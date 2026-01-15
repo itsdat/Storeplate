@@ -3,13 +3,16 @@ import { ICart } from "@/interfaces/cart/cart.interface";
 import { IProduct } from "@/interfaces/product/product.interface";
 import { addToCart } from "@/utils/cart.utils";
 import { getImageLink } from "@/utils/getImageLink.utils";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function ProductCardList({ item }: { item: IProduct }) {
-  const { toastAddToCart, toastError } = useToast();
+  const { toastAddToCart, toastError, toastWarning } = useToast();
   const handleAddToCart = (data: ICart) => {
     try {
+      if (!data.size) {
+        toastWarning("size is required", "Please select one size option");
+        return;
+      }
       addToCart(data);
       toastAddToCart({
         title: `${data.name} added to cart`,
@@ -58,7 +61,8 @@ export default function ProductCardList({ item }: { item: IProduct }) {
                 price: item.variants[0].price,
                 quantity: 1,
                 thumbnail: item.variants[0].images[0],
-                size: { label: "Size M", value: "m" },
+                size: item.sizes[0],
+                slug: item.slug
               });
             }}
             className={`px-5 py-2 bg-(--color-text-btn) text-(--color-btn) border border-(--color-btn) hover:bg-(--color-btn) hover:text-(--color-text-btn) transition-all duration-300 font-bold rounded-sm ${

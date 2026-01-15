@@ -10,6 +10,7 @@ import {
 import { getImageLink } from "@/utils/getImageLink.utils";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 
 export default function UserCart({
@@ -22,6 +23,7 @@ export default function UserCart({
   onSetCount: (count: number) => void;
 }) {
   const [carts, setCarts] = useState<ICart[]>();
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchCartLocal() {
@@ -58,83 +60,101 @@ export default function UserCart({
           </Link>
         </div>
       ) : (
-        <ScrollArea className="max-h-60">
-          <div className="w-full flex flex-col gap-3 pr-3">
-            {carts.map((item) => (
-              <div
-                key={item.id}
-                className="flex items-center justify-between group transition-all duration-300 cursor-default"
-              >
-                <div className="flex items-start justify-start gap-2">
-                  <img
-                    src={getImageLink(item.thumbnail)}
-                    alt="image"
-                    className="w-12 h-12 aspect-square rounded-[3px]"
-                  />
+        <div className="w-full">
+          <ScrollArea>
+            <div className="w-full flex flex-col gap-3 pr-7 max-h-60">
+              {carts.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between group transition-all duration-300 cursor-default"
+                >
+                  <div className="flex items-start justify-start gap-2">
+                    <img
+                      src={getImageLink(item.thumbnail)}
+                      alt="image"
+                      className="w-12 h-12 aspect-square rounded-[3px]"
+                    />
 
-                  <div className="flex flex-col">
-                    <p className="text-(--color-title)">{item.name}</p>
-                    <span className="text-[12px] text-(--color-desc)">
-                      {item.size.label} - £{item.price}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-1 items-center justify-end gap-2 transition-all duration-300 group-hover:translate-x-3 translate-x-10">
-                  <div className="flex flex-1 items-center justify-end gap-3">
-                    <p className="text-(--color-text)">
-                      £{item.price * item.quantity}
-                    </p>
-
-                    <div className="flex items-center justify-center gap-1">
-                      <button
-                        onClick={() => {
-                          const newCart = updateCartQuantity(
-                            item.id,
-                            item.quantity - 1
-                          );
-                          setCarts(newCart);
-                        }}
-                        className="w-5 h-5 aspect-square flex items-center justify-center cursor-pointer"
+                    <div className="flex flex-col">
+                      <p
+                        className="text-(--color-title) group-hover:underline cursor-pointer line-clamp-1 max-w-52"
+                        onClick={() => router.push(`/product/${item.slug}`)}
                       >
-                        <Minus strokeWidth={1.5} size={15} />
-                      </button>
-                      <div className="w-7 h-7 aspect-square flex items-center justify-center bg-(--color-foreground) border border-(--color-foreground)">
-                        {item.quantity}
-                      </div>
-                      <button
-                        onClick={() => {
-                          const newCart = updateCartQuantity(
-                            item.id,
-                            item.quantity + 1
-                          );
-                          setCarts(newCart);
-                        }}
-                        className="w-5 h-5 aspect-square flex items-center justify-center cursor-pointer"
-                      >
-                        <Plus strokeWidth={1.5} size={15} />
-                      </button>
+                        {item.name}
+                      </p>
+                      <span className="text-[12px] text-(--color-desc)">
+                        {item.size.label} - £{item.price}
+                      </span>
                     </div>
                   </div>
 
-                  <div
-                    className="opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center cursor-pointer"
-                    onClick={() => {
-                      const newCart = removeFromCart(item.id);
-                      setCarts(newCart);
-                    }}
-                  >
-                    <Trash2
-                      color="var(--color-red-500)"
-                      strokeWidth={1.5}
-                      size={20}
-                    />
+                  <div className="flex flex-1 items-center justify-end gap-2 transition-all duration-300 group-hover:translate-x-3 translate-x-10">
+                    <div className="flex flex-1 items-center justify-end gap-3">
+                      <p className="text-(--color-text)">
+                        £{item.price * item.quantity}
+                      </p>
+
+                      <div className="flex items-center justify-center gap-1">
+                        <button
+                          onClick={() => {
+                            const newCart = updateCartQuantity(
+                              item.id,
+                              item.quantity - 1,
+                              item.size.value
+                            );
+                            setCarts(newCart);
+                          }}
+                          className="w-5 h-5 aspect-square flex items-center justify-center cursor-pointer"
+                        >
+                          <Minus strokeWidth={1.5} size={15} />
+                        </button>
+                        <div className="w-7 h-7 aspect-square flex items-center justify-center bg-(--color-foreground) border border-(--color-foreground)">
+                          {item.quantity}
+                        </div>
+                        <button
+                          onClick={() => {
+                            const newCart = updateCartQuantity(
+                              item.id,
+                              item.quantity + 1,
+                              item.size.value
+                            );
+                            setCarts(newCart);
+                          }}
+                          className="w-5 h-5 aspect-square flex items-center justify-center cursor-pointer"
+                        >
+                          <Plus strokeWidth={1.5} size={15} />
+                        </button>
+                      </div>
+                    </div>
+
+                    <div
+                      className="opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center cursor-pointer"
+                      onClick={() => {
+                        const newCart = removeFromCart(
+                          item.id,
+                          item.size.value
+                        );
+                        setCarts(newCart);
+                      }}
+                    >
+                      <Trash2
+                        color="var(--color-red-500)"
+                        strokeWidth={1.5}
+                        size={20}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
+              ))}
+            </div>
+          </ScrollArea>
+          <button
+            onClick={() => router.push("/carts")}
+            className="w-full mt-3 py-2 bg-(--color-btn) text-(--color-text-btn) rounded-sm text-sm cursor-pointer text-center"
+          >
+            View All Cart
+          </button>
+        </div>
       )}
     </BasePopover>
   );

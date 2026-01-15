@@ -1,5 +1,8 @@
 "use client";
-import { IProduct } from "@/interfaces/product/product.interface";
+import {
+  IProduct,
+  IProductOption,
+} from "@/interfaces/product/product.interface";
 import { useState } from "react";
 import { MomoIcon } from "@/components/common/icons/BaseIcon";
 import { Separator } from "@/components/ui/separator";
@@ -9,14 +12,20 @@ import { getImageLink } from "@/utils/getImageLink.utils";
 import { ICart } from "@/interfaces/cart/cart.interface";
 import { addToCart } from "@/utils/cart.utils";
 import { useToast } from "@/hooks/others/useToast.hook";
+import BaseSelect from "@/components/common/input-select/BaseSelect";
 
 export default function ProductDetailLayout({ item }: { item: IProduct }) {
   const [variantIndex, setVariantIndex] = useState<number>(0);
   const [viewImage, setViewImage] = useState<number>(0);
-  const { toastAddToCart, toastError } = useToast();
+  const { toastAddToCart, toastError, toastWarning } = useToast();
+  const [sizeOption, setSizeOption] = useState<IProductOption>();
 
   const handleAddToCart = (data: ICart) => {
     try {
+      if (!data.size) {
+        toastWarning("size is required", "Please select one size option");
+        return;
+      }
       addToCart(data);
       toastAddToCart({
         title: `${data.name} added to cart`,
@@ -103,10 +112,25 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
             </div>
           </div>
 
-          <div className="flex flex-col items-start justify-start gap-2">
+          <div className="flex flex-col items-start justify-start gap-2 w-full">
             <h5 className="text-2xl text-(--color-title) font-semibold">
               Size
             </h5>
+
+            <BaseSelect
+              required
+              onSelectOption={(option) => setSizeOption(option)}
+              options={item.sizes}
+              placeholder="Select Size"
+              classProps={{
+                className:
+                  "bg-(--color-foreground) border-none text-(--color-desc) rounded-sm font-normal w-60!",
+                classItem:
+                  "hover:bg-[#00000080]! rounded-none! text-(--color-text) hover:text-white! py-3 data-[selected=true]:bg-[#00000080]! data-[selected=true]:text-white",
+                classGroup:
+                  "p-0 border-none! ring-0! outline-none! bg-(--color-background)",
+              }}
+            />
           </div>
 
           <div className="flex flex-col items-start justify-start gap-4">
@@ -118,7 +142,8 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
                   price: item.variants[variantIndex].price,
                   quantity: 1,
                   thumbnail: item.variants[variantIndex].images[0],
-                  size: { label: "Size M", value: "m" },
+                  size: sizeOption!,
+                  slug: item.slug,
                 })
               }
               className={`cursor-pointer px-5 py-2.5 bg-(--color-btn) text-(--color-text-btn) font-semibold rounded-sm`}
@@ -178,6 +203,7 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
               label: "More Info",
               value: "more",
               content: `${item.moreInfo}`,
+              hidden: !item.moreInfo,
             },
           ]}
         />

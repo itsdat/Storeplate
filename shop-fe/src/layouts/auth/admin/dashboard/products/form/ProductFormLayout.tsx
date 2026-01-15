@@ -1,14 +1,17 @@
+import { CollectionApis } from "@/apis";
 import BaseImagePicker from "@/components/common/image/image-picker/BaseImagePicker";
+import BaseSelectRhf from "@/components/common/input-select/BaseSelectRhf";
 import BaseInput from "@/components/common/input/BaseInput";
 import { BaseInputRhf } from "@/components/common/input/BaseInputRhf";
 import { Label } from "@/components/ui/label";
 import { BASE_FOLDER } from "@/constants/folder.constant";
 import {
   IProduct,
+  IProductOption,
 } from "@/interfaces/product/product.interface";
 import { SimFormReturn } from "@/types/others/sim-rhf.types";
-import { Plus, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useFieldArray } from "react-hook-form";
 import { v4 as uuid } from "uuid";
 
@@ -19,6 +22,7 @@ export default function ProductFormLayout({
 }) {
   const { control, setValue, watch } = rhf;
   const [images, setImages] = useState<string[]>([]);
+  const [collections, setCollection] = useState<IProductOption[]>();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -49,6 +53,18 @@ export default function ProductFormLayout({
     value: "",
   });
 
+  useEffect(() => {
+    const fetchOptions = async () => {
+      const res = await CollectionApis.findMulti();
+      const options = res.data.map((i: any) => ({
+        label: i.name,
+        value: i.id,
+      }));
+      setCollection(options);
+    };
+    fetchOptions();
+  }, []);
+
   return (
     <div className="flex w-full items-start justify-start gap-5">
       <div className="w-1/2 flex flex-col items-start justify-start gap-5">
@@ -59,6 +75,16 @@ export default function ProductFormLayout({
           placeholder="Product name"
           label="Name"
         />
+
+        <BaseSelectRhf
+          control={control}
+          name="collectionId"
+          label="Collection"
+          options={collections!}
+          onSelectOption={() => console.log("HHEHHE")}
+          placeholder="Select collection"
+        />
+
         <BaseInputRhf
           control={control}
           required

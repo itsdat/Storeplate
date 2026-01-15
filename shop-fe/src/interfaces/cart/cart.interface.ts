@@ -7,5 +7,6 @@ export interface ICart extends IBase{
     quantity: number,
     price: number;
     discount?: number;
-    size: IProductOption, 
+    size: IProductOption,
+    slug: string
 }

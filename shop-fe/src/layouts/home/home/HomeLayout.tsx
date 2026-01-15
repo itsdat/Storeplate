@@ -1,9 +1,11 @@
+"use client";
 import { ICollection } from "@/interfaces/collection/collection.interface";
 import BannerSectionLayout from "./sections/banners/BannerSectionLayout";
 import CollectionsSectionLayout from "./sections/collections/CollectionsSectionLayout";
 import DealOfTheWeekSectionLayout from "./sections/deals/DealOfTheWeekSectionLayout";
 import FeatureSectionLayout from "./sections/features/FeatureSectionLayout";
 import { IBanner } from "@/interfaces/banner/banner.interface";
+import { IProduct } from "@/interfaces/product/product.interface";
 
 interface HomeResProps {
   items: {
@@ -13,7 +15,11 @@ interface HomeResProps {
     };
     banners?: {
       data: IBanner[];
-      totlal: number;
+      total: number;
+    };
+    products?: {
+      data: IProduct[];
+      total: number;
     };
   };
 }
@@ -26,7 +32,10 @@ export default function HomeLayout({ items }: HomeResProps) {
         items={items?.collections?.data!}
         total={items.collections?.total!}
       />
-      <FeatureSectionLayout />
+      <FeatureSectionLayout
+        items={items?.products?.data!}
+        total={items.products?.total!}
+      />
       <DealOfTheWeekSectionLayout />
     </div>
   );

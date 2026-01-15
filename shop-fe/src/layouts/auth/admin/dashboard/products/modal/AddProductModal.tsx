@@ -30,7 +30,7 @@ export default function AddProductModal({
       ],
       sizes: [
         {
-          id: uuid(),
+          // id: uuid(),
           label: "",
           value: "",
         },
@@ -41,6 +41,8 @@ export default function AddProductModal({
   const { toastError, toastSuccess } = useToast();
 
   const onSubmit: SubmitHandler<IProduct> = async (data) => {
+    console.log("data", data);
+    
     try {
       const res = await ProductApis.create(data);
       if (res.statusCode === 201) {

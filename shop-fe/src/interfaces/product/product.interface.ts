@@ -34,4 +34,5 @@ export interface IProduct extends IBase{
     moreInfo?: string,
     isActive?: boolean
     sizes: IProductOption[];
+    collectionId?: string
 }
