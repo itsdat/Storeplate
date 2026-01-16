@@ -6,11 +6,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface BaseTableColumn<T> {
   key: keyof T | string;
-  label: string;
+  label: string | ReactNode;
   render?: (item: T, index: number) => React.ReactNode;
   className?: string;
   hidden?: boolean; // 👈 thêm optional cho phép ẩn riêng cột

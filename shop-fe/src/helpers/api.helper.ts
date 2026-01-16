@@ -1,8 +1,15 @@
 'use server';
+
 import { API_URL } from "@/constants/api.constant";
-import { BASE_ROUTE } from "@/constants/route.contant";
 import { getSession } from "@/lib/session";
-import { IBaseErrorRes } from "@/shared/constants/common/IBaseRetun.interface";
+
+export interface IBaseApiResponse<T> {
+  data?: T;
+  statusCode: number;
+  message?: string;
+  totalItems?: number
+}
+
 
 interface IOptions extends RequestInit {
   body?: any;
@@ -18,25 +25,23 @@ export async function api<T>({
   skipAuth,
   method = "GET",
   ...options
-}: IOptions & { method?: string }): Promise<T & IBaseErrorRes> {
+}: IOptions & { method?: string }): Promise<IBaseApiResponse<T>> {
+
   let headers: HeadersInit = {
     ...(options.headers || {}),
   };
 
-  // Nếu có token thì gắn vào header 
   if (!skipAuth) {
-    const session = await getSession()
-    const token = session?.token
-    // const session = sessionStorage.getItem("token");
+    const session = await getSession();
+    const token = session?.token;
     if (token) {
       (headers as Record<string, string>)["Authorization"] = `Bearer ${token}`;
     }
   }
 
-  // Serialize body
   let bodyData = body;
   if (body instanceof FormData) {
-    // ❌ không set Content-Type, fetch sẽ tự thêm
+    // fetch tự set content-type
   } else if (body) {
     (headers as Record<string, string>)["Content-Type"] = "application/json";
     bodyData = JSON.stringify(body);
@@ -50,20 +55,27 @@ export async function api<T>({
     cache: "no-store",
   });
 
-  const result = await response.json();
+  // ⚠️ fetch có thể trả body rỗng
+  const result = await response
+    .json()
+    .catch(() => ({}));
 
-  if (!response.ok) {
-    throw new Error(result.message || result.error || `HTTP ${response.status}`);
+  // ✅ 401 → trả object, KHÔNG throw
+  if (response.status === 401) {
+    return {
+      statusCode: 401,
+      message: "Unauthorized",
+    };
   }
 
   if (!response.ok) {
-    if (response.status === 401) {
-      window.location.href = `${BASE_ROUTE.HOME}`;
-    }else if(response.status === 500){
-      window.location.href = `${BASE_ROUTE.ERROR}`;
-    }
-    throw new Error(`API Error: ${response.status}`);
+    throw new Error(
+      result?.message || result?.error || `HTTP ${response.status}`
+    );
   }
 
-  return result;
+  return {
+    statusCode: response.status,
+    ...result,
+  };
 }

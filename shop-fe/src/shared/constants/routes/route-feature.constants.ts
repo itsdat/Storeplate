@@ -1,11 +1,12 @@
 export const ROUTE_COMMON_FEATURES = {
   CREATE: 'create',
-  GET_ONE_BY_ID: 'get-one-by-id',
+  FIND_ONE_BY_ID: 'find-one-by-id',
   FIND_ONE_BY_SLUG: 'find-one-by-slug',
   GET_MULTI: 'find-multi', // dùng cho ui table
   GET_ALL: 'find-all', // dùng cho select-option
   UPDATE: 'update',
   DELETE_MULTI: 'delete-multi',
+  DELETE: 'delete',
   SOFT_DELETE: 'soft-delete',
   RESTORE: 'restore',
   FIND_DATA: 'find-data', // Bảng chỉ có 1 item

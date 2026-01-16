@@ -31,6 +31,7 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${karla.variable} ${geistMono.variable} karla antialiased bg-[var(--color-background)]`}
       >
         <SessionProvider session={session as any}>

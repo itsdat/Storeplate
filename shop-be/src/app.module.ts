@@ -11,6 +11,7 @@ import { UploadModule } from './modules/upload/upload.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { User } from './modules/users/entities/user.entity';
+import { CartModule } from './modules/cart/cart.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { User } from './modules/users/entities/user.entity';
     ProductModule,
     TagModule,
     UploadModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],

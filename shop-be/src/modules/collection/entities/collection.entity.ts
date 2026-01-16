@@ -1,5 +1,6 @@
 import slugify from "slugify";
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Product } from "src/modules/product/entities/product.entity";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity("collections")
 export class Collection {
@@ -14,6 +15,10 @@ export class Collection {
 
     @Column({default: true})
     isActive: boolean;
+
+    @OneToMany(() => Product, (product) => product.collection)
+    products: Product[];
+
 
     @BeforeInsert()
     @BeforeUpdate()

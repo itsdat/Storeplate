@@ -1,10 +1,9 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ReactNode } from "react";
 
 interface BaseTabItemProps {
   label: string;
   value: string;
-  content: ReactNode;
+  content: string;
   hidden?: boolean;
 }
 
@@ -26,10 +25,13 @@ export default function BaseTab({ items }: { items: BaseTabItemProps[] }) {
       {items.map((item) => (
         <TabsContent
           key={item.value}
-          className="-mt-2 bg-(--color-foreground) px-5 py-5 transition-all duration-300"
+          className="-mt-2 bg-(--color-foreground) p-3 transition-all duration-300"
           value={item.value}
         >
-          {item.content}
+          <div
+            className="prose bg-white p-3"
+            dangerouslySetInnerHTML={{ __html: item.content }}
+          />
         </TabsContent>
       ))}
     </Tabs>

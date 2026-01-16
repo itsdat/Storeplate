@@ -25,7 +25,7 @@ interface IBaseSelectClass {
 }
 
 export interface BaseSelectProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
   className?: string;
   label?: string;
   type?: HTMLInputTypeAttribute;
@@ -45,7 +45,7 @@ export default function BaseSelect({
   error,
   placeholder,
   search = false,
-  options,
+  options = [],
   classProps,
   value: externalValue,
   onChange,
@@ -53,23 +53,25 @@ export default function BaseSelect({
   ...props
 }: BaseSelectProps) {
   const [open, setOpen] = useState(false);
-  
+
   // Sử dụng controlled value từ props hoặc fallback về empty string
   const value = externalValue || "";
+  const [opts, setOpts] = useState<IProductOption>();
 
   const handleSelect = (currentValue: string, option: IProductOption) => {
     const newValue = currentValue === value ? "" : currentValue;
-    
+
     // Gọi onChange callback (cho RHF)
     if (onChange) {
       onChange(newValue);
     }
-    
+
     // Gọi onSelectOption callback nếu có
     if (onSelectOption) {
       onSelectOption(option);
+      setOpts(option);
     }
-    
+
     setOpen(false);
   };
 
@@ -88,9 +90,10 @@ export default function BaseSelect({
             aria-expanded={open}
             className="w-full justify-between"
           >
-            {value
-              ? options.find((i) => i.value === value)?.label
-              : placeholder}
+            {opts?.label ?? options.find((i) => i.value === value)?.label ?? (
+              <p className="text-(--color-desc) font-normal">{placeholder}</p>
+            )}
+
             <ChevronDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -122,9 +125,7 @@ export default function BaseSelect({
           </Command>
         </PopoverContent>
       </Popover>
-      {error && (
-        <p className="text-sm text-red-500">{error}</p>
-      )}
+      {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   );
 }

@@ -1,12 +1,17 @@
-import { IBase } from "../common/base.interface";
 import { IProductOption } from "../product/product.interface";
 
-export interface ICart extends IBase{
+export interface ICart{
+    id?: string,
+    createdAt?: string,
+    updatedAt?: string
     name: string,
     thumbnail: string,
     quantity: number,
     price: number;
     discount?: number;
     size: IProductOption,
-    slug: string
+    slug: string,
+    sizes: IProductOption[],
+    productId: string,
+    userId?: string
 }

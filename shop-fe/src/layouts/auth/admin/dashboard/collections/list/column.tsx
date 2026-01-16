@@ -5,7 +5,6 @@ import { AdvancedColumn } from "@/components/common/table/BaseTable";
 import { getImageLink } from "@/utils/getImageLink.utils";
 import BaseTag from "@/components/common/tags/BaseTag";
 import { STATUS_COLORS } from "@/constants/status-color.constant";
-import { PhotoProvider, PhotoView } from "react-photo-view";
 import PreviewImage from "@/components/common/image/image-view/PreviewImage";
 
 export const getCollectionColumn = ({

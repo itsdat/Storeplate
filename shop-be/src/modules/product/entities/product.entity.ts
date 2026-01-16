@@ -1,8 +1,9 @@
 import slugify from "slugify";
 import { Tag } from "src/modules/tag/entities/tag.entity";
-import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductVariant } from "./product-variant.entity";
 import { ProductOption } from "./product-options.entity";
+import { Collection } from "src/modules/collection/entities/collection.entity";
 
 @Entity('products')
 export class Product {
@@ -61,6 +62,13 @@ export class Product {
 
     @Column({ type: "json" })
     sizes: ProductOption[];
+
+
+    @ManyToOne(() => Collection, (collection) => collection.products)
+    @JoinColumn({ name: 'collection_id' })
+    collection: Collection;
+
+
 
     @CreateDateColumn()
     createdAt: Date;

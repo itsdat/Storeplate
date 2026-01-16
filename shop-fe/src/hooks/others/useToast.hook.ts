@@ -3,6 +3,7 @@
 import { toast } from "sonner";
 import { Check } from "lucide-react";
 import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useRouter } from "next/navigation";
 
 interface ToastAddToCartProps {
   title: string;
@@ -12,6 +13,7 @@ interface ToastAddToCartProps {
 }
 
 export function useToast() {
+  const router = useRouter();
   const toastAddToCart = ({
   title,
   image,
@@ -43,12 +45,12 @@ export function useToast() {
         _jsxs(
           "div",
           {
-            className: "flex flex-col gap-1 justify-start items-start mb-3.5!",
+            className: "flex flex-col gap-1 justify-start items-start mb-3.5! w-48",
             children: [
               _jsx(
                 "span",
                 {
-                  className: "text-sm font-medium text-(--color-title)",
+                  className: "text-sm font-medium text-(--color-title) line-clamp-1",
                   children: title,
                 },
                 "title"
@@ -88,6 +90,23 @@ export function useToast() {
           },
           "content"
         ),
+       _jsx(
+        "div",
+        {
+          className:
+            "w-12 py-1 cursor-pointer rounded-xs px-1 text-xs bg-(--color-btn) text-(--color-text-btn) flex items-center justify-center",
+          children: _jsx(
+            "span",
+            {
+              onClick: () => router.push("/carts"),
+              children: "View",
+            },
+            "text"
+          ),
+        },
+        "view-text"
+      ),
+
       ],
     }),
 

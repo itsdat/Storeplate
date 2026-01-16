@@ -4,5 +4,6 @@ export const ROUTE_CONTROLLERS = {
   ROLES: 'roles',
   COLLECTIONS: 'collection',
   IMAGES: 'upload',
-  PRODUCTS: 'product'
+  PRODUCTS: 'product',
+  CARTS: 'cart',
 };

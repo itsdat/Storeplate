@@ -1,4 +1,5 @@
 import { ICart } from "@/interfaces/cart/cart.interface";
+import { IProductOption } from "@/interfaces/product/product.interface";
 
 export const getCart = (): ICart[] => {
   if (typeof window === "undefined") return [];
@@ -33,6 +34,15 @@ export const removeFromCart = (id: string, size: string) => {
   localStorage.setItem("cart", JSON.stringify(cart));
   return cart;
 };
+
+export const updateCartSize = (id: string, oldSize: IProductOption, size: IProductOption) => {
+  const cart = getCart()
+    .map((item) =>
+      item.id === id && item.size.value === oldSize.value ? { ...item, size: size } : item
+    );
+    localStorage.setItem("cart", JSON.stringify(cart));
+  return cart;
+}
 
 export const updateCartQuantity = (id: string, quantity: number, size: string) => {
   if(quantity === 0){

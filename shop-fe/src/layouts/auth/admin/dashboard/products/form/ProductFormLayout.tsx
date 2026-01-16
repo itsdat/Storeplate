@@ -1,10 +1,13 @@
 import { CollectionApis } from "@/apis";
+import BaseEditorRhf from "@/components/common/editor/BaseEditorRhf";
 import BaseImagePicker from "@/components/common/image/image-picker/BaseImagePicker";
 import BaseSelectRhf from "@/components/common/input-select/BaseSelectRhf";
 import BaseInput from "@/components/common/input/BaseInput";
 import { BaseInputRhf } from "@/components/common/input/BaseInputRhf";
+import { BaseSwitchRhf } from "@/components/common/switch/BaseSwitchRhf";
 import { Label } from "@/components/ui/label";
 import { BASE_FOLDER } from "@/constants/folder.constant";
+import { ICollection } from "@/interfaces/collection/collection.interface";
 import {
   IProduct,
   IProductOption,
@@ -52,6 +55,16 @@ export default function ProductFormLayout({
     label: "",
     value: "",
   });
+  const collectionId = watch("collectionId");
+
+  useEffect(() => {
+    if (collections?.length && collectionId) {
+      setValue("collectionId", collectionId, {
+        shouldDirty: false,
+        shouldValidate: false,
+      });
+    }
+  }, [collections]);
 
   useEffect(() => {
     const fetchOptions = async () => {
@@ -66,159 +79,181 @@ export default function ProductFormLayout({
   }, []);
 
   return (
-    <div className="flex w-full items-start justify-start gap-5">
-      <div className="w-1/2 flex flex-col items-start justify-start gap-5">
-        <BaseInputRhf
-          control={control}
-          required
-          name="name"
-          placeholder="Product name"
-          label="Name"
-        />
+    <div>
+      <div className="flex w-full items-start justify-start gap-5">
+        <div className="w-1/2 flex flex-col items-start justify-start gap-5">
+          <BaseInputRhf
+            control={control}
+            required
+            name="name"
+            placeholder="Product name"
+            label="Name"
+          />
 
-        <BaseSelectRhf
-          control={control}
-          name="collectionId"
-          label="Collection"
-          options={collections!}
-          onSelectOption={() => console.log("HHEHHE")}
-          placeholder="Select collection"
-        />
+          <BaseSelectRhf
+            control={control}
+            name="collectionId"
+            label="Collection"
+            options={collections!}
+            onSelectOption={() => console.log("HHEHHE")}
+            placeholder="Select collection"
+          />
 
-        <BaseInputRhf
-          control={control}
-          required
-          name="description"
-          placeholder="Description product"
-          label="Description"
-        />
-        <BaseInputRhf
-          control={control}
-          name="moreInfo"
-          placeholder="More product info"
-          label="More info"
-        />
+          {/* <BaseInputRhf
+            control={control}
+            required
+            name="description"
+            placeholder="Description product"
+            label="Description"
+          />
+          <BaseInputRhf
+            control={control}
+            name="moreInfo"
+            placeholder="More product info"
+            label="More info"
+          /> */}
 
-        <div className="w-full flex flex-col gap-3">
-          <Label className=" text-(--color-title)">Sizes</Label>
+          <BaseEditorRhf
+            control={control}
+            label="Description"
+            name="description"
+            placeholder="Description product"
+          />
 
-          {sizeFields.map((item, index) => (
-            <div
-              key={item.id}
-              className="flex items-center justify-between gap-3"
-            >
-              <div className="w-full flex items-center justify-between gap-3 border p-2 border-(--color-border) rounded-sm">
-                <BaseInputRhf
-                  control={control}
-                  name={`sizes.${index}.label`}
-                  label="Label"
-                  required
-                />
-                <BaseInputRhf
-                  control={control}
-                  name={`sizes.${index}.value`}
-                  label="Value"
-                  required
-                />
-              </div>
-              {sizeFields.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeSize(index)}
-                  className="text-red-500 cursor-pointer"
-                >
-                  <Trash2 strokeWidth={1.5} size={16} />
-                </button>
-              )}
-            </div>
-          ))}
+          <BaseEditorRhf
+            control={control}
+            name="moreInfo"
+            label="More infomation"
+            placeholder="More infomation product"
+          />
 
-          <button
-            onClick={() => appendSize(createEmptySize() as any)}
-            type="button"
-            className="w-full py-2 text-sm flex items-center justify-center rounded-sm text-(--color-text-btn) bg-(--color-btn) mb-0.5 cursor-pointer"
-          >
-            Add New Size
-          </button>
-        </div>
-      </div>
-      <div className="w-1/2 flex flex-col items-start justify-start gap-5">
-        {fields.map((field, index) => (
-          <div key={field.id} className="w-full">
-            <div className="flex items-center justify-between">
-              <Label className="mb-2 text-(--color-text)">
-                Variant {index + 1}
-              </Label>
-              {fields.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => remove(index)}
-                  className="text-red-500 cursor-pointer"
-                >
-                  <Trash2 strokeWidth={1.5} size={16} />
-                </button>
-              )}
-            </div>
+          <BaseSwitchRhf
+            control={control}
+            name="isActive"
+            label="Active Products"
+          />
 
-            <div className="flex flex-col items-start justify-start gap-5 border rounded-sm p-3">
-              <div className="flex gap-3 w-full">
-                <BaseInputRhf
-                  control={control}
-                  name={`variants.${index}.price`}
-                  label="Price"
-                  required
-                />
+          <div className="w-full flex flex-col gap-3">
+            <Label className=" text-(--color-title)">Sizes</Label>
 
-                <BaseInputRhf
-                  control={control}
-                  name={`variants.${index}.discount`}
-                  label="Discount"
-                />
-              </div>
-
-              <div className="flex gap-3 w-full">
-                <BaseInputRhf
-                  control={control}
-                  name={`variants.${index}.stock`}
-                  label="Stock"
-                  required
-                />
-
-                <div className="flex items-end justify-start gap-1 w-full">
-                  <BaseInput
-                    label="List Images"
+            {sizeFields.map((item, index) => (
+              <div
+                key={item.id}
+                className="flex items-center justify-between gap-3"
+              >
+                <div className="w-full flex items-center justify-between gap-3 border p-2 border-(--color-border) rounded-sm">
+                  <BaseInputRhf
+                    control={control}
+                    name={`sizes.${index}.label`}
+                    label="Label"
                     required
-                    placeholder="Select list images"
-                    className="flex-1"
-                    value={`${images.length} image selected`}
-                    readOnly
+                  />
+                  <BaseInputRhf
+                    control={control}
+                    name={`sizes.${index}.value`}
+                    label="Value"
+                    required
+                  />
+                </div>
+                {sizeFields.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeSize(index)}
+                    className="text-red-500 cursor-pointer"
+                  >
+                    <Trash2 strokeWidth={1.5} size={16} />
+                  </button>
+                )}
+              </div>
+            ))}
+
+            <button
+              onClick={() => appendSize(createEmptySize() as any)}
+              type="button"
+              className="w-full py-2 text-sm flex items-center justify-center rounded-sm text-(--color-text-btn) bg-(--color-btn) mb-0.5 cursor-pointer"
+            >
+              Add New Size
+            </button>
+          </div>
+        </div>
+        <div className="w-1/2 flex flex-col items-start justify-start gap-5">
+          {fields.map((field, index) => (
+            <div key={field.id} className="w-full">
+              <div className="flex items-center justify-between">
+                <Label className="mb-2 text-(--color-text)">
+                  Variant {index + 1}
+                </Label>
+                {fields.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => remove(index)}
+                    className="text-red-500 cursor-pointer"
+                  >
+                    <Trash2 strokeWidth={1.5} size={16} />
+                  </button>
+                )}
+              </div>
+
+              <div className="flex flex-col items-start justify-start gap-5 border rounded-sm p-3">
+                <div className="flex gap-3 w-full">
+                  <BaseInputRhf
+                    control={control}
+                    name={`variants.${index}.price`}
+                    label="Price"
+                    required
                   />
 
-                  <div>
-                    <BaseImagePicker
-                      type="multi"
-                      folderName={BASE_FOLDER.PRODUCTS}
-                      onSelectImages={(images) => {
-                        setValue(`variants.${index}.images` as any, images, {
-                          shouldDirty: true,
-                          shouldValidate: true,
-                        });
-                        setImages(images);
-                      }}
+                  <BaseInputRhf
+                    control={control}
+                    name={`variants.${index}.discount`}
+                    label="Discount"
+                  />
+                </div>
+
+                <div className="flex gap-3 w-full">
+                  <BaseInputRhf
+                    control={control}
+                    name={`variants.${index}.stock`}
+                    label="Stock"
+                    required
+                  />
+
+                  <div className="flex items-end justify-start gap-1 w-full">
+                    <BaseInput
+                      label="List Images"
+                      required
+                      placeholder="Select list images"
+                      className="flex-1"
+                      value={`${images.length} image selected`}
+                      readOnly
                     />
+
+                    <div>
+                      <BaseImagePicker
+                        type="multi"
+                        folderName={BASE_FOLDER.PRODUCTS}
+                        onSelectImages={(images) => {
+                          setValue(`variants.${index}.images` as any, images, {
+                            shouldDirty: true,
+                            shouldValidate: true,
+                          });
+                          setImages(images);
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-        <button
-          onClick={() => append(createEmptyVariant() as any)}
-          type="button"
-          className="w-full py-2 bg-(--color-btn) text-(--color-text-btn) flex items-center justify-center rounded-sm text-sm cursor-pointer"
-        >
-          Add New Variant
-        </button>
+          ))}
+          <button
+            onClick={() => append(createEmptyVariant() as any)}
+            type="button"
+            className="w-full py-2 bg-(--color-btn) text-(--color-text-btn) flex items-center justify-center rounded-sm text-sm cursor-pointer"
+          >
+            Add New Variant
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -29,8 +29,21 @@ export const getProductColumn = ({
 }): AdvancedColumn<IProduct>[] => {
   return [
     {
+      label: "Thubnail",
+      key: "temp",
+      render: (record: IProduct) => (
+        <PreviewImage
+          url={getImageLink(record.variants[0].images[0])}
+          classname="w-10"
+        />
+      ),
+    },
+    {
       label: "Name",
       key: "name",
+      // render: (record: IProduct) => (
+      //   <p className="truncate max-w-[90%]" title={record.name}>{record.name}</p>
+      // ),
     },
     {
       label: "Variants",
@@ -68,6 +81,13 @@ export const getProductColumn = ({
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+      ),
+    },
+    {
+      label: "Colection",
+      key: "collectionId",
+      render: (record: IProduct) => (
+        <p className="truncate max-w-50">{record.collection?.name}</p>
       ),
     },
     {

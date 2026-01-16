@@ -28,7 +28,7 @@ export async function findAll(){
 }
 
 export async function findMulti(){
-    const res = await api({
+    const res = await api<ICollection[]>({
         url: `${URL}/${ROUTE_COMMON_FEATURES.GET_MULTI}`,
         method: CONST_METHODS.GET,
         // skipAuth: true

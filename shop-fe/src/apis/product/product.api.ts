@@ -27,7 +27,7 @@ export async function findAll(){
 }
 
 export async function findMulti(){
-    const res = await api({
+    const res = await api<IProduct[]>({
         url: `${URL}/${ROUTE_COMMON_FEATURES.GET_MULTI}`,
         method: CONST_METHODS.GET,
     })
@@ -35,9 +35,28 @@ export async function findMulti(){
 }
 
 export async function findOneBySlug(slug: string){
-    const res = await api({
+    const res = await api<IProduct>({
         url: `${URL}/${ROUTE_COMMON_FEATURES.FIND_ONE_BY_SLUG}/${slug}`,
         method: CONST_METHODS.GET,
     })
+    return res;
+}
+
+export async function update(id: string, payload: IProduct){
+    const res = await api({
+        url: `${URL}/${ROUTE_COMMON_FEATURES.UPDATE}/${id}`,
+        method: CONST_METHODS.PATCH,
+        body: payload
+    })
+    revalidatePath('/admin')
+    return res;
+}
+
+export async function remove(id: string){
+    const res = await api({
+        url: `${URL}/${ROUTE_COMMON_FEATURES.DELETE}/${id}`,
+        method: CONST_METHODS.DELETE,
+    })
+    revalidatePath('/admin')
     return res;
 }

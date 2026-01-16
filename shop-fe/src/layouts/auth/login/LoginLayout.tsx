@@ -1,10 +1,11 @@
 "use client";
-import { AuthApis } from "@/apis";
+import { AuthApis, CartApis } from "@/apis";
 import BaseHeading from "@/components/common/heading/BaseHeading";
 import { BaseInputRhf } from "@/components/common/input/BaseInputRhf";
 import { useSimRhf } from "@/hooks/others/useSimRhf.hook";
 import { useToast } from "@/hooks/others/useToast.hook";
 import { ILogin } from "@/interfaces/auth/auth.interface";
+import { clearCart, getCart } from "@/utils/cart.utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SubmitHandler } from "react-hook-form";
@@ -29,6 +30,18 @@ export default function LoginLayout() {
           "Login Successfull",
           "Signed in successfully. Wellcome to Storeplate!"
         );
+        try {
+          const localCart = getCart();
+          for (const item of localCart) {
+            await CartApis.create({
+              ...item,
+              userId: res.data.user.id,
+            });
+          }
+          clearCart();
+        } catch (error) {
+          console.log("error", error);
+        }
         router.replace("/");
       } else {
         toast("Login fail");

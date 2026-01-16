@@ -13,20 +13,32 @@ import { ICart } from "@/interfaces/cart/cart.interface";
 import { addToCart } from "@/utils/cart.utils";
 import { useToast } from "@/hooks/others/useToast.hook";
 import BaseSelect from "@/components/common/input-select/BaseSelect";
+import { useSession } from "@/context/SessionProvider";
+import { CartApis } from "@/apis";
 
 export default function ProductDetailLayout({ item }: { item: IProduct }) {
   const [variantIndex, setVariantIndex] = useState<number>(0);
   const [viewImage, setViewImage] = useState<number>(0);
   const { toastAddToCart, toastError, toastWarning } = useToast();
   const [sizeOption, setSizeOption] = useState<IProductOption>();
+  const user = useSession();
 
-  const handleAddToCart = (data: ICart) => {
+  const handleAddToCart = async (data: ICart) => {
     try {
-      if (!data.size) {
-        toastWarning("size is required", "Please select one size option");
+      if (!user) {
+        if (!data.size) {
+          toastWarning("size is required", "Please select one size option");
+          return;
+        }
+        addToCart(data);
+        toastAddToCart({
+          title: `${data.name} added to cart`,
+          image: getImageLink(data.thumbnail),
+        });
         return;
       }
-      addToCart(data);
+
+      await CartApis.create({ ...data });
       toastAddToCart({
         title: `${data.name} added to cart`,
         image: getImageLink(data.thumbnail),
@@ -137,13 +149,16 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
             <button
               onClick={() =>
                 handleAddToCart({
-                  id: item.variants[variantIndex].id,
+                  // id: item.variants[variantIndex].id,
                   name: item.name,
                   price: item.variants[variantIndex].price,
                   quantity: 1,
                   thumbnail: item.variants[variantIndex].images[0],
                   size: sizeOption!,
                   slug: item.slug,
+                  discount: item.variants[0].discount,
+                  sizes: item.sizes,
+                  productId: item.id,
                 })
               }
               className={`cursor-pointer px-5 py-2.5 bg-(--color-btn) text-(--color-text-btn) font-semibold rounded-sm`}

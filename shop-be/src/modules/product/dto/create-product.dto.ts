@@ -35,6 +35,11 @@ export class CreateProductDto {
     tagIds?: string[];
 
     variants?: CreateProductVariantDto[];
+
+    @IsOptional()
+    @IsUUID()
+    collectionId?: string;
+
 }
 
 export class CreateProductVariantDto {

@@ -19,6 +19,7 @@ export default function AddProductModal({
     defaultValues: {
       name: "",
       description: "",
+      moreInfo: "",
       variants: [
         {
           id: uuid(),
@@ -35,6 +36,7 @@ export default function AddProductModal({
           value: "",
         },
       ],
+      isActive: true,
     },
   });
   const { handleSubmit, reset } = rhf;
@@ -42,7 +44,6 @@ export default function AddProductModal({
 
   const onSubmit: SubmitHandler<IProduct> = async (data) => {
     console.log("data", data);
-    
     try {
       const res = await ProductApis.create(data);
       if (res.statusCode === 201) {
@@ -66,7 +67,7 @@ export default function AddProductModal({
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="max-h-[60vh] overflow-y-auto"
+        className="max-h-[60vh] overflow-y-auto px-1"
       >
         <ProductFormLayout rhf={rhf} />
         <BaseGroupButton submitText="Create" onCancel={onClose} />

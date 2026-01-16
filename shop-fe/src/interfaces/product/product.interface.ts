@@ -1,3 +1,4 @@
+import { ICollection } from "../collection/collection.interface";
 import { IBase } from "../common/base.interface";
 
 export interface IProductTag extends IBase {
@@ -34,5 +35,6 @@ export interface IProduct extends IBase{
     moreInfo?: string,
     isActive?: boolean
     sizes: IProductOption[];
-    collectionId?: string
+    collectionId?: string;
+    collection?: ICollection
 }

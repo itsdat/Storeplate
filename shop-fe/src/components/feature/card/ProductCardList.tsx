@@ -1,3 +1,5 @@
+import { CartApis } from "@/apis";
+import { useSession } from "@/context/SessionProvider";
 import { useToast } from "@/hooks/others/useToast.hook";
 import { ICart } from "@/interfaces/cart/cart.interface";
 import { IProduct } from "@/interfaces/product/product.interface";
@@ -7,13 +9,23 @@ import Link from "next/link";
 
 export default function ProductCardList({ item }: { item: IProduct }) {
   const { toastAddToCart, toastError, toastWarning } = useToast();
-  const handleAddToCart = (data: ICart) => {
+  const user = useSession();
+  const handleAddToCart = async (data: ICart) => {
     try {
-      if (!data.size) {
-        toastWarning("size is required", "Please select one size option");
+      if (!user) {
+        if (!data.size) {
+          toastWarning("size is required", "Please select one size option");
+          return;
+        }
+        addToCart(data);
+        toastAddToCart({
+          title: `${data.name} added to cart`,
+          image: getImageLink(data.thumbnail),
+        });
         return;
       }
-      addToCart(data);
+
+      await CartApis.create({ ...data });
       toastAddToCart({
         title: `${data.name} added to cart`,
         image: getImageLink(data.thumbnail),
@@ -45,24 +57,29 @@ export default function ProductCardList({ item }: { item: IProduct }) {
                 {(item.variants?.[0]?.price ?? 0) -
                   (item.variants?.[0]?.discount ?? 0)}
               </span>
-              <small className="text-lg line-through">
-                £{item.variants?.[0]?.price ?? 0}
-              </small>
+              {item.variants[0].discount && (
+                <small className="text-lg line-through">
+                  £{item.variants?.[0]?.price ?? 0}
+                </small>
+              )}
             </div>
           </div>
 
-          <p className="text-(--color-desc) line-clamp-4">{item.description}</p>
+          <p className="text-(--color-desc) line-clamp-3">{item.description}</p>
 
           <button
             onClick={() => {
               handleAddToCart({
-                id: item.variants[0].id,
+                // id: item.variants[0].id,
                 name: item.name,
                 price: item.variants[0].price,
                 quantity: 1,
                 thumbnail: item.variants[0].images[0],
                 size: item.sizes[0],
-                slug: item.slug
+                slug: item.slug,
+                discount: item.variants[0].discount,
+                sizes: item.sizes,
+                productId: item.id,
               });
             }}
             className={`px-5 py-2 bg-(--color-text-btn) text-(--color-btn) border border-(--color-btn) hover:bg-(--color-btn) hover:text-(--color-text-btn) transition-all duration-300 font-bold rounded-sm ${

@@ -7,5 +7,5 @@ export default async function ProductDetail({ params }: any) {
   };
   const res = await ProductApis.findOneBySlug(param.slug);
   
-  return <ProductDetailLayout item={res.data} />;
+  return <ProductDetailLayout item={res.data!} />;
 }
