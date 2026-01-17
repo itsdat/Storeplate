@@ -7,6 +7,9 @@ export class Cart {
 
     @Column()
     productId: string;
+    
+    @Column()
+    variantId: string;
 
     @Column()
     userId: string;

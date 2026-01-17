@@ -4,7 +4,7 @@ import { API_URL } from "@/constants/api.constant";
 import { getSession } from "@/lib/session";
 
 export interface IBaseApiResponse<T> {
-  data?: T;
+  data?: T | any;
   statusCode: number;
   message?: string;
   totalItems?: number

@@ -3,35 +3,61 @@ import { getImageLink } from "@/utils/getImageLink.utils";
 import PreviewImage from "@/components/common/image/image-view/PreviewImage";
 import { ICart } from "@/interfaces/cart/cart.interface";
 import { Minus, Plus, Trash2 } from "lucide-react";
-import {
-  removeFromCart,
-  updateCartQuantity,
-  updateCartSize,
-} from "@/utils/cart.utils";
+import { removeFromCart, updateCartSize } from "@/utils/cart.utils";
 import BaseSelect from "@/components/common/input-select/BaseSelect";
 import { Checkbox } from "@/components/ui/checkbox";
+import { IProductOption } from "@/interfaces/product/product.interface";
 
 export const getCartColumn = ({
+  data,
+  selected,
   onSetCart,
   onSelected,
+  onSelectAll,
+  onAddCart,
+  onSubtractionCart,
+  onRemoveCart,
+  onUpdateSize,
 }: {
+  data: ICart[];
+  selected: string[];
   onSetCart: (items: ICart[]) => void;
-  onSelected: (items: string) => void;
+  onSelected: (id: string) => void;
+  onSelectAll: (checked: boolean) => void;
+  onAddCart: (item: ICart) => void;
+  onSubtractionCart: (item: ICart) => void;
+  onRemoveCart: (item: ICart) => void;
+  onUpdateSize: (item: ICart, newSize: IProductOption) => void;
 }): AdvancedColumn<ICart>[] => {
   return [
     {
       label: (
         <Checkbox
-          id="terms"
-          className="cursor-pointer bg-white rounded-[1px] border-(--color-border) data-[state=checked]:bg-(--color-btn) data-[state=checked]:text-(--color-text-btn) data-[state=checked]:border-(--color-border)"
+          checked={
+            selected.length === 0
+              ? false
+              : selected.length === data.length
+              ? true
+              : "indeterminate"
+          }
+          onCheckedChange={(checked) => {
+            if (checked === true) {
+              onSelectAll(true);
+            } else {
+              onSelectAll(false);
+            }
+          }}
+          className="cursor-pointer bg-white rounded-[1px]"
         />
       ),
       key: "temp",
       render: (record: ICart) => (
         <Checkbox
-          onClick={() => onSelected(record?.id as any)}
-          id="terms"
-          className="cursor-pointer bg-white rounded-[1px] border-(--color-border) data-[state=checked]:bg-(--color-btn) data-[state=checked]:text-(--color-text-btn) data-[state=checked]:border-(--color-border)"
+          checked={selected.includes(record.id ?? record.variantId ?? "")}
+          onCheckedChange={() =>
+            onSelected(record.id ?? record.variantId ?? "")
+          }
+          className="cursor-pointer bg-white rounded-[1px]"
         />
       ),
     },
@@ -53,9 +79,16 @@ export const getCartColumn = ({
         <BaseSelect
           options={record.sizes}
           value={record.size.value}
+          // onSelectOption={(value) => {
+          //   const newCart = updateCartSize(
+          //     record.productId ?? "",
+          //     record.size,
+          //     value
+          //   );
+          //   onSetCart(newCart);
+          // }}
           onSelectOption={(value) => {
-            const newCart = updateCartSize(record.id ?? "", record.size, value);
-            onSetCart(newCart);
+            onUpdateSize(record, value);
           }}
         />
       ),
@@ -80,14 +113,7 @@ export const getCartColumn = ({
       render: (record: ICart) => (
         <div className="flex items-center justify-start gap-1">
           <button
-            onClick={() => {
-              const newCart = updateCartQuantity(
-                record.id ?? "",
-                record.quantity - 1,
-                record.size.value
-              );
-              onSetCart(newCart);
-            }}
+            onClick={() => onSubtractionCart(record)}
             className="w-5 h-5 aspect-square flex items-center justify-center cursor-pointer"
           >
             <Minus strokeWidth={1.5} size={15} />
@@ -96,14 +122,7 @@ export const getCartColumn = ({
             {record.quantity}
           </div>
           <button
-            onClick={() => {
-              const newCart = updateCartQuantity(
-                record.id ?? "",
-                record.quantity + 1,
-                record.size.value
-              );
-              onSetCart(newCart);
-            }}
+            onClick={() => onAddCart(record)}
             className="w-5 h-5 aspect-square flex items-center justify-center cursor-pointer"
           >
             <Plus strokeWidth={1.5} size={15} />
@@ -116,11 +135,9 @@ export const getCartColumn = ({
       key: "action",
       render: (record: ICart) => (
         <button
+          type="button"
           className="cursor-pointer"
-          onClick={() => {
-            const newCart = removeFromCart(record.id ?? "", record.size.value);
-            onSetCart(newCart);
-          }}
+          onClick={() => onRemoveCart(record)}
         >
           <Trash2 strokeWidth={1.5} size={20} color="var(--color-red-500)" />
         </button>

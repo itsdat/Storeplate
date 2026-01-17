@@ -28,7 +28,7 @@ export class ProductController {
     return this.productService.findMulti();
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('find-one-by-slug/:slug')
   findOne(@Param('slug') slug: string) {
     return this.productService.findOne(slug);

@@ -1,6 +1,7 @@
 import { IProductOption } from "../product/product.interface";
 
 export interface ICart{
+    variantId?: string, // use for localStorage
     id?: string,
     createdAt?: string,
     updatedAt?: string

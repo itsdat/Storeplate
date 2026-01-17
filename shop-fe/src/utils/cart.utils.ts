@@ -27,30 +27,30 @@ export const addToCart = (item: ICart) => {
   localStorage.setItem("cart", JSON.stringify(cart));
 };
 
-export const removeFromCart = (id: string, size: string) => {
+export const removeFromCart = (productId: string, size: string) => {
    const cart = getCart().filter(
-    (i) => !(i.id === id && i.size.value === size)
+    (i) => !(i.productId === productId && i.size.value === size)
   );
   localStorage.setItem("cart", JSON.stringify(cart));
   return cart;
 };
 
-export const updateCartSize = (id: string, oldSize: IProductOption, size: IProductOption) => {
+export const updateCartSize = (productId: string, oldSize: IProductOption, size: IProductOption) => {
   const cart = getCart()
     .map((item) =>
-      item.id === id && item.size.value === oldSize.value ? { ...item, size: size } : item
+      item.productId === productId && item.size.value === oldSize.value ? { ...item, size: size } : item
     );
     localStorage.setItem("cart", JSON.stringify(cart));
   return cart;
 }
 
-export const updateCartQuantity = (id: string, quantity: number, size: string) => {
+export const updateCartQuantity = (productId: string, quantity: number, size: string) => {
   if(quantity === 0){
-    removeFromCart(id, size)
+    removeFromCart(productId, size)
   }
   const cart = getCart()
     .map((item) =>
-      item.id === id && item.size.value === size ? { ...item, quantity: quantity } : item
+      item.productId === productId && item.size.value === size ? { ...item, quantity: quantity } : item
     );
 
   localStorage.setItem("cart", JSON.stringify(cart));

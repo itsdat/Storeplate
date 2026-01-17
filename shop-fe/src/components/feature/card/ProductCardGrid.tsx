@@ -54,7 +54,7 @@ export default function ProductCardGrid({ item }: { item: IProduct }) {
             onClick={(e) => {
               e.preventDefault();
               handleAddToCart({
-                // id: item.variants[0].id,
+                variantId: item.variants[0].id,
                 name: item.name,
                 price: item.variants[0].price,
                 quantity: 1,

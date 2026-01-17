@@ -16,52 +16,57 @@ export class CartService {
   ){}
 
   async addOrUpdateCart(dto: CreateCartDto, userId: string) {
-  const { productId, quantity } = dto;
+    const { productId, quantity, size, variantId } = dto;
 
-  const existingCart = await this.cartRepo.findOne({
-    where: { userId, productId },
-  });
+    const existingCart = await this.cartRepo
+      .createQueryBuilder('cart')
+      .where('cart.userId = :userId', { userId })
+      .andWhere('cart.productId = :productId', { productId })
+      .andWhere('cart.variantId = :variantId', { variantId })
+      .andWhere(
+      "CAST(JSON_UNQUOTE(JSON_EXTRACT(cart.size, '$.value')) AS CHAR) = :sizeValue",
+      { sizeValue: size.value }
+    )
+    .getOne();
 
-  if (existingCart) {
-    const newQuantity = existingCart.quantity + quantity;
+    if (existingCart) {
+      const newQuantity = existingCart.quantity + quantity;
 
-    if (newQuantity <= 0) {
-      await this.cartRepo.remove(existingCart);
+      if (newQuantity <= 0) {
+        await this.cartRepo.remove(existingCart);
+        return {
+          message: 'Cart item removed',
+          statusCode: HttpStatusCode.OK,
+        };
+      }
+
+      existingCart.quantity = newQuantity;
+      const saved = await this.cartRepo.save(existingCart);
+
       return {
-        message: 'Cart item removed',
+        data: saved,
+        message: 'Cart updated',
         statusCode: HttpStatusCode.OK,
       };
     }
 
-    existingCart.quantity = newQuantity;
-    const saved = await this.cartRepo.save(existingCart);
+    if (quantity <= 0) {
+      throw new BadRequestException('Quantity must be greater than 0');
+    }
+
+    const newCart = this.cartRepo.create({
+      ...dto,
+      userId,
+    });
+
+    const saved = await this.cartRepo.save(newCart);
 
     return {
       data: saved,
-      message: 'Cart updated',
-      statusCode: HttpStatusCode.OK,
+      message: 'Added to cart',
+      statusCode: HttpStatusCode.CREATED,
     };
   }
-
-  if (quantity <= 0) {
-    throw new BadRequestException('Quantity must be greater than 0');
-  }
-
-  const newCart = this.cartRepo.create({
-    ...dto,
-    userId,
-  });
-
-  const saved = await this.cartRepo.save(newCart);
-
-  return {
-    data: saved,
-    message: 'Added to cart',
-    statusCode: HttpStatusCode.CREATED,
-  };
-}
-
-
 
   async create(createCartDto: CreateCartDto): Promise<IBaseCreatedRes> {
     try {
@@ -92,7 +97,7 @@ export class CartService {
         statusCode: HttpStatusCode.OK
       }
     } catch (error: any) {
-      console.log("error updating collection", error.message);
+      console.log("error updating cart", error.message);
       throw new BadRequestException("Update fail")
     }
   }

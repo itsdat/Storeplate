@@ -122,7 +122,7 @@ export default function BaseTable<T>({
           )}
         </div>
       ) : (
-        <ScrollArea className="h-[70vh] w-full!">
+        <ScrollArea className="max-h-[70vh] w-full!">
           <Table className="w-full">
             {caption && <TableCaption>{caption}</TableCaption>}
 

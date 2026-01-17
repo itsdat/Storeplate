@@ -18,8 +18,18 @@ export async function create(payload: ICart){
     return res
 }
 
-export async function findAll(){
+export async function update(id: string, payload: ICart){
     const res = await api({
+        url: `${URL}/${ROUTE_COMMON_FEATURES.UPDATE}/${id}`,
+        method: CONST_METHODS.PATCH,
+        body: payload,
+    })
+    revalidatePath('/')
+    return res
+}
+
+export async function findAll(){
+    const res = await api<ICart[]>({
         url: `${URL}/${ROUTE_COMMON_FEATURES.GET_ALL}`,
         method: CONST_METHODS.GET,
     })

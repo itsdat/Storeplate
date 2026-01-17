@@ -23,6 +23,14 @@ export class CreateCartDto {
     })
     productId: string;
 
+    @IsString()
+    @IsNotEmpty()
+    @ApiProperty({
+        example: 'e9fc7fde-dba0-4f19-a779-37ebaa595ff2',
+        description: 'Variant id',
+    })
+    variantId: string;
+
     // @IsString()
     // @IsNotEmpty()
     // @ApiProperty({

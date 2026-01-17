@@ -52,7 +52,7 @@ export default function UserCart({
   const handleSubtractionCart = async (item: ICart) => {
     if (!user) {
       const newCart = updateCartQuantity(
-        item.id ?? '',
+        item.productId,
         item.quantity - 1,
         item.size.value
       );
@@ -60,6 +60,11 @@ export default function UserCart({
       return;
     }
 
+    if (item.quantity === 1) {
+      const res = await CartApis.remove(item.id!);
+      setCarts(res.data);
+      return;
+    }
     await CartApis.create({
       ...item,
       quantity: -1,
@@ -72,7 +77,7 @@ export default function UserCart({
   const handleAddCart = async (item: ICart) => {
     if (!user) {
       const newCart = updateCartQuantity(
-        item.id ?? '',
+        item.productId,
         item.quantity + 1,
         item.size.value
       );
@@ -91,19 +96,18 @@ export default function UserCart({
 
   const handleRemoveProductFromCart = async (item: ICart) => {
     if (!user) {
-      const newCart = removeFromCart(item.id ?? '', item.size.value);
+      const newCart = removeFromCart(item.productId, item.size.value);
       setCarts(newCart);
+      return;
     }
-    await CartApis.remove(item.id ?? '');
+    await CartApis.remove(item.id ?? "");
     const res = await CartApis.findOneById();
     setCarts(res.data);
   };
 
   return (
     <BasePopover align="center" trigger={trigger}>
-      {!carts ? (
-        <Spinner />
-      ) : carts.length === 0 ? (
+      {carts && carts.length === 0 ? (
         <div className="flex flex-col items-center justify-center">
           <CartEmptyIcon />
           <h5 className="text-lg text-(--color-text)">

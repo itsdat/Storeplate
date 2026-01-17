@@ -149,7 +149,7 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
             <button
               onClick={() =>
                 handleAddToCart({
-                  // id: item.variants[variantIndex].id,
+                  variantId: item.variants[variantIndex].id,
                   name: item.name,
                   price: item.variants[variantIndex].price,
                   quantity: 1,
