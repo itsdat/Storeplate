@@ -77,3 +77,11 @@ export async function register(payload: IRegister){
   })
   return res
 }
+
+export async function getMe(){
+  const res = await api({
+    url: `${URL}/${FEATURE.GET_ME}`,
+    method: CONST_METHODS.GET,
+  })
+  return res
+}

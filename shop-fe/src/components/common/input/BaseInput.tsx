@@ -6,21 +6,21 @@ import {
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Eye, EyeClosed } from "lucide-react";
-import { HTMLInputTypeAttribute, useState } from "react";
+import { HTMLInputTypeAttribute, ReactNode, useState } from "react";
 
 export interface ClassInputProps {
   lableClass?: string;
   inputClass?: string;
 }
 
-export interface BaseInputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface BaseInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   classProps?: ClassInputProps;
   label?: string;
   type?: HTMLInputTypeAttribute;
   placeholder?: string;
   error?: string;
+  addon?: ReactNode;
 }
 
 export default function BaseInput({
@@ -30,6 +30,7 @@ export default function BaseInput({
   type = "text",
   error,
   placeholder,
+  addon,
   ...props
 }: BaseInputProps) {
   const [showPass, setShowPass] = useState<boolean>(false);
@@ -51,7 +52,7 @@ export default function BaseInput({
         {/* <InputGroupAddon>
           <CreditCardIcon />
         </InputGroupAddon> */}
-        {type === "password" && (
+        {type === "password" ? (
           <InputGroupAddon align="inline-end" className="pr-5">
             <button
               type="button"
@@ -65,6 +66,12 @@ export default function BaseInput({
               )}
             </button>
           </InputGroupAddon>
+        ) : (
+          addon && (
+            <InputGroupAddon align="inline-end" className="pr-5">
+              {addon}
+            </InputGroupAddon>
+          )
         )}
       </InputGroup>
     </div>

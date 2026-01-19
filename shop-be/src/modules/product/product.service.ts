@@ -105,7 +105,7 @@ export class ProductService {
       const data = await this.productRepo.find({
         where: {isActive: true},
         order: {createdAt: "DESC"},
-        relations: ['tags']
+        relations: ['tags', 'collection']
       })
 
       return {
@@ -124,7 +124,7 @@ export class ProductService {
       const product = await this.productRepo.findOne({
         where: {slug: slug},
         order: {createdAt: "DESC"},
-        relations: ['tags']
+        relations: ['tags','collection']
       })
       if(!product){
         throw new NotFoundException("Product not found")

@@ -54,7 +54,7 @@ export default function UserCart({
       const newCart = updateCartQuantity(
         item.productId,
         item.quantity - 1,
-        item.size.value
+        item.size.value,
       );
       setCarts(newCart);
       return;
@@ -79,7 +79,7 @@ export default function UserCart({
       const newCart = updateCartQuantity(
         item.productId,
         item.quantity + 1,
-        item.size.value
+        item.size.value,
       );
       setCarts(newCart);
       return;
@@ -145,7 +145,7 @@ export default function UserCart({
                           {item.name}
                         </p>
                         <span className="text-[12px] text-(--color-desc)">
-                          {item.size.label} - £{item.price}
+                          {item.size.label} - €{item.price}
                         </span>
                       </div>
                     </div>
@@ -153,7 +153,7 @@ export default function UserCart({
                     <div className="flex flex-1 items-center justify-end gap-2 transition-all duration-300 group-hover:translate-x-3 translate-x-10">
                       <div className="flex flex-1 items-center justify-end gap-3">
                         <p className="text-(--color-text)">
-                          £{item.price * item.quantity}
+                          €{item.price * item.quantity}
                         </p>
 
                         <div className="flex items-center justify-center gap-1">

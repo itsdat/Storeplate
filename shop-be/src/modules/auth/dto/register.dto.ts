@@ -11,11 +11,18 @@ export class RegisterDto {
     email: string;
 
     @ApiPropertyOptional({
-        example: 'username_123abc',
-        description: 'Username (auto-generated if not provided)',
+        example: 'John',
+        description: 'First Name',
     })
     @IsString()
-    username: string;
+    firstName: string;
+
+    @ApiPropertyOptional({
+        example: 'Doe',
+        description: 'Last Name',
+    })
+    @IsString()
+    lastName: string;
 
     @ApiProperty({
         example: '123456',

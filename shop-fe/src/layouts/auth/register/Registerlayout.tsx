@@ -15,7 +15,8 @@ export default function Registerlayout() {
     defaultValues: {
       email: "",
       password: "",
-      username: "",
+      firstName: "",
+      lastName: "",
     },
   });
   const { control, handleSubmit } = rhf;
@@ -28,7 +29,7 @@ export default function Registerlayout() {
       if (res.statusCode === 201) {
         toastSuccess(
           "Register Successfull",
-          "Please enter email & password to login"
+          "Please enter email & password to login",
         );
         router.replace("/login");
       } else {
@@ -50,19 +51,34 @@ export default function Registerlayout() {
         className="mt-14 max-w-xl mx-auto w-full flex flex-col gap-7"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <BaseInputRhf
-          required
-          name="username"
-          control={control}
-          className="text-[16px]! px-5"
-          placeholder="Enter your name"
-          label="Name"
-          classProps={{
-            inputClass:
-              "py-7 focus:border-none border-none shadow-none bg-(--color-foreground) rounded-[3px]  has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-gray-500 has-[[data-slot=input-group-control]:focus-visible]:ring-[1px]",
-            lableClass: "text-xl font-normal",
-          }}
-        />
+        <div className="flex items-center justify-between gap-5">
+          <BaseInputRhf
+            required
+            name="firstName"
+            control={control}
+            className="text-[16px]! px-5"
+            placeholder="First name"
+            label="First Name"
+            classProps={{
+              inputClass:
+                "py-7 focus:border-none border-none shadow-none bg-(--color-foreground) rounded-[3px]  has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-gray-500 has-[[data-slot=input-group-control]:focus-visible]:ring-[1px]",
+              lableClass: "text-xl font-normal",
+            }}
+          />
+          <BaseInputRhf
+            required
+            name="lastName"
+            control={control}
+            className="text-[16px]! px-5"
+            placeholder="Last Name"
+            label="Last Name"
+            classProps={{
+              inputClass:
+                "py-7 focus:border-none border-none shadow-none bg-(--color-foreground) rounded-[3px]  has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-gray-500 has-[[data-slot=input-group-control]:focus-visible]:ring-[1px]",
+              lableClass: "text-xl font-normal",
+            }}
+          />
+        </div>
 
         <BaseInputRhf
           required

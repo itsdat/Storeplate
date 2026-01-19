@@ -28,8 +28,8 @@ export default function BaseSlider({
   return (
     <div className="w-full">
       <div className="flex justify-between text-(--color-text) mb-3">
-        <span>£{value[0]}</span>
-        <span>£{value[1]}</span>
+        <span>€{value[0]}</span>
+        <span>€{value[1]}</span>
       </div>
 
       <Slider

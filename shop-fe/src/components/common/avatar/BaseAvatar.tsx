@@ -3,7 +3,7 @@ import { getInitials } from "@/utils/getInitials.utils";
 
 export default function BaseAvatar({
   url,
-  size = 40,
+  size = 35,
   name,
 }: {
   url?: string;
@@ -13,7 +13,7 @@ export default function BaseAvatar({
   return (
     <Avatar
       className="bg-(--color-primary)"
-      style={{ maxWidth: size, maxHeight: size }}
+      style={{ width: size, height: size }}
     >
       <AvatarImage src={url || ""} alt="avatar" className="object-cover" />
       <AvatarFallback className="scale-[0.99] bg-(--color-btn) text-(--color-text-btn) font-medium">

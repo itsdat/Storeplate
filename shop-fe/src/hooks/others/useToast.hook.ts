@@ -127,7 +127,7 @@ export function useToast() {
       description: _jsxs("div", {
         className: "flex items-center justify-start gap-1.5",
         children: [
-          _jsx("span", { children: description }, "text"),
+          _jsx("span", { children: description, className: "text-(--color-text)" }, "text"),
         ],
       })
     });
@@ -139,7 +139,7 @@ export function useToast() {
       description: _jsxs("div", {
         className: "flex items-center justify-start gap-1.5",
         children: [
-          _jsx("span", { children: description }, "text"),
+          _jsx("span", { children: description, className: "text-(--color-text)" }, "text"),
         ],
       })
     });
@@ -151,7 +151,7 @@ export function useToast() {
       description: _jsxs("div", {
         className: "flex items-center justify-start gap-1.5",
         children: [
-          _jsx("span", { children: description }, "text"),
+          _jsx("span", { children: description, className: "text-(--color-text)" }, "text"),
         ],
       })
     });

@@ -15,6 +15,8 @@ import { useToast } from "@/hooks/others/useToast.hook";
 import BaseSelect from "@/components/common/input-select/BaseSelect";
 import { useSession } from "@/context/SessionProvider";
 import { CartApis } from "@/apis";
+import TagIMG from "../../../../public/images/details/tag.png";
+import TagSale from "@/components/feature/tag/TagSale";
 
 export default function ProductDetailLayout({ item }: { item: IProduct }) {
   const [variantIndex, setVariantIndex] = useState<number>(0);
@@ -51,7 +53,7 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
   return (
     <div className="w-full max-w-7xl mx-auto">
       <div className="flex items-start justify-between gap-10">
-        <div className="w-1/2">
+        <div className="w-2/5">
           <BaseCarousel
             slides={item.variants[variantIndex].images}
             slidesPerView={1}
@@ -89,35 +91,50 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
             ))}
           </div>
         </div>
-        <div className="w-1/2 flex flex-col items-start justify-start gap-7">
-          <h5 className="text-3xl font-semibold">{item.name}</h5>
-
-          <div className="flex items-start justify-center gap-3 -translate-y-3">
-            <span className="text-3xl text-(--color-desc) font-semibold">
-              £
+        <div className="w-3/5 flex flex-col items-start justify-start gap-5">
+          <div>
+            {item.collection && (
+              <span className="text-(--color-desc) text-sm font-semibold">
+                {item.collection?.name}
+              </span>
+            )}
+            <div className="flex items-center justify-start gap-2">
+              <h5 className="text-3xl font-semibold">{item.name}</h5>
+              {item.variants[variantIndex].discount && (
+                <TagSale
+                  value={
+                    (item.variants?.[variantIndex]?.discount! /
+                      item.variants?.[variantIndex]?.price) *
+                    100
+                  }
+                />
+              )}
+            </div>
+          </div>
+          <div className="flex items-start justify-center gap-3 -translate-y-1">
+            <span className="text-3xl text-(--color-text) font-medium">
+              €
               {(item.variants?.[variantIndex]?.price ?? 0) -
                 (item.variants?.[variantIndex]?.discount ?? 0)}
             </span>
             <small className="text-lg text-(--color-desc) line-through">
-              £{item.variants?.[variantIndex]?.price ?? 0}
+              €{item.variants?.[variantIndex]?.price ?? 0}
             </small>
           </div>
 
           <div className="flex flex-col items-start justify-start gap-2">
-            <h5 className="text-2xl text-(--color-title) font-semibold">
-              Color
-            </h5>
+            <h5 className="text-xl text-(--color-title) font-medium">Color</h5>
             <div className="flex items-start justify-start gap-3">
               {item.variants.map((v, index) => (
                 <img
                   key={index}
                   src={getImageLink(v.images[0])}
                   alt="image"
-                  className={`object-cover w-12 border-2 transition-all ring-2 ring-white duration-300 aspect-square rounded-sm cursor-pointer ${
+                  className={`object-cover w-12 border-2 transition-all ring-2 ring-white duration-300 aspect-square rounded-full cursor-pointer ${
                     variantIndex === index ? "border-2 border-black" : ""
                   }`}
                   onClick={() => {
-                    setVariantIndex(index), setViewImage(0);
+                    (setVariantIndex(index), setViewImage(0));
                   }}
                 />
               ))}
@@ -125,9 +142,7 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
           </div>
 
           <div className="flex flex-col items-start justify-start gap-2 w-full">
-            <h5 className="text-2xl text-(--color-title) font-semibold">
-              Size
-            </h5>
+            <h5 className="text-xl text-(--color-title) font-medium">Size</h5>
 
             <BaseSelect
               required
@@ -145,7 +160,7 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
             />
           </div>
 
-          <div className="flex flex-col items-start justify-start gap-4">
+          <div className="w-full flex flex-col items-start justify-start gap-4">
             <button
               onClick={() =>
                 handleAddToCart({
@@ -161,18 +176,18 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
                   productId: item.id,
                 })
               }
-              className={`cursor-pointer px-5 py-2.5 bg-(--color-btn) text-(--color-text-btn) font-semibold rounded-sm`}
+              className={`cursor-pointer px-7 py-2 bg-(--color-btn) text-(--color-text-btn) font-medium rounded-sm`}
             >
               Add To Cart
             </button>
 
-            <div className="w-full rounded-sm bg-(--color-foreground) px-2 py-1.5 text-(--color-text)">
-              {item.deliveryInfo || "Est. Delivery between 4 - 6 days"}
+            <div className="w-fit rounded-sm bg-(--color-foreground) px-2 py-1.5 text-(--color-text)">
+              {item.deliveryInfo || "Est. Delivery between 3 - 5 days"}
             </div>
           </div>
 
           <div className="flex items-start justify-start gap-2">
-            <h5 className="text-2xl text-(--color-title) font-semibold">
+            <h5 className="text-xl text-(--color-title) font-medium">
               Payment:
             </h5>
             <div className="bg-(--color-foreground) p-1 rounded-sm">
@@ -183,15 +198,11 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
           <Separator className="text-(--color-dark-light)" />
 
           <div className="flex flex-col items-start justify-start gap-2">
-            <h5 className="text-2xl text-(--color-title) font-semibold">
-              Share:
-            </h5>
+            <h5 className="text-xl text-(--color-title) font-medium">Share:</h5>
           </div>
 
           <div className="flex items-start justify-start gap-2">
-            <h5 className="text-2xl text-(--color-title) font-semibold">
-              Tags:
-            </h5>
+            <h5 className="text-xl text-(--color-title) font-medium">Tags:</h5>
             <div className="flex items-start justify-start flex-wrap gap-2">
               {item.tags?.map((tag, index) => (
                 <div

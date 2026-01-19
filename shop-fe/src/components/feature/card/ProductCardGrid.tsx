@@ -77,13 +77,13 @@ export default function ProductCardGrid({ item }: { item: IProduct }) {
         <h5 className="font-medium text-xl line-clamp-2">{item.name}</h5>
         <div className="flex items-center justify-center gap-3 -translate-y-3">
           <span className="text-xl font-semibold">
-            £
+            €
             {(item.variants?.[0]?.price ?? 0) -
               (item.variants?.[0]?.discount ?? 0)}
           </span>
           {item.variants[0].discount && (
             <small className="text-lg text-(--color-desc) line-through">
-              £{item.variants?.[0]?.price ?? 0}
+              €{item.variants?.[0]?.price ?? 0}
             </small>
           )}
         </div>

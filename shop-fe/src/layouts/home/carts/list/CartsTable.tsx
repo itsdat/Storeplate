@@ -33,7 +33,7 @@ export default function CartsTable({
       const newCart = updateCartQuantity(
         item.productId,
         item.quantity - 1,
-        item.size.value
+        item.size.value,
       );
       setData(newCart);
       return;
@@ -58,7 +58,7 @@ export default function CartsTable({
       const newCart = updateCartQuantity(
         item.productId,
         item.quantity + 1,
-        item.size.value
+        item.size.value,
       );
       setData(newCart);
       return;
@@ -104,13 +104,13 @@ export default function CartsTable({
 
     onSelected: (id: string) => {
       setSelected((prev) =>
-        prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+        prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
       );
     },
 
     onSelectAll: (checked: boolean) => {
       setSelected(
-        checked ? (items || data).map((i) => i.id! ?? i.variantId) : []
+        checked ? (items || data).map((i) => i.id! ?? i.variantId) : [],
       );
     },
 
@@ -131,6 +131,7 @@ export default function CartsTable({
   return (
     <div>
       <BaseTable
+        height="max-h-[50vh]! overflow-y-scroll"
         showIndex={false}
         columns={columns}
         data={items || data}
@@ -150,7 +151,7 @@ export default function CartsTable({
           <button
             onClick={() => {
               const checkoutItems = (items || data).filter((item) =>
-                selected.includes(item.id ?? item.variantId!)
+                selected.includes(item.id ?? item.variantId!),
               );
               setItems(checkoutItems);
               router.push("/checkout");

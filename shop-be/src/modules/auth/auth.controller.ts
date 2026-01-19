@@ -1,11 +1,15 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
+import { CurrentUser } from 'src/common/decorators/current-user.decorator';
+import { User } from '../users/entities/user.entity';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
 @ApiTags('Auth')
 @Controller('auth')
+@ApiBearerAuth('access_token')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -35,5 +39,13 @@ export class AuthController {
     @Body() authDto: LoginDto
   ){
     return this.authService.adminLogin(authDto)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('get-me')
+  @ApiOperation({ summary: 'Get current user' })
+  @ApiResponse({ status: 200, description: 'Success' })
+  getMe(@CurrentUser() user: User){
+    return this.authService.getMe(user?.id)
   }
 }

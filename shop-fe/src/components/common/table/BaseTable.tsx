@@ -17,6 +17,7 @@ import { CartEmptyIcon } from "../icons/BaseIcon";
 import Link from "next/link";
 import { Inbox } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
+import { cn } from "@/lib/utils";
 
 interface BaseTableColumn<T> {
   key: keyof T | string;
@@ -44,6 +45,7 @@ interface BaseTableProps<T> {
   onBtnAction?: () => void;
   empty?: EmptyProp;
   header?: boolean;
+  height?: string;
 }
 
 export interface AdvancedColumn<T> {
@@ -67,6 +69,7 @@ export default function BaseTable<T>({
   },
   onBtnAction,
   header = true,
+  height,
 }: BaseTableProps<T>) {
   // Thêm cột Index nếu được bật
   const displayColumns = React.useMemo(() => {
@@ -105,7 +108,7 @@ export default function BaseTable<T>({
         </div>
       )}
       {!data ? (
-        <div className="h-[30vh] flex items-center justify-center">
+        <div className="max-h-[70vh] flex items-center justify-center">
           <Spinner />
         </div>
       ) : data.length === 0 ? (
@@ -122,7 +125,7 @@ export default function BaseTable<T>({
           )}
         </div>
       ) : (
-        <ScrollArea className="max-h-[70vh] w-full!">
+        <ScrollArea className={cn("max-h-[70vh] w-full!", height)}>
           <Table className="w-full">
             {caption && <TableCaption>{caption}</TableCaption>}
 
@@ -157,7 +160,7 @@ export default function BaseTable<T>({
                     >
                       {col.render
                         ? col.render(item, rowIndex)
-                        : (item as any)[col.key] ?? ""}
+                        : ((item as any)[col.key] ?? "")}
                     </TableCell>
                   ))}
                 </TableRow>

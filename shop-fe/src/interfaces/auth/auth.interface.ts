@@ -4,5 +4,6 @@ export interface ILogin {
 }
 
 export interface IRegister extends ILogin {
-    username: string
+    firstName: string,
+    lastName: string,
 }

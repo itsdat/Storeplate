@@ -53,13 +53,13 @@ export default function ProductCardList({ item }: { item: IProduct }) {
             </Link>
             <div className="flex items-start text-(--color-desc) justify-start gap-3">
               <span className="text-xl font-semibold">
-                £
+                €
                 {(item.variants?.[0]?.price ?? 0) -
                   (item.variants?.[0]?.discount ?? 0)}
               </span>
               {item.variants[0].discount && (
                 <small className="text-lg line-through">
-                  £{item.variants?.[0]?.price ?? 0}
+                  €{item.variants?.[0]?.price ?? 0}
                 </small>
               )}
             </div>

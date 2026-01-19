@@ -3,11 +3,14 @@ import { BaseInputRhf } from "@/components/common/input/BaseInputRhf";
 import { useSimRhf } from "@/hooks/others/useSimRhf.hook";
 import { useCheckoutStore } from "@/stores/checkout.store";
 import { ChevronsRight, CreditCard, ListOrdered, Truck } from "lucide-react";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import ShippingOption from "./common/radio/ShippingOption";
 import { getImageLink } from "@/utils/getImageLink.utils";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
+import BaseConfirmAlert from "@/components/common/alert/BaseConfirmAlert";
+import { useRouter } from "next/navigation";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function CheckoutLayout() {
   const rhf = useSimRhf<any>({
@@ -17,7 +20,9 @@ export default function CheckoutLayout() {
     },
   });
   const { control, handleSubmit, reset } = rhf;
-  const { items } = useCheckoutStore();
+  const { items, clear } = useCheckoutStore();
+  const [isCancel, setIsCancel] = useState<boolean>(false);
+  const router = useRouter();
 
   return (
     <div className="w-full max-w-7xl mx-auto">
@@ -119,27 +124,29 @@ export default function CheckoutLayout() {
               title="Order Summary"
             />
             <div className="flex flex-col gap-5">
-              {items.map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-start justify-start gap-5"
-                >
-                  <img
-                    src={getImageLink(item.thumbnail)}
-                    alt="image"
-                    className="w-20 h-20 aspect-square object-cover"
-                  />
-                  <div className="">
-                    <h5>{item.name}</h5>
-                    <p className="text-sm text-(--color-desc)">
-                      {item.size.label} x{item.quantity}
-                    </p>
-                    <span>£{item.price * item.quantity}</span>
+              <ScrollArea className="max-h-52 flex flex-col gap-5">
+                {items.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-start justify-start gap-5 mb-3"
+                  >
+                    <img
+                      src={getImageLink(item.thumbnail)}
+                      alt="image"
+                      className="w-20 h-20 aspect-square object-cover"
+                    />
+                    <div className="">
+                      <h5>{item.name}</h5>
+                      <p className="text-sm text-(--color-desc)">
+                        {item.size.label} x{item.quantity}
+                      </p>
+                      <span>€{item.price * item.quantity}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </ScrollArea>
 
-              <div className="flex items-center justify-start gap-2 mt-5">
+              <div className="flex items-center justify-start gap-2 ">
                 <BaseInputRhf
                   type="email"
                   name="email"
@@ -163,9 +170,9 @@ export default function CheckoutLayout() {
               <div className="flex flex-col gap-2">
                 <RowItem
                   label="Subtotal"
-                  content={`£${items.reduce(
+                  content={`€${items.reduce(
                     (total, item) => total + item.price * item.quantity,
-                    0
+                    0,
                   )}`}
                 />
                 <RowItem
@@ -173,7 +180,7 @@ export default function CheckoutLayout() {
                   content="Free"
                   classname="text-green-600"
                 />
-                <RowItem label="Voucher discount" content="£0" />
+                <RowItem label="Voucher discount" content="€0" />
               </div>
 
               <Separator className="bg-(--color-border)" />
@@ -183,21 +190,41 @@ export default function CheckoutLayout() {
                   Total
                 </p>
                 <p className="font-semibold text-lg text-(--color-title)">
-                  £
+                  €
                   {items.reduce(
                     (total, item) => total + item.price * item.quantity,
-                    0
+                    0,
                   )}
                 </p>
               </div>
 
               <button className="px-3 py-2 bg-(--color-btn) flex items-center justify-center gap-1 text-sm rounded-[3px] text-(--color-text-btn) cursor-pointer">
-                Complete Purchase <ChevronsRight strokeWidth={1.5} className="size-5" />
+                Complete Purchase{" "}
+                <ChevronsRight strokeWidth={1.5} className="size-5" />
               </button>
             </div>
           </div>
+          <button
+            onClick={() => setIsCancel(true)}
+            className="max-w-[90%] mx-auto mt-5 hover:bg-red-500 hover:text-white transition-all duration-200 w-full px-3 py-2 border border-red-500  text-red-500 flex items-center justify-center gap-1 text-sm rounded-[3px] cursor-pointer"
+          >
+            Cancel Checkout
+          </button>
         </div>
       </div>
+
+      <BaseConfirmAlert
+        title="Cancel Checkout?"
+        description="Your selected items will remain in your cart, but you will leave the checkout process."
+        cancelText="Stay on Checkout"
+        confirmText="Yes, Cancel Checkout"
+        open={isCancel}
+        onOpenChange={() => setIsCancel(false)}
+        onConfirm={() => {
+          clear();
+          router.replace("/carts");
+        }}
+      />
     </div>
   );
 }

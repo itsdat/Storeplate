@@ -37,8 +37,8 @@ export const getCartColumn = ({
             selected.length === 0
               ? false
               : selected.length === data.length
-              ? true
-              : "indeterminate"
+                ? true
+                : "indeterminate"
           }
           onCheckedChange={(checked) => {
             if (checked === true) {
@@ -99,10 +99,10 @@ export const getCartColumn = ({
       render: (record: ICart) => (
         <div className="flex items-center justify-start gap-1">
           <p className="text-red-500 font-medium">
-            £{record.price * record.quantity}
+            €{record.price * record.quantity}
           </p>
           <p className="line-through text-(--color-desc) text-xs">
-            £{record.discount}
+            €{record.discount}
           </p>
         </div>
       ),

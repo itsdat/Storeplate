@@ -51,6 +51,7 @@ export default function BaseEditorRhf<T extends FieldValues>({
         "|",
         "undo",
         "redo",
+        "table"
       ],
       buttonsXS: ["bold", "italic", "ul", "ol", "link", "image"],
     }),

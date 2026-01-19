@@ -6,10 +6,9 @@ import { In, Repository } from 'typeorm';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt'
 import { instanceToPlain } from 'class-transformer';
-import { generateUsername } from 'src/utils/generateUsername.utils';
 import { HttpStatusCode } from 'src/shared/enums/http-status.enum';
 import { LoginDto } from './dto/login.dto';
-import { IBaseCreatedRes } from 'src/shared/interfaces/common/IBaseRetun.interface';
+import { IBaseCreatedRes, IBaseGetOneRes } from 'src/shared/interfaces/common/IBaseRetun.interface';
 import { ROLES } from 'src/shared/constants/common/role.contanst';
 
 @Injectable()
@@ -27,18 +26,19 @@ export class AuthService {
       throw new BadRequestException('Email already exists');
     }
 
-    const usernameExist = await this.userRepo.findOne({where: {username: dto.username}});
-    if (usernameExist) {
-      throw new BadRequestException('Username already exists');
-    }
+    // const usernameExist = await this.userRepo.findOne({where: {username: dto.username}});
+    // if (usernameExist) {
+    //   throw new BadRequestException('Username already exists');
+    // }
 
     const hashed = await bcrypt.hash(dto.password, 10);
 
     try {
       const newUser = this.userRepo.create({
+        firstName: dto.firstName,
+        lastName: dto.lastName,
         email: dto.email,
         password: hashed,
-        username: dto.username ?? generateUsername(dto.email),
         role: dto.role ?? ROLES.USER
       });
       const savedUser = await this.userRepo.save(newUser);
@@ -72,7 +72,8 @@ export class AuthService {
         user: {
           id: user.id,
           email: user.email,
-          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
           role: user.role
         }
       },
@@ -105,6 +106,22 @@ export class AuthService {
       },
       message: "Wellcome Admin!",
       statusCode: HttpStatusCode.OK
+    }
+  }
+
+  async getMe(userId: string): Promise<IBaseGetOneRes>{
+    if(!userId){
+      throw new NotFoundException("User does not exist")
+    }
+    try {
+      const data = await this.userRepo.findOne({where: {id: userId}});
+      return{
+        data: data,
+        statusCode: HttpStatusCode.OK
+      }
+    } catch (error) {
+      console.log("error fetching", error.message);
+      throw new BadRequestException("Fetching fail")
     }
   }
 

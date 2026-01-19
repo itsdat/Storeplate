@@ -24,7 +24,7 @@
     async validate(payload: any) {
         const user = await this.userRepo.findOne({ 
             where: { id: payload.sub },
-            select: ['id', 'email', 'username', 'verified', 'avatar', "fullname"] // Chỉ lấy các trường cần thiết, không lấy password
+            select: ['id', 'email', 'firstName', 'lastName', 'verified', 'avatar', "fullname"] // Chỉ lấy các trường cần thiết, không lấy password
         });
         
         if (!user) {

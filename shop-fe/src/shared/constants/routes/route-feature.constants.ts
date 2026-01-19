@@ -16,7 +16,8 @@ export const ROUTE_FEATURES = {
   AUTH: {
     LOGIN: 'login',
     REGISTER: 'register',
-    ADMIN_LOGIN: 'admin/login'
+    ADMIN_LOGIN: 'admin/login',
+    GET_ME: 'get-me'
   },
   UPLOAD: {
     CREATE: 'upload'
