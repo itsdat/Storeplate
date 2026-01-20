@@ -12,6 +12,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { User } from './modules/users/entities/user.entity';
 import { CartModule } from './modules/cart/cart.module';
+import { VoucherModule } from './modules/voucher/voucher.module';
 
 @Module({
   imports: [
@@ -21,10 +22,10 @@ import { CartModule } from './modules/cart/cart.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: process.env.DB_HOST,
       port: 3306,
-      username: process.env.DB_USERNAME,
-      password: process.env.DB_PASSWORD,
+      username: process.env.DB_USER,
+      password: process.env.DB_PASS,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
@@ -40,6 +41,7 @@ import { CartModule } from './modules/cart/cart.module';
     TagModule,
     UploadModule,
     CartModule,
+    VoucherModule,
   ],
   controllers: [AppController],
   providers: [AppService],

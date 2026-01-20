@@ -30,7 +30,7 @@ export async function update(id: string, payload: ICart){
 
 export async function findAll(){
     const res = await api<ICart[]>({
-        url: `${URL}/${ROUTE_COMMON_FEATURES.GET_ALL}`,
+        url: `${URL}/${ROUTE_COMMON_FEATURES.FIND_ALL}`,
         method: CONST_METHODS.GET,
     })
     return res;

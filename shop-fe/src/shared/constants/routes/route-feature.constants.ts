@@ -2,8 +2,8 @@ export const ROUTE_COMMON_FEATURES = {
   CREATE: 'create',
   FIND_ONE_BY_ID: 'find-one-by-id',
   FIND_ONE_BY_SLUG: 'find-one-by-slug',
-  GET_MULTI: 'find-multi', // dùng cho ui table
-  GET_ALL: 'find-all', // dùng cho select-option
+  FIND_MULTI: 'find-multi', // dùng cho ui table
+  FIND_ALL: 'find-all', // dùng cho select-option
   UPDATE: 'update',
   DELETE_MULTI: 'delete-multi',
   DELETE: 'delete',
@@ -37,7 +37,7 @@ export const ROUTE_FEATURES = {
     DISTRIBUTE: 'distribute',
     ADD_NOTE: 'add-note',
     ADD_ORDER: 'add-order',
-    GET_MULTI_BARE: 'get-multi-bare',
+    FIND_MULTI_BARE: 'get-multi-bare',
     GET_ONE_BY_MKH: 'get-one-by-mkh',
     GET_NOTE_SIMPLE: 'get-note-simple',
   },

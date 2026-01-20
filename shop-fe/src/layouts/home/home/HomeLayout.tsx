@@ -27,6 +27,7 @@ interface HomeResProps {
 export default function HomeLayout({ items }: HomeResProps) {
   return (
     <div className="w-full max-w-7xl mx-auto">
+      {process.env.NEXT_PUBLIC_BACKEND_URL}
       <BannerSectionLayout />
       <CollectionsSectionLayout
         items={items?.collections?.data!}

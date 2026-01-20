@@ -10,7 +10,7 @@ const URL = ROUTE_CONTROLLERS.IMAGES
 
 export async function findMulti(folder: string){
     const res = await api({
-        url: `${URL}/${ROUTE_COMMON_FEATURES.GET_MULTI}/${folder}`,
+        url: `${URL}/${ROUTE_COMMON_FEATURES.FIND_MULTI}/${folder}`,
         method: CONST_METHODS.GET,
     })
     return res

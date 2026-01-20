@@ -20,7 +20,7 @@ export async function create(payload: IProduct){
 
 export async function findAll(){
     const res = await api({
-        url: `${URL}/${ROUTE_COMMON_FEATURES.GET_ALL}`,
+        url: `${URL}/${ROUTE_COMMON_FEATURES.FIND_ALL}`,
         method: CONST_METHODS.GET,
     })
     return res;
@@ -28,7 +28,7 @@ export async function findAll(){
 
 export async function findMulti(){
     const res = await api<IProduct[]>({
-        url: `${URL}/${ROUTE_COMMON_FEATURES.GET_MULTI}`,
+        url: `${URL}/${ROUTE_COMMON_FEATURES.FIND_MULTI}`,
         method: CONST_METHODS.GET,
     })
     return res;

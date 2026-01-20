@@ -21,6 +21,7 @@ A production-ready e-commerce solution built with cutting-edge technologies, fea
 ## ✨ Features
 
 ### 🛒 Customer Experience
+
 - **Product Catalog** - Browse products with filtering and search capabilities
 - **Product Details** - Rich product pages with images, variants, and specifications
 - **Smart Cart** - Persistent shopping cart with localStorage support
@@ -28,6 +29,7 @@ A production-ready e-commerce solution built with cutting-edge technologies, fea
 - **Profile Management** - User account and preference management
 
 ### 🎛️ Admin Dashboard
+
 - **Product Management** - Full CRUD operations for products
 - **Variant Control** - Manage product variants, sizes, colors, and pricing
 - **Stock Tracking** - Real-time inventory management
@@ -67,6 +69,7 @@ storeplate/
 <td valign="top" width="50%">
 
 ### Frontend
+
 - **Framework:** Next.js 14 (App Router)
 - **UI Library:** React 18
 - **Styling:** Tailwind CSS
@@ -79,6 +82,7 @@ storeplate/
 <td valign="top" width="50%">
 
 ### Backend
+
 - **Framework:** NestJS
 - **ORM:** TypeORM
 - **Database:** MySQL
@@ -98,6 +102,7 @@ storeplate/
 ### Prerequisites
 
 Ensure you have the following installed:
+
 - **Node.js** (v18 or higher)
 - **npm** or **yarn**
 - **MySQL** (v8 or higher)
@@ -105,42 +110,45 @@ Ensure you have the following installed:
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/itsdat/Storeplate.git
    cd Storeplate
    ```
 
 2. **Setup Backend**
+
    ```bash
    cd shop-be
    npm install
-   
+
    # Configure environment variables
    cp .env.example .env
    # Edit .env with your database credentials
-   
+
    # Run database migrations
    npm run migration:run
-   
+
    # Start development server
    npm run start:dev
    ```
-   
+
    Backend will be running at `http://localhost:3001`
 
 3. **Setup Frontend**
+
    ```bash
    cd shop-fe
    npm install
-   
+
    # Configure environment variables
    cp .env.example .env
    # Edit .env with your API URL
-   
+
    # Start development server
    npm run dev
    ```
-   
+
    Frontend will be running at `http://localhost:3000`
 
 ---
@@ -155,8 +163,8 @@ Create a `.env` file in the `shop-be` directory:
 # Database Configuration
 DB_HOST=localhost
 DB_PORT=3306
-DB_USERNAME=root
-DB_PASSWORD=your_secure_password
+DB_USER=root
+DB_PASS=your_secure_password
 DB_NAME=storeplate
 
 # JWT Configuration
@@ -187,12 +195,15 @@ NEXT_PUBLIC_API_URL=http://localhost:3001
 <div align="center">
 
 ### Product Catalog
+
 ![Product Catalog](#)
 
 ### Product Details
+
 ![Product Details](#)
 
 ### Admin Dashboard
+
 ![Admin Dashboard](#)
 
 </div>
@@ -244,6 +255,7 @@ npm run start:prod
 ```
 
 Deploy to platforms like:
+
 - Railway
 - Render
 - DigitalOcean
@@ -258,6 +270,7 @@ npm start
 ```
 
 Deploy to platforms like:
+
 - Vercel (recommended)
 - Netlify
 - AWS Amplify

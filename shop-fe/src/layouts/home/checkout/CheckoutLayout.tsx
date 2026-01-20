@@ -11,6 +11,9 @@ import { cn } from "@/lib/utils";
 import BaseConfirmAlert from "@/components/common/alert/BaseConfirmAlert";
 import { useRouter } from "next/navigation";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import BaseInput from "@/components/common/input/BaseInput";
+import ShowVoucherModal from "./modal/ShowVoucherModal";
+import { IVoucher } from "@/interfaces/voucher/voucher.interface";
 
 export default function CheckoutLayout() {
   const rhf = useSimRhf<any>({
@@ -23,6 +26,14 @@ export default function CheckoutLayout() {
   const { items, clear } = useCheckoutStore();
   const [isCancel, setIsCancel] = useState<boolean>(false);
   const router = useRouter();
+  const [voucher, setVoucher] = useState<IVoucher>();
+  const totalTemp = items.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0,
+  );
+
+  const getDiscountValue = (v: IVoucher) =>
+    Math.min((totalTemp * v.discountPercentage) / 100, v.maxDiscount);
 
   return (
     <div className="w-full max-w-7xl mx-auto">
@@ -147,10 +158,10 @@ export default function CheckoutLayout() {
               </ScrollArea>
 
               <div className="flex items-center justify-start gap-2 ">
-                <BaseInputRhf
+                <BaseInput
+                  readOnly
+                  value={voucher ? voucher.code : ""}
                   type="email"
-                  name="email"
-                  control={control}
                   className="text-[14px]! px-5"
                   placeholder="Voucher"
                   classProps={{
@@ -159,10 +170,15 @@ export default function CheckoutLayout() {
                     lableClass: "text-sm font-normal",
                   }}
                 />
-
-                <button className="px-3 py-1.5 bg-(--color-btn) text-sm rounded-[3px] text-(--color-text-btn) cursor-pointer">
-                  Apply
-                </button>
+                
+                <ShowVoucherModal
+                  currentVoucher={voucher?.id}
+                  onApply={(item) => setVoucher(item)}
+                  totalTemp={items.reduce(
+                    (total, item) => total + item.price * item.quantity,
+                    0,
+                  )}
+                />
               </div>
 
               <Separator className="bg-(--color-border)" />
@@ -180,7 +196,10 @@ export default function CheckoutLayout() {
                   content="Free"
                   classname="text-green-600"
                 />
-                <RowItem label="Voucher discount" content="€0" />
+                <RowItem
+                  label="Voucher discount"
+                  content={`- €${voucher ? getDiscountValue(voucher) : "€0"}`}
+                />
               </div>
 
               <Separator className="bg-(--color-border)" />
@@ -190,16 +209,12 @@ export default function CheckoutLayout() {
                   Total
                 </p>
                 <p className="font-semibold text-lg text-(--color-title)">
-                  €
-                  {items.reduce(
-                    (total, item) => total + item.price * item.quantity,
-                    0,
-                  )}
+                  €{totalTemp - (voucher ? getDiscountValue(voucher) : 0)}
                 </p>
               </div>
 
               <button className="px-3 py-2 bg-(--color-btn) flex items-center justify-center gap-1 text-sm rounded-[3px] text-(--color-text-btn) cursor-pointer">
-                Complete Purchase{" "}
+                Complete Purchase
                 <ChevronsRight strokeWidth={1.5} className="size-5" />
               </button>
             </div>

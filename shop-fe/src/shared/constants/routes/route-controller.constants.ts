@@ -6,4 +6,5 @@ export const ROUTE_CONTROLLERS = {
   IMAGES: 'upload',
   PRODUCTS: 'product',
   CARTS: 'cart',
+  VOUCHERS: 'voucher',
 };
