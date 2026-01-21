@@ -100,6 +100,19 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
             )}
             <div className="flex items-center justify-start gap-2">
               <h5 className="text-3xl font-semibold">{item.name}</h5>
+            </div>
+          </div>
+          <div className="flex items-start justify-center gap-3 -translate-y-1 leading-0">
+            <span className="text-3xl text-(--color-text) font-medium">
+              €
+              {(item.variants?.[variantIndex]?.price ?? 0) -
+                (item.variants?.[variantIndex]?.discount ?? 0)}
+            </span>
+            <small className="text-lg text-(--color-desc) line-through">
+              €{item.variants?.[variantIndex]?.price ?? 0}
+            </small>
+
+            <div className="-mt-5">
               {item.variants[variantIndex].discount && (
                 <TagSale
                   value={
@@ -110,16 +123,6 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
                 />
               )}
             </div>
-          </div>
-          <div className="flex items-start justify-center gap-3 -translate-y-1">
-            <span className="text-3xl text-(--color-text) font-medium">
-              €
-              {(item.variants?.[variantIndex]?.price ?? 0) -
-                (item.variants?.[variantIndex]?.discount ?? 0)}
-            </span>
-            <small className="text-lg text-(--color-desc) line-through">
-              €{item.variants?.[variantIndex]?.price ?? 0}
-            </small>
           </div>
 
           <div className="flex flex-col items-start justify-start gap-2">

@@ -6,6 +6,7 @@ import { Image } from './entities/image.entity';
 import { UploadDto } from './dto/upload.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { HttpStatusCode } from 'src/shared/enums/http-status.enum';
+import { IBaseCreatedRes } from 'src/shared/interfaces/common/IBaseRetun.interface';
 
 @Injectable()
 export class UploadService {
@@ -16,11 +17,15 @@ export class UploadService {
     private readonly uploadRepo: Repository<Image>
   ) {}
 
-  async uploadFile(file: Express.Multer.File, uploadDto: UploadDto, folder?: string) {
+  async uploadFile(file: Express.Multer.File, uploadDto: UploadDto, folder?: string): Promise<IBaseCreatedRes> {
     if (!file) throw new BadRequestException('File is required');
     const res = await this.storage.upload(file, folder)
     const image = this.uploadRepo.create(uploadDto)
-    return await this.uploadRepo.save({...image, key: res.key, url: res.url});
+    return {
+      data: await this.uploadRepo.save({...image, key: res.key, url: res.url}),
+      message: 'Upload file successfully',
+      statusCode: HttpStatusCode.CREATED
+    }
   }
 
   async deleteFile(key: string) {

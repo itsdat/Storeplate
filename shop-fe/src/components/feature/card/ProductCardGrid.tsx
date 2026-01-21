@@ -81,7 +81,7 @@ export default function ProductCardGrid({ item }: { item: IProduct }) {
             {(item.variants?.[0]?.price ?? 0) -
               (item.variants?.[0]?.discount ?? 0)}
           </span>
-          {item.variants[0].discount && (
+          {item.variants[0].discount && item.variants[0].discount !== 0 && (
             <small className="text-lg text-(--color-desc) line-through">
               €{item.variants?.[0]?.price ?? 0}
             </small>

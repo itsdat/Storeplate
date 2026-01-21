@@ -15,6 +15,10 @@ import UserCart from "./cart/UserCart";
 import { useSession } from "@/context/SessionProvider";
 import BaseAvatar from "@/components/common/avatar/BaseAvatar";
 import BaseBadge from "@/components/common/badge/BaseBadge";
+import BaseModal from "@/components/common/modal/BaseModal";
+import { IUser } from "@/interfaces/user/user.interface";
+import { AuthApis } from "@/apis";
+import { getImageLink } from "@/utils/getImageLink.utils";
 
 export default function Navbar() {
   const session = useSession();
@@ -23,6 +27,18 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [openCart, setOpenCart] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
+  const [openSearch, setOpenSearch] = useState<boolean>(false);
+  const [user, setUser] = useState<IUser>();
+
+  useEffect(() => {
+    if (session?.userId) {
+      async function fetchUser() {
+        const res = await AuthApis.getMe();
+        setUser(res.data);
+      }
+      fetchUser();
+    }
+  }, [session?.userId]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,6 +56,7 @@ export default function Navbar() {
       const isCtrlK = !isMac && e.ctrlKey && e.key.toLowerCase() === "k";
 
       if (isCmdK || isCtrlK) {
+        setOpenSearch(true);
         e.preventDefault();
         inputRef.current?.focus();
       }
@@ -54,7 +71,7 @@ export default function Navbar() {
         scrolled ? "shadow-sm h-24" : "h-28"
       }`}
     >
-      <div className="w-full mx-auto max-w-7xl h-16 flex items-center justify-between  gap-4">
+      <div className="w-full mx-auto max-w-7xl h-16 flex items-center justify-between gap-4">
         <Link href={"/"} className="w-fit">
           <LogoIcon />
         </Link>
@@ -106,7 +123,10 @@ export default function Navbar() {
           />
           {session?.userId ? (
             <Link href={"/profile"} className="cursor-pointer">
-              <BaseAvatar name={session?.username} />
+              <BaseAvatar
+                url={getImageLink(user?.avatar ?? "")}
+                name={session?.username}
+              />
             </Link>
           ) : (
             <Link href={"/login"} className="cursor-pointer">
@@ -117,6 +137,15 @@ export default function Navbar() {
       </div>
 
       <NavDrawer open={openMenu} onClose={() => setOpenMenu(false)} />
+
+      <BaseModal
+        width="4xl"
+        classname="top-45"
+        open={openSearch}
+        onClose={() => setOpenSearch(false)}
+      >
+        <div></div>
+      </BaseModal>
     </div>
   );
 }

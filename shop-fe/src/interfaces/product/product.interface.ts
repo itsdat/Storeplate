@@ -38,3 +38,15 @@ export interface IProduct extends IBase{
     collectionId?: string;
     collection?: ICollection
 }
+
+export interface IProductQuery {
+  search?: string;
+  collectionId?: string;
+  tagId?: number;
+  minPrice?: number;
+  maxPrice?: number;
+  page?: number;
+  limit?: number;
+  sortBy?: string;
+  order?: 'ASC' | 'DESC';
+}

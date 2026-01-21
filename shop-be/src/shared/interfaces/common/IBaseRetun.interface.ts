@@ -12,7 +12,8 @@ export interface IBaseUpdatedRes {
 export interface IBaseGetAllRes<T = any> {
   data: T,
   totalItems: number,
-  statusCode: number
+  statusCode: number,
+  optional?: any
 }
 
 export interface IBaseGetOneRes<T = any> {

@@ -1,6 +1,6 @@
 "use server";
 import { api } from "@/helpers/api.helper";
-import { IProduct } from "@/interfaces/product/product.interface";
+import { IProduct, IProductQuery } from "@/interfaces/product/product.interface";
 import { CONST_METHODS } from "@/shared/constants/routes/methods.constants";
 import { ROUTE_CONTROLLERS } from "@/shared/constants/routes/route-controller.constants";
 import { ROUTE_COMMON_FEATURES } from "@/shared/constants/routes/route-feature.constants";
@@ -26,14 +26,19 @@ export async function findAll(){
     return res;
 }
 
-export async function findMulti(){
-    const res = await api<IProduct[]>({
-        url: `${URL}/${ROUTE_COMMON_FEATURES.FIND_MULTI}`,
-        method: CONST_METHODS.GET,
-    })
-    return res;
+export async function findMulti(query?: IProductQuery){
+    const queryString = new URLSearchParams(query as Record<string, string>).toString();
+    try {
+        const res = await api<IProduct[]>({
+            url: `${URL}/${ROUTE_COMMON_FEATURES.FIND_MULTI}${queryString ? `?${queryString}` : ''}`,
+            method: CONST_METHODS.GET,
+        });
+        
+        return res
+    } catch (error) {
+        console.error("API Error:", error);
+    }
 }
-
 export async function findOneBySlug(slug: string){
     const res = await api<IProduct>({
         url: `${URL}/${ROUTE_COMMON_FEATURES.FIND_ONE_BY_SLUG}/${slug}`,

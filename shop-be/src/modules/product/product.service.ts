@@ -8,6 +8,7 @@ import { HttpStatusCode } from 'src/shared/enums/http-status.enum';
 import { Tag } from '../tag/entities/tag.entity';
 import { IBaseCreatedRes, IBaseDeleteRes, IBaseGetAllRes, IBaseGetOneRes } from 'src/shared/interfaces/common/IBaseRetun.interface';
 import { Collection } from '../collection/entities/collection.entity';
+import { GetProductQueryDto } from './dto/get-product-query.dto';
 
 @Injectable()
 export class ProductService {
@@ -100,23 +101,75 @@ export class ProductService {
     }
   }
 
-  async findMulti(): Promise<IBaseGetAllRes>{
-    try {
-      const data = await this.productRepo.find({
-        where: {isActive: true},
-        order: {createdAt: "DESC"},
-        relations: ['tags', 'collection']
-      })
+  async findMulti(query: GetProductQueryDto): Promise<IBaseGetAllRes> {
+    const qb = this.productRepo
+      .createQueryBuilder('product')
+      .leftJoinAndSelect('product.tags', 'tag')
+      .leftJoinAndSelect('product.collection', 'collection')
+      .leftJoinAndSelect('product.variants', 'variant')
+      .where('product.isActive = :isActive', { isActive: true });
 
-      return {
-        data: data,
-        statusCode: HttpStatusCode.OK,
-        totalItems: data.length
-      }
-    } catch (error) {
-      console.log("error fetching", error);
-      throw new BadRequestException("Fetching fail")
+    if (query.search) {
+      qb.andWhere('product.name LIKE :search', {
+        search: `%${query.search}%`,
+      });
     }
+
+    if (query.collectionId) {
+      qb.andWhere('collection.id = :collectionId', {
+        collectionId: query.collectionId,
+      });
+    }
+
+    if (query.tagId) {
+      qb.andWhere('tag.id = :tagId', {
+        tagId: query.tagId,
+      });
+    }
+
+    if (query.minPrice) {
+      qb.andWhere('variant.price >= :minPrice', {
+        minPrice: query.minPrice,
+      });
+    }
+
+    if (query.maxPrice) {
+      qb.andWhere('variant.price <= :maxPrice', {
+        maxPrice: query.maxPrice,
+      });
+    }
+
+    const page = Number(query.page) || 1;
+    const limit = Number(query.limit) || 10;
+
+    qb.skip((page - 1) * limit).take(limit);
+
+    qb.orderBy(
+      `product.${query.sortBy || 'createdAt'}`,
+      query.order === 'ASC' ? 'ASC' : 'DESC',
+    );
+
+    const priceRange = await this.productRepo
+      .createQueryBuilder('product')
+      .leftJoin('product.variants', 'variant')
+      .select('MIN(variant.price)', 'minPrice')
+      .addSelect('MAX(variant.price)', 'maxPrice')
+      .where('product.isActive = true')
+      .getRawOne();
+
+    const [data, totalItems] = await qb.getManyAndCount();
+
+    return {
+      data,
+      totalItems,
+      statusCode: HttpStatusCode.OK,
+      optional:{
+        priceRange: {
+          min: Number(priceRange?.minPrice) || 0,
+          max: Number(priceRange?.maxPrice) || 0,
+      },
+      }
+    };
   }
 
   async findOne(slug: string): Promise<IBaseGetOneRes> {

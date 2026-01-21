@@ -18,6 +18,7 @@ import {
 import { ReactNode } from "react";
 import BaseAlertVerifyEmail from "./common/BaseAlertVerifyEmail";
 import EditProfileBtn from "./modal/edit-profile/EditProfileBtn";
+import { getImageLink } from "@/utils/getImageLink.utils";
 
 export default function ProfileLayout({ item }: { item: IUser }) {
   const user = useSession();
@@ -25,7 +26,7 @@ export default function ProfileLayout({ item }: { item: IUser }) {
     <div className="w-full max-w-7xl mx-auto flex flex-col gap-7">
       <div className="w-full flex items-center justify-between">
         <div className="w-full flex  items-center justify-start gap-5">
-          <BaseAvatar size={50} />
+          <BaseAvatar url={getImageLink(item.avatar) ?? ""} size={50} />
           <div>
             <h1>Account Settings</h1>
             <p>Manage your personal information and orders</p>
@@ -94,7 +95,7 @@ export default function ProfileLayout({ item }: { item: IUser }) {
                   "focus:border-none border-none shadow-none bg-(--color-foreground) rounded-[3px] has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-gray-500 has-[[data-slot=input-group-control]:focus-visible]:ring-[1px]",
                 lableClass: "text-sm font-normal",
               }}
-              addon={<BaseTag color={STATUS_COLORS.SUCCESS}>Verify</BaseTag>}
+              addon={<BaseTag color={STATUS_COLORS.ERROR}>not verified</BaseTag>}
             />
             <BaseInput
               disabled

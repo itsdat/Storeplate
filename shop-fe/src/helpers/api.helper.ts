@@ -7,7 +7,8 @@ export interface IBaseApiResponse<T> {
   data?: T | any;
   statusCode: number;
   message?: string;
-  totalItems?: number
+  totalItems?: number,
+  optional?: any
 }
 
 

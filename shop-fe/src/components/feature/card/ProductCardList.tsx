@@ -65,6 +65,10 @@ export default function ProductCardList({ item }: { item: IProduct }) {
             </div>
           </div>
 
+          {/* <div
+            className="prose bg-white p-3 text-(--color-desc) line-clamp-3"
+            dangerouslySetInnerHTML={{ __html: item.description }}
+          /> */}
           <p className="text-(--color-desc) line-clamp-3">{item.description}</p>
 
           <button
@@ -82,7 +86,7 @@ export default function ProductCardList({ item }: { item: IProduct }) {
                 productId: item.id,
               });
             }}
-            className={`px-5 py-2 bg-(--color-text-btn) text-(--color-btn) border border-(--color-btn) hover:bg-(--color-btn) hover:text-(--color-text-btn) transition-all duration-300 font-bold rounded-sm ${
+            className={`px-5 py-1.5 bg-(--color-text-btn) text-(--color-btn) border border-(--color-btn) hover:bg-(--color-btn) hover:text-(--color-text-btn) transition-all duration-300 font-bold rounded-sm ${
               checkStock ? "cursor-not-allowed" : "cursor-pointer"
             }`}
           >

@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { GetProductQueryDto } from './dto/get-product-query.dto';
 
 @Controller('product')
 @ApiBearerAuth('access_token')
@@ -24,8 +25,8 @@ export class ProductController {
 
   // @UseGuards(JwtAuthGuard)
   @Get("find-multi")
-  findMulti() {
-    return this.productService.findMulti();
+  findMulti(@Query() query: GetProductQueryDto) {
+    return this.productService.findMulti(query);
   }
 
   // @UseGuards(JwtAuthGuard)

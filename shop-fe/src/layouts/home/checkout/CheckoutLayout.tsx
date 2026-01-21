@@ -198,7 +198,7 @@ export default function CheckoutLayout() {
                 />
                 <RowItem
                   label="Voucher discount"
-                  content={`- €${voucher ? getDiscountValue(voucher) : "€0"}`}
+                  content={`- €${voucher ? getDiscountValue(voucher) : "0"}`}
                 />
               </div>
 

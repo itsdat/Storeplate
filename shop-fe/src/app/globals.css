@@ -34,6 +34,7 @@
 }
 
 :root {
+  --navbar-height: 112px;
   --font-sans: var(--font-karla);
   --radius: .6rem;
   --custom-radius: 1rem;

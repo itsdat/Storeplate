@@ -13,6 +13,7 @@ import { join } from 'path';
 import { User } from './modules/users/entities/user.entity';
 import { CartModule } from './modules/cart/cart.module';
 import { VoucherModule } from './modules/voucher/voucher.module';
+import { UserModule } from './modules/users/user.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { VoucherModule } from './modules/voucher/voucher.module';
     UploadModule,
     CartModule,
     VoucherModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService],

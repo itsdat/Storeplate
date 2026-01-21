@@ -1,6 +1,6 @@
 export const ROUTE_CONTROLLERS = {
   AUTH: 'auth',
-  USERS: 'users',
+  USERS: 'user',
   ROLES: 'roles',
   COLLECTIONS: 'collection',
   IMAGES: 'upload',
