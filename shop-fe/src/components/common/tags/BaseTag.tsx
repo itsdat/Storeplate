@@ -19,7 +19,7 @@ export default function BaseTag({
         style={{ backgroundColor: `${color}` }}
       ></div>
       <p
-        className={`text-[12px] uppercase font-semibold mt-0.5`}
+        className={`text-[12px] uppercase font-semibold`}
         style={{ color: color }}
       >
         {children}

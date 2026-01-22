@@ -16,7 +16,7 @@ import {
 import { IProductOption } from "@/interfaces/product/product.interface";
 import { cn } from "@/lib/utils";
 import { Check, ChevronDown } from "lucide-react";
-import { HTMLInputTypeAttribute, useState } from "react";
+import { HTMLInputTypeAttribute, useEffect, useState } from "react";
 
 interface IBaseSelectClass {
   className?: string;
@@ -24,8 +24,10 @@ interface IBaseSelectClass {
   classGroup?: string;
 }
 
-export interface BaseSelectProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange"> {
+export interface BaseSelectProps extends Omit<
+  React.InputHTMLAttributes<HTMLInputElement>,
+  "onChange"
+> {
   className?: string;
   label?: string;
   type?: HTMLInputTypeAttribute;
@@ -83,24 +85,49 @@ export default function BaseSelect({
         </Label>
       )}
       <Popover open={open} onOpenChange={setOpen}>
-        <PopoverTrigger asChild className={cn("", classProps?.className)}>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className="w-full justify-between"
+        <div className="relative">
+          <PopoverTrigger
+            asChild
+            className={cn("z-1 relative", classProps?.className)}
           >
-            {opts?.label ?? options.find((i) => i.value === value)?.label ?? (
-              <p className="text-(--color-desc) font-normal">{placeholder}</p>
-            )}
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="w-full justify-between"
+            >
+              {opts?.value
+                ? opts?.label
+                : ((options &&
+                    options.find((i) => i.value === value)?.label) ?? (
+                    <p className="text-(--color-desc) font-normal">
+                      {placeholder}
+                    </p>
+                  ))}
+              {/* {opts?.label ?? (
+                <p className="text-(--color-desc) font-normal">{placeholder}</p>
+              )} */}
 
-            <ChevronDown className="opacity-50" />
-          </Button>
-        </PopoverTrigger>
+              <ChevronDown className="opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <input
+            type="text"
+            tabIndex={-1}
+            autoComplete="off"
+            className="absolute inset-0 w-full opacity-0 pointer-events-none"
+            value={value}
+            onChange={() => {}}
+            required={props.required}
+          />
+        </div>
         <PopoverContent className="rounded-[5px] p-0 w-(--radix-popover-trigger-width) border-(--color-border)">
-          <Command className="w-full rounded-[3px]">
+          <Command
+            className="w-full rounded-[3px]"
+            onWheel={(e) => e.stopPropagation()}
+          >
             {search && <CommandInput placeholder="Search..." className="h-9" />}
-            <CommandList className="w-full">
+            <CommandList className="w-full max-h-50 overflow-y-auto">
               <CommandEmpty>No item found.</CommandEmpty>
               <CommandGroup className={cn("w-full!", classProps?.classGroup)}>
                 {options &&
@@ -115,7 +142,7 @@ export default function BaseSelect({
                       <Check
                         className={cn(
                           "ml-auto data-[selected=true]:text-white",
-                          value === i.value ? "opacity-100" : "opacity-0"
+                          value === i.value ? "opacity-100" : "opacity-0",
                         )}
                       />
                     </CommandItem>

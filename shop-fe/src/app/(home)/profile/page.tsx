@@ -1,7 +1,18 @@
-import { AuthApis } from "@/apis";
+import { AddressApi, AuthApis } from "@/apis";
 import ProfileLayout from "@/layouts/home/profile/ProfileLayout";
 
 export default async function ProfilePage() {
-  const res = await AuthApis.getMe();
-  return <ProfileLayout item={res.data} />;
+  const userRes = await AuthApis.getMe();
+  const addressRes = await AddressApi.findMulti();
+  return (
+    <ProfileLayout
+      items={{
+        userData: userRes.data,
+        addresses: {
+          data: addressRes.data,
+          total: Number(addressRes.totalItems),
+        },
+      }}
+    />
+  );
 }

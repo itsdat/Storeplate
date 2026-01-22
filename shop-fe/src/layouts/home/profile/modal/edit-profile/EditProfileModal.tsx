@@ -4,6 +4,7 @@ import BaseGroupButton from "@/components/common/button/BaseGroupButton";
 import { BaseInputRhf } from "@/components/common/input/BaseInputRhf";
 import BaseModal from "@/components/common/modal/BaseModal";
 import { BASE_FOLDER } from "@/constants/folder.constant";
+import { useAuth } from "@/context/AuthContext";
 import { useSimRhf } from "@/hooks/others/useSimRhf.hook";
 import { useToast } from "@/hooks/others/useToast.hook";
 import { IUser } from "@/interfaces/user/user.interface";
@@ -24,6 +25,7 @@ export default function EditProfileModal({
   const [preview, setPreview] = useState<string | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const { toastSuccess, toastWarning, toastError } = useToast();
+  const { refreshUser } = useAuth();
   const { control, handleSubmit, reset } = useSimRhf<IUser>({
     defaultValues: {
       firstName: "",
@@ -73,6 +75,7 @@ export default function EditProfileModal({
         toastSuccess("Success", "Profile updated successfully");
       }
       onClose();
+      refreshUser();
     } catch (error) {
       toastError("Error", (error as Error).message);
     }

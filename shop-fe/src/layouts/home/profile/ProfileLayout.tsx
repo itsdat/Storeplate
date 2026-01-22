@@ -5,7 +5,6 @@ import BaseInput from "@/components/common/input/BaseInput";
 import BaseTag from "@/components/common/tags/BaseTag";
 import { Separator } from "@/components/ui/separator";
 import { STATUS_COLORS } from "@/constants/status-color.constant";
-import { useSession } from "@/context/SessionProvider";
 import { IUser } from "@/interfaces/user/user.interface";
 import {
   LogOut,
@@ -19,14 +18,27 @@ import { ReactNode } from "react";
 import BaseAlertVerifyEmail from "./common/BaseAlertVerifyEmail";
 import EditProfileBtn from "./modal/edit-profile/EditProfileBtn";
 import { getImageLink } from "@/utils/getImageLink.utils";
+import AddAddressBtn from "./modal/add-address/AddAddressBtn";
+import { IAddress } from "@/interfaces/address/address.interface";
+import AddressList from "./AddressList";
 
-export default function ProfileLayout({ item }: { item: IUser }) {
-  const user = useSession();
+interface ProfileResProps {
+  userData: IUser;
+  addresses: {
+    data: IAddress[];
+    total: number;
+  };
+}
+
+export default function ProfileLayout({ items }: { items: ProfileResProps }) {
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col gap-7">
       <div className="w-full flex items-center justify-between">
         <div className="w-full flex  items-center justify-start gap-5">
-          <BaseAvatar url={getImageLink(item.avatar) ?? ""} size={50} />
+          <BaseAvatar
+            url={getImageLink(items.userData.avatar) ?? ""}
+            size={50}
+          />
           <div>
             <h1>Account Settings</h1>
             <p>Manage your personal information and orders</p>
@@ -45,7 +57,7 @@ export default function ProfileLayout({ item }: { item: IUser }) {
           icon={<UserRound strokeWidth={1.5} size={16} />}
           textBtn={
             <EditProfileBtn
-              item={item}
+              item={items.userData}
               trigger={
                 <div className="flex items-center justify-end gap-2 cursor-pointer">
                   <Pencil strokeWidth={1.5} size={14} />
@@ -59,7 +71,7 @@ export default function ProfileLayout({ item }: { item: IUser }) {
         <div className="flex flex-col gap-5 mt-5">
           <div className="flex items-center justify-between gap-5">
             <BaseInput
-              value={item.firstName}
+              value={items.userData.firstName}
               disabled
               className="text-[14px]! px-5"
               placeholder="John"
@@ -71,7 +83,7 @@ export default function ProfileLayout({ item }: { item: IUser }) {
               }}
             />
             <BaseInput
-              value={item.lastName}
+              value={items.userData.lastName}
               disabled
               className="text-[14px]! px-5"
               placeholder="Doe"
@@ -85,7 +97,7 @@ export default function ProfileLayout({ item }: { item: IUser }) {
           </div>
           <div className="flex items-center justify-between gap-5">
             <BaseInput
-              value={item.email}
+              value={items.userData.email}
               disabled
               className="text-[14px]! px-5"
               placeholder="johndoe@gmail.com"
@@ -95,11 +107,13 @@ export default function ProfileLayout({ item }: { item: IUser }) {
                   "focus:border-none border-none shadow-none bg-(--color-foreground) rounded-[3px] has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-gray-500 has-[[data-slot=input-group-control]:focus-visible]:ring-[1px]",
                 lableClass: "text-sm font-normal",
               }}
-              addon={<BaseTag color={STATUS_COLORS.ERROR}>not verified</BaseTag>}
+              addon={
+                <BaseTag color={STATUS_COLORS.ERROR}>not verified</BaseTag>
+              }
             />
             <BaseInput
               disabled
-              value={item.phone}
+              value={items.userData.phone}
               className="text-[14px]! px-5"
               placeholder="(+1).834.738.264"
               label="Phone Number"
@@ -129,16 +143,19 @@ export default function ProfileLayout({ item }: { item: IUser }) {
           title="Saved Address"
           icon={<MapPin strokeWidth={1.5} size={16} />}
           textBtn={
-            <div className="flex items-center justify-center gap-2 cursor-pointer">
-              <Plus strokeWidth={1.5} size={18} />
-              Add New Address
-            </div>
+            <AddAddressBtn
+              total={items.addresses.total}
+              trigger={
+                <div className="flex items-center justify-center gap-2 cursor-pointer">
+                  <Plus strokeWidth={1.5} size={18} />
+                  Add New Address
+                </div>
+              }
+            />
           }
         />
 
-        <div>
-          <BaseEmpty />
-        </div>
+        <AddressList items={items.addresses.data} />
       </div>
     </div>
   );

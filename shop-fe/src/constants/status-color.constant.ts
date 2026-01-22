@@ -9,4 +9,5 @@ export const STATUS_COLORS = {
   ERROR: "#EF4444",         // Red – lỗi
   FAILED: "#DC2626",        // Red Dark – thất bại
   INFO: "#0EA5E9",          // Cyan – thông tin
+  DEFAULT: "#000000",          // Cyan – thông tin
 } as const;

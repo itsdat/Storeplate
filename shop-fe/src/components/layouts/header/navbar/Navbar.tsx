@@ -19,6 +19,7 @@ import BaseModal from "@/components/common/modal/BaseModal";
 import { IUser } from "@/interfaces/user/user.interface";
 import { AuthApis } from "@/apis";
 import { getImageLink } from "@/utils/getImageLink.utils";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
   const session = useSession();
@@ -28,17 +29,7 @@ export default function Navbar() {
   const [openCart, setOpenCart] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
   const [openSearch, setOpenSearch] = useState<boolean>(false);
-  const [user, setUser] = useState<IUser>();
-
-  useEffect(() => {
-    if (session?.userId) {
-      async function fetchUser() {
-        const res = await AuthApis.getMe();
-        setUser(res.data);
-      }
-      fetchUser();
-    }
-  }, [session?.userId]);
+  const { user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {

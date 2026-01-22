@@ -14,6 +14,7 @@ import { User } from './modules/users/entities/user.entity';
 import { CartModule } from './modules/cart/cart.module';
 import { VoucherModule } from './modules/voucher/voucher.module';
 import { UserModule } from './modules/users/user.module';
+import { AddressModule } from './modules/address/address.module';
 
 @Module({
   imports: [
@@ -43,7 +44,8 @@ import { UserModule } from './modules/users/user.module';
     UploadModule,
     CartModule,
     VoucherModule,
-    UserModule
+    UserModule,
+    AddressModule
   ],
   controllers: [AppController],
   providers: [AppService],

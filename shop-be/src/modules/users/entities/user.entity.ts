@@ -1,6 +1,7 @@
 import { Exclude } from "class-transformer";
+import { Address } from "src/modules/address/entities/address.entity";
 import { ROLES } from "src/shared/constants/common/role.contanst";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity("users")
 export class User {
@@ -37,6 +38,9 @@ export class User {
 
     @Column({default: ROLES.USER})
     role: string;
+
+    @OneToMany(() => Address, address => address.user)
+    addresses: Address[];
 
     @CreateDateColumn()
     createdAt: Date;

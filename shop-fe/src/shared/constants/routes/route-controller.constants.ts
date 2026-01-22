@@ -7,4 +7,5 @@ export const ROUTE_CONTROLLERS = {
   PRODUCTS: 'product',
   CARTS: 'cart',
   VOUCHERS: 'voucher',
+  ADDRESS: 'address'
 };

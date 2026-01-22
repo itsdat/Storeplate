@@ -5,6 +5,7 @@ import LayoutRoot from "./RootLayout";
 import { Toaster } from "@/components/ui/sonner";
 import { SessionProvider } from "@/context/SessionProvider";
 import { getSession } from "@/lib/session";
+import { AuthProvider } from "@/context/AuthContext";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -35,7 +36,9 @@ export default async function RootLayout({
         className={`${karla.variable} ${geistMono.variable} karla antialiased bg-[var(--color-background)]`}
       >
         <SessionProvider session={session as any}>
-          <LayoutRoot>{children}</LayoutRoot>
+          <AuthProvider>
+            <LayoutRoot>{children}</LayoutRoot>
+          </AuthProvider>
           <Toaster />
         </SessionProvider>
       </body>

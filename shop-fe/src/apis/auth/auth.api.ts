@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import { ROUTE_CONTROLLERS } from "@/shared/constants/routes/route-controller.constants";
 import { ROUTE_FEATURES } from "@/shared/constants/routes/route-feature.constants";
 import { CONST_METHODS } from "@/shared/constants/routes/methods.constants";
+import { IUser } from "@/interfaces/user/user.interface";
 
 const URL = ROUTE_CONTROLLERS.AUTH;
 const FEATURE = ROUTE_FEATURES.AUTH;
@@ -79,7 +80,7 @@ export async function register(payload: IRegister){
 }
 
 export async function getMe(){
-  const res = await api({
+  const res = await api<IUser>({
     url: `${URL}/${FEATURE.GET_ME}`,
     method: CONST_METHODS.GET,
   })

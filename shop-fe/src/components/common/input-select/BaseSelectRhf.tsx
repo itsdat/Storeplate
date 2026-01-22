@@ -2,8 +2,10 @@ import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import BaseSelect, { BaseSelectProps } from "./BaseSelect";
 import { IProductOption } from "@/interfaces/product/product.interface";
 
-export interface BaseSelectRhfProps<T extends FieldValues>
-  extends Omit<BaseSelectProps, "value" | "onChange" | "defaultValue"> {
+export interface BaseSelectRhfProps<T extends FieldValues> extends Omit<
+  BaseSelectProps,
+  "value" | "onChange" | "defaultValue"
+> {
   name: Path<T>;
   control: Control<T>;
   options: IProductOption[];
