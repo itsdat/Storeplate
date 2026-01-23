@@ -18,9 +18,9 @@ const socials = [
 
 export default function Footer() {
   return (
-    <div className="w-full bg-(--color-foreground) mt-32">
+    <div className="w-full bg-(--color-foreground) md:mt-32 mt-10">
       <div className="w-full max-w-7xl mx-auto">
-        <div className="flex items-center justify-between py-16">
+        <div className="flex md:flex-row flex-col gap-2 md:gap-0 items-center justify-between md:py-16 py-5">
           <Link href={"/"}>
             <LogoIcon />
           </Link>
@@ -29,7 +29,7 @@ export default function Footer() {
               <Link
                 href={item.href}
                 key={index}
-                className="text-(--color-text) font-medium"
+                className="text-(--color-text) md:text-md text-sm font-medium"
               >
                 {item.label}
               </Link>
@@ -52,8 +52,8 @@ export default function Footer() {
 
         <Separator className="bg-(--color-border)" />
 
-        <div className="w-full flex items-center justify-between py-5">
-          <div className="flex items-center justify-start gap-5 w-full">
+        <div className="w-full flex md:flex-row flex-col items-center md:justify-between justify-center text-center py-5">
+          <div className="flex items-center md:justify-start justify-center gap-5 w-full  md:text-md text-sm">
             <Link
               href={"/privacy-&-policy"}
               className="text-(--color-desc) font-medium"
@@ -68,7 +68,9 @@ export default function Footer() {
             </Link>
           </div>
 
-          <p className="text-(--color-text) font-medium">itsdat@2026</p>
+          <p className="text-(--color-text) font-medium md:text-md text-sm">
+            itsdat@2026
+          </p>
         </div>
       </div>
     </div>

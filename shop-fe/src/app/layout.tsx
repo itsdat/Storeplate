@@ -3,7 +3,6 @@ import { Geist_Mono, Karla } from "next/font/google";
 import "./globals.css";
 import LayoutRoot from "./RootLayout";
 import { Toaster } from "@/components/ui/sonner";
-import { SessionProvider } from "@/context/SessionProvider";
 import { getSession } from "@/lib/session";
 import { AuthProvider } from "@/context/AuthContext";
 
@@ -33,14 +32,12 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${karla.variable} ${geistMono.variable} karla antialiased bg-[var(--color-background)]`}
+        className={`${karla.variable} ${geistMono.variable} karla antialiased bg-(--color-background)`}
       >
-        <SessionProvider session={session as any}>
-          <AuthProvider>
-            <LayoutRoot>{children}</LayoutRoot>
-          </AuthProvider>
-          <Toaster />
-        </SessionProvider>
+        <AuthProvider>
+          <LayoutRoot>{children}</LayoutRoot>
+        </AuthProvider>
+        <Toaster />
       </body>
     </html>
   );

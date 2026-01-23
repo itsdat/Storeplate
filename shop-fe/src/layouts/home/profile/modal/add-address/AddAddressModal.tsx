@@ -1,14 +1,12 @@
-import { AddressApi, OthersApis } from "@/apis";
+import { AddressApi } from "@/apis";
 import BaseGroupButton from "@/components/common/button/BaseGroupButton";
-import BaseSelectRhf from "@/components/common/input-select/BaseSelectRhf";
 import { BaseInputRhf } from "@/components/common/input/BaseInputRhf";
 import BaseModal from "@/components/common/modal/BaseModal";
 import { BaseSwitchRhf } from "@/components/common/switch/BaseSwitchRhf";
 import { useSimRhf } from "@/hooks/others/useSimRhf.hook";
 import { useToast } from "@/hooks/others/useToast.hook";
 import { IAddress } from "@/interfaces/address/address.interface";
-import { useEffect, useState } from "react";
-import { set, SubmitHandler } from "react-hook-form";
+import { SubmitHandler } from "react-hook-form";
 
 export default function AddAddressModal({
   onClose,
@@ -19,11 +17,6 @@ export default function AddAddressModal({
   onClose: () => void;
   total: number;
 }) {
-  const [cityList, setCityList] = useState<any[]>([]);
-  const [districtList, setDistrictList] = useState<any[]>([]);
-  const [district, setDistrict] = useState<any>(null);
-  const [wardsList, setWardsList] = useState<any[]>([]);
-  const [wards, setWards] = useState<any>(null);
   const { toastSuccess, toastError, toastWarning } = useToast();
   const { control, handleSubmit, reset, watch } = useSimRhf<IAddress>({
     defaultValues: {
@@ -34,34 +27,6 @@ export default function AddAddressModal({
       isDefault: false,
     },
   });
-
-  useEffect(() => {
-    if (open && total) {
-      async function initialItem() {
-        const res = await OthersApis.getProvinces();
-        setCityList(res.data.data);
-      }
-      initialItem();
-    }
-  }, [open, total]);
-
-  useEffect(() => {
-    if (!district) return;
-    async function initialDistricts() {
-      const res = await OthersApis.getDistricts(district.value);
-      setDistrictList(res.data.data);
-    }
-    initialDistricts();
-  }, [district]);
-
-  useEffect(() => {
-    if (!wards) return;
-    async function initialWards() {
-      const res = await OthersApis.getWards(wards.value);
-      setWardsList(res.data.data);
-    }
-    initialWards();
-  }, [wards]);
 
   const onSubmit: SubmitHandler<IAddress> = async (data) => {
     if (total === 3) {
@@ -96,81 +61,49 @@ export default function AddAddressModal({
     >
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-5 mb-1">
-          <div className="grid grid-cols-3 gap-5">
-            <BaseSelectRhf
+          <div className="grid grid-cols-2 gap-5">
+            <BaseInputRhf
               required
-              options={cityList.map((city) => ({
-                label: city.name,
-                value: city.code,
-              }))}
               control={control}
-              onSelectOption={(cityList) => {
-                setDistrict(cityList);
-              }}
               name="city"
               className="text-[14px]! px-5"
+              placeholder="City/Province"
               label="City/Province"
-              placeholder="Select city or province"
               classProps={{
-                classGroup: "border-none",
-                classItem: "text-(--color-text)",
-                className:
-                  "rounded-[3px] font-normal shadow-none bg-(--color-foreground) border-none",
+                inputClass:
+                  "focus:border-none! border-none! shadow-none! bg-(--color-foreground) rounded-[3px] ring-(--color-btn)! rounded-[3px]! has-[[data-slot=input-group-control]:focus-visible]:ring-[0.5px]! has-[[data-slot=input-group-control]:focus-visible]:shadow-none! has-[[data-slot=input-group-control]:focus-visible]:border-none!",
+                lableClass: "text-sm font-normal",
               }}
             />
 
-            <BaseSelectRhf
+            <BaseInputRhf
               required
-              options={
-                districtList
-                  ? districtList.map((d) => ({
-                      label: d.name,
-                      value: d.code,
-                    }))
-                  : []
-              }
               control={control}
-              onSelectOption={(wards) => {
-                setWards(wards);
-              }}
               name="district"
               className="text-[14px]! px-5"
+              placeholder="District"
               label="District"
-              placeholder="Select district"
               classProps={{
-                classGroup: "border-none",
-                classItem: "text-(--color-text)",
-                className:
-                  "rounded-[3px] font-normal shadow-none bg-(--color-foreground) border-none",
+                inputClass:
+                  "focus:border-none! border-none! shadow-none! bg-(--color-foreground) rounded-[3px] ring-(--color-btn)! rounded-[3px]! has-[[data-slot=input-group-control]:focus-visible]:ring-[0.5px]! has-[[data-slot=input-group-control]:focus-visible]:shadow-none! has-[[data-slot=input-group-control]:focus-visible]:border-none!",
+                lableClass: "text-sm font-normal",
               }}
             />
 
-            <BaseSelectRhf
+            <BaseInputRhf
               required
-              options={
-                wardsList
-                  ? wardsList.map((wards) => ({
-                      label: wards.name,
-                      value: wards.code,
-                    }))
-                  : []
-              }
               control={control}
-              onSelectOption={() => {}}
               name="wards"
               className="text-[14px]! px-5"
+              placeholder="Wards"
               label="Wards"
-              placeholder="Select wards"
               classProps={{
-                classGroup: "border-none",
-                classItem: "text-(--color-text)",
-                className:
-                  "rounded-[3px] font-normal shadow-none bg-(--color-foreground) border-none",
+                inputClass:
+                  "focus:border-none! border-none! shadow-none! bg-(--color-foreground) rounded-[3px] ring-(--color-btn)! rounded-[3px]! has-[[data-slot=input-group-control]:focus-visible]:ring-[0.5px]! has-[[data-slot=input-group-control]:focus-visible]:shadow-none! has-[[data-slot=input-group-control]:focus-visible]:border-none!",
+                lableClass: "text-sm font-normal",
               }}
             />
-          </div>
 
-          <div className="flex items-end justify-start gap-5">
             <BaseInputRhf
               required
               control={control}
@@ -184,8 +117,10 @@ export default function AddAddressModal({
                 lableClass: "text-sm font-normal",
               }}
             />
+          </div>
 
-            <div className="w-90">
+          <div className="flex items-end justify-start gap-5">
+            <div className="w-1/2">
               <BaseSwitchRhf
                 control={control}
                 name="isDefault"

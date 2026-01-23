@@ -13,16 +13,28 @@ export default function CollectionsSectionLayout({
   total: number;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-10 py-20">
+    <div className="flex flex-col items-center justify-center md:gap-10 gap-5 md:py-20 py-10 md:mx-0 mx-5">
       <BaseHeading title="Collections" />
-      <BaseCarousel<ICollection>
-        slides={items}
-        slidesPerView={3}
-        slidesPerGroup={1}
-        autoPlay={false}
-        dot={false}
-        renderItem={(item) => <CollectionCard item={item} />}
-      />
+      <div className="w-full hidden md:block">
+        <BaseCarousel<ICollection>
+          slides={items}
+          slidesPerView={3}
+          slidesPerGroup={1}
+          autoPlay={false}
+          dot={false}
+          renderItem={(item) => <CollectionCard item={item} />}
+        />
+      </div>
+      <div className="w-full block md:hidden">
+        <BaseCarousel<ICollection>
+          slides={items}
+          slidesPerView={2}
+          slidesPerGroup={1}
+          autoPlay={false}
+          dot={false}
+          renderItem={(item) => <CollectionCard item={item} />}
+        />
+      </div>
     </div>
   );
 }
@@ -49,9 +61,9 @@ const CollectionCard = ({
         src={getImageLink(item.image)}
         alt={item.name || "image"}
         draggable={false}
-        className="h-72 w-full object-cover"
+        className="md:h-72 aspect-square w-full object-cover"
       />
-      <h5 className="text-3xl text-(--color-title) font-medium mt-6 mb-2">
+      <h5 className="md:text-3xl text-center text-(--color-title) font-medium md:mt-6 mt-2 md:mb-2">
         {item.name}
       </h5>
       <p className="text-(--color-desc) text-xl">{count} items</p>

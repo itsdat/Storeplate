@@ -11,7 +11,7 @@ export default function CartsLayout({
   total?: number;
 }) {
   return (
-    <div className="w-full max-w-7xl mx-auto">
+    <div className="w-full max-w-7xl mx-auto md:px-0 px-5">
       <BaseHeading
         title="Carts"
         desc="Check product details, quantities, and prices in your cart."

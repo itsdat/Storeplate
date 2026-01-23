@@ -13,17 +13,16 @@ import { ICart } from "@/interfaces/cart/cart.interface";
 import { addToCart } from "@/utils/cart.utils";
 import { useToast } from "@/hooks/others/useToast.hook";
 import BaseSelect from "@/components/common/input-select/BaseSelect";
-import { useSession } from "@/context/SessionProvider";
 import { CartApis } from "@/apis";
-import TagIMG from "../../../../public/images/details/tag.png";
 import TagSale from "@/components/feature/tag/TagSale";
+import { useAuth } from "@/context/AuthContext";
 
 export default function ProductDetailLayout({ item }: { item: IProduct }) {
   const [variantIndex, setVariantIndex] = useState<number>(0);
   const [viewImage, setViewImage] = useState<number>(0);
   const { toastAddToCart, toastError, toastWarning } = useToast();
   const [sizeOption, setSizeOption] = useState<IProductOption>();
-  const user = useSession();
+  const {user} = useAuth()
 
   const handleAddToCart = async (data: ICart) => {
     try {
@@ -52,8 +51,8 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
 
   return (
     <div className="w-full max-w-7xl mx-auto">
-      <div className="flex items-start justify-between gap-10">
-        <div className="w-2/5">
+      <div className="flex md:flex-row flex-col items-start justify-between gap-10">
+        <div className="w-full md:w-2/5">
           <BaseCarousel
             slides={item.variants[variantIndex].images}
             slidesPerView={1}
@@ -81,7 +80,7 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
                 src={getImageLink(img)}
                 alt={img || "image"}
                 draggable={false}
-                className={`w-20 aspect-square border-2 transition-all duration-300 object-cover translate-x-2.5 rounded-sm cursor-pointer ${
+                className={`md:w-20 w-15 aspect-square border-2 transition-all duration-300 object-cover translate-x-2.5 rounded-sm cursor-pointer ${
                   viewImage === index
                     ? "border-(--color-btn)"
                     : "border-transparent"
@@ -91,7 +90,7 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
             ))}
           </div>
         </div>
-        <div className="w-3/5 flex flex-col items-start justify-start gap-5">
+        <div className="w-full md:w-3/5 flex flex-col items-start justify-start gap-5 md:px-0 px-5">
           <div>
             {item.collection && (
               <span className="text-(--color-desc) text-sm font-semibold">
@@ -154,7 +153,7 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
               placeholder="Select Size"
               classProps={{
                 className:
-                  "bg-(--color-foreground) border-none text-(--color-desc) rounded-sm font-normal w-60!",
+                  "bg-(--color-foreground) border-none text-(--color-desc) rounded-sm font-normal md:w-60! w-full",
                 classItem:
                   "hover:bg-[#00000080]! rounded-none! text-(--color-text) hover:text-white! py-3 data-[selected=true]:bg-[#00000080]! data-[selected=true]:text-white",
                 classGroup:
@@ -179,12 +178,12 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
                   productId: item.id,
                 })
               }
-              className={`cursor-pointer px-7 py-2 bg-(--color-btn) text-(--color-text-btn) font-medium rounded-sm`}
+              className={`cursor-pointer  px-7 py-2 bg-(--color-btn) text-(--color-text-btn) font-medium rounded-sm`}
             >
               Add To Cart
             </button>
 
-            <div className="w-fit rounded-sm bg-(--color-foreground) px-2 py-1.5 text-(--color-text)">
+            <div className="md:w-fit w-full rounded-sm bg-(--color-foreground) px-2 py-1.5 text-(--color-text)">
               {item.deliveryInfo || "Est. Delivery between 3 - 5 days"}
             </div>
           </div>
@@ -220,7 +219,7 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
         </div>
       </div>
 
-      <div className="mt-32 mb-20">
+      <div className="md:mt-32 mt-20 mb-20 md:px-0 px-2">
         <BaseTab
           items={[
             {

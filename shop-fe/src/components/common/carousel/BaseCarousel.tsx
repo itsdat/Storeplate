@@ -156,14 +156,14 @@ export default function BaseCarousel<T>({
           <button
             disabled={current === 0}
             onClick={prev}
-            className="absolute w-12 h-12 rounded-[3px] left-5 top-1/2 -translate-y-1/2 bg-white text-gray-900 cursor-pointer p-2 shadow flex items-center justify-center opacity-0 -translate-x-2.5 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto disabled:brightness-90 disabled:cursor-default"
+            className="absolute w-12 h-12 rounded-[3px] left-5 top-1/2 -translate-y-1/2 bg-white text-gray-900 cursor-pointer p-2 shadow flex items-center justify-center md:opacity-0 opacity-100 -translate-x-2.5 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto disabled:brightness-90 disabled:cursor-default"
           >
             <MoveLeft />
           </button>
 
           <button
             onClick={next}
-            className="absolute w-12 h-12 rounded-[3px] right-5 top-1/2 -translate-y-1/2 bg-white text-gray-900 cursor-pointer p-2 shadow flex items-center justify-center opacity-0 translate-x-2.5 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto"
+            className="absolute w-12 h-12 rounded-[3px] right-5 top-1/2 -translate-y-1/2 bg-white text-gray-900 cursor-pointer p-2 shadow flex items-center justify-center md:opacity-0 opacity-100 translate-x-2.5 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0 group-hover:pointer-events-auto"
           >
             <MoveRight />
           </button>

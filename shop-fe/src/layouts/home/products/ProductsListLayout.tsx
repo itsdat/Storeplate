@@ -3,7 +3,7 @@ import BaseSlider from "@/components/common/slider/BaseSlider";
 import { IProduct } from "@/interfaces/product/product.interface";
 import { useEffect, useState } from "react";
 import { ICollection } from "@/interfaces/collection/collection.interface";
-import { LayoutGrid, List } from "lucide-react";
+import { Funnel, FunnelX, LayoutGrid, List } from "lucide-react";
 import ProductsGirdTab from "./tab/grid/ProductsGirdTab";
 import ProductsListTab from "./tab/list/ProductsListTab";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -42,6 +42,7 @@ export default function ProductsListLayout({ items }: ProductsResProps) {
   ]);
   const [tab, setTab] = useState<"list" | "grid">("grid");
   const router = useRouter();
+  const [showFilters, setShowFilters] = useState<boolean>(false);
 
   // useEffect(() => {
   //   if (rangeValue[0] === minPrice && rangeValue[1] === maxPrice) {
@@ -59,9 +60,24 @@ export default function ProductsListLayout({ items }: ProductsResProps) {
   };
 
   return (
-    <div className="w-full max-w-7xl lg:px-0 md:px-10 px-3 mx-auto">
-      <div className="flex items-start justify-between gap-10 w-full mb-20">
-        <div className="w-1/4">
+    <div className="w-full max-w-7xl lg:px-0 md:px-10 px-5 mx-auto">
+      <div className="flex md:flex-row flex-col items-start justify-between gap-5 md:gap-10 w-full md:mb-20">
+        <div
+          className={`
+    w-full md:w-1/4 overflow-hidden
+    transition-all duration-300 ease-in-out
+    ${
+      showFilters
+        ? "max-h-125 opacity-100 translate-y-0"
+        : "max-h-0 opacity-0 -translate-y-2 pointer-events-none"
+    }
+    md:max-h-none
+    md:opacity-100
+    md:translate-y-0
+    md:pointer-events-auto
+    md:transition-none
+  `}
+        >
           <div>
             <HeadingFilter title="Select Price Range" />
             <BaseSlider
@@ -70,7 +86,6 @@ export default function ProductsListLayout({ items }: ProductsResProps) {
               range={rangeValue}
               onSelectRange={(range) => {
                 setRangeValue(range);
-                console.log("Price range:", range);
               }}
             />
             <button
@@ -138,30 +153,45 @@ export default function ProductsListLayout({ items }: ProductsResProps) {
           </div>
         </div>
 
-        <div className="w-3/4">
+        <div className="w-full md:w-3/4">
           <div className="flex items-center justify-between mb-5">
-            <div className="flex items-center justify-start gap-4">
-              <p className="text-(--color-title) font-medium">Views</p>
-              <div className="flex items-center justify-start gap-2">
+            <div className="flex items-center justify-start gap-4 w-full">
+              <p className="text-(--color-title) font-medium hidden md:block">
+                Views
+              </p>
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center justify-start gap-2">
+                  <button
+                    onClick={() => setTab("grid")}
+                    className={`${
+                      tab === "grid"
+                        ? "bg-(--color-btn) text-(--color-text-btn)"
+                        : "bg-transparent text-(--color-btn)"
+                    } transition-all duration-200 cursor-pointer w-8 h-8 border border-(--color-btn) aspect-square flex items-center justify-center rounded-[3px] `}
+                  >
+                    <LayoutGrid size={20} />
+                  </button>
+                  <button
+                    onClick={() => setTab("list")}
+                    className={`${
+                      tab === "list"
+                        ? "bg-(--color-btn) text-(--color-text-btn)"
+                        : "bg-transparent text-(--color-btn)"
+                    } transition-all duration-200 cursor-pointer w-8 h-8 border border-(--color-btn) aspect-square flex items-center justify-center rounded-[3px] `}
+                  >
+                    <List size={20} />
+                  </button>
+                </div>
                 <button
-                  onClick={() => setTab("grid")}
-                  className={`${
-                    tab === "grid"
-                      ? "bg-(--color-btn) text-(--color-text-btn)"
-                      : "bg-transparent text-(--color-btn)"
-                  } transition-all duration-200 cursor-pointer w-8 h-8 border border-(--color-btn) aspect-square flex items-center justify-center rounded-[3px] `}
+                  className="flex items-center justify-center gap-1 px-2 py-1 transition-all duration-200"
+                  onClick={() => setShowFilters(!showFilters)}
                 >
-                  <LayoutGrid size={20} />
-                </button>
-                <button
-                  onClick={() => setTab("list")}
-                  className={`${
-                    tab === "list"
-                      ? "bg-(--color-btn) text-(--color-text-btn)"
-                      : "bg-transparent text-(--color-btn)"
-                  } transition-all duration-200 cursor-pointer w-8 h-8 border border-(--color-btn) aspect-square flex items-center justify-center rounded-[3px] `}
-                >
-                  <List size={20} />
+                  {showFilters ? (
+                    <FunnelX className="size-5" strokeWidth={1.5} />
+                  ) : (
+                    <Funnel className="size-5" strokeWidth={1.5} />
+                  )}{" "}
+                  Filter
                 </button>
               </div>
             </div>

@@ -12,17 +12,13 @@ import ThemeToggle from "../../../feature/theme/ThemeToggle";
 import Link from "next/link";
 import NavDrawer from "./drawer/NavDrawer";
 import UserCart from "./cart/UserCart";
-import { useSession } from "@/context/SessionProvider";
 import BaseAvatar from "@/components/common/avatar/BaseAvatar";
 import BaseBadge from "@/components/common/badge/BaseBadge";
 import BaseModal from "@/components/common/modal/BaseModal";
-import { IUser } from "@/interfaces/user/user.interface";
-import { AuthApis } from "@/apis";
 import { getImageLink } from "@/utils/getImageLink.utils";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Navbar() {
-  const session = useSession();
   const inputRef = useRef<HTMLInputElement>(null);
   const [openMenu, setOpenMenu] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState(false);
@@ -59,23 +55,23 @@ export default function Navbar() {
   return (
     <div
       className={`w-full flex flex-col transition-all duration-300 items-center justify-center bg-(--color-background) sticky top-0 z-10 ${
-        scrolled ? "shadow-sm h-24" : "h-28"
+        scrolled ? "shadow-sm md:h-24 h-12" : "md:h-28 h-14"
       }`}
     >
-      <div className="w-full mx-auto max-w-7xl h-16 flex items-center justify-between gap-4">
+      <div className="w-full mx-auto max-w-7xl h-16 flex items-center justify-between lg:gap-4 md:gap-0 lg:px-0 md:px-5 px-3">
         <Link href={"/"} className="w-fit">
           <LogoIcon />
         </Link>
 
         <div
           onClick={() => setOpenMenu(true)}
-          className="flex items-end cursor-pointer justify-center w-fit px-10 gap-1.5 text-sm"
+          className="flex items-end cursor-pointer justify-center w-fit lg:px-10 md:px-5 px-0 gap-1.5 text-sm"
         >
-          <p>Pages</p>
-          <Menu size={16} />
+          <p className="hidden md:block">Pages</p>
+          <Menu className="md:size-4 size-8 md:stroke-2 stroke-1" />
         </div>
 
-        <div className="flex-1">
+        <div className="flex-1 hidden md:block">
           <InputGroup className="py-2! h-11! border-(--color-dark-light) px-2 shadow-none bg-(--color-foreground) rounded-full">
             <InputGroupInput
               ref={inputRef}
@@ -93,7 +89,7 @@ export default function Navbar() {
           </InputGroup>
         </div>
 
-        <div className="w-fit pl-3 flex items-end justify-end gap-5">
+        <div className="w-fit pl-3 items-end justify-end gap-5 hidden md:flex">
           <ThemeToggle />
           <BaseBadge
             trigger={
@@ -112,11 +108,11 @@ export default function Navbar() {
             }
             count={count}
           />
-          {session?.userId ? (
+          {user?.id ? (
             <Link href={"/profile"} className="cursor-pointer">
               <BaseAvatar
                 url={getImageLink(user?.avatar ?? "")}
-                name={session?.username}
+                name={`${user.lastName}" "${user.firstName}`}
               />
             </Link>
           ) : (

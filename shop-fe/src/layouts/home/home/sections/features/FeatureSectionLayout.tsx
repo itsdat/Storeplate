@@ -13,13 +13,13 @@ export default function FeatureSectionLayout({
 }) {
   const router = useRouter();
   return (
-    <div className="flex flex-col items-center justify-center gap-10 py-20">
+    <div className="flex flex-col items-center justify-center md:gap-10 gap-5 md:py-20 md:mx-0 mx-5">
       <BaseHeading
         title="Featured Products"
         desc="Explore Today's Featured Picks!"
       />
 
-      <div className="my-20 grid grid-cols-4 gap-x-5 gap-y-14">
+      <div className="md:my-20 grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-x-5 md:gap-y-14">
         {items ? (
           items.length > 8 ? (
             items
@@ -37,7 +37,7 @@ export default function FeatureSectionLayout({
 
       <button
         onClick={() => router.push("/products")}
-        className="w-60 rounded-sm cursor-pointer py-4 gap-1 text-xl font-medium flex items-center justify-center bg-(--color-btn) text-(--color-text-btn)"
+        className="md:w-60 w-fit md:px-0 px-5 rounded-sm cursor-pointer md:py-4 py-2.5 gap-1 md:text-xl text-sm font-medium flex items-center justify-center bg-(--color-btn) text-(--color-text-btn)"
       >
         <Plus size={16} strokeWidth={3} />
         See All Products

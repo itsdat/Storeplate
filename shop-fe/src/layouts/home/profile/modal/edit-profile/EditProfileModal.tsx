@@ -90,8 +90,8 @@ export default function EditProfileModal({
       description="You can update your personal details below. Changes will be saved immediately."
     >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex items-center justify-between gap-5 w-full">
-          <div className="w-1/5 flex flex-col items-center justify-center gap-3 group">
+        <div className="flex md:flex-row flex-col items-center justify-between md:gap-5 w-full">
+          <div className="md:w-1/5 w-full flex flex-col items-center justify-center gap-3 group">
             <div className="border rounded-full">
               <BaseAvatar
                 url={
@@ -114,7 +114,7 @@ export default function EditProfileModal({
               onChange={handleSelectImage}
             />
           </div>
-          <div className="flex flex-col gap-5 mt-5 w-4/5">
+          <div className="flex flex-col gap-5 mt-5 md:w-4/5 w-full">
             <div className="flex items-center justify-between gap-3">
               <BaseInputRhf
                 control={control}

@@ -64,22 +64,22 @@ export default function BannerSectionLayout() {
 
 const BannerCard = ({ item }: { item: IBanner }) => {
   return (
-    <div className="w-full rounded-md bg-(--color-foreground) flex items-center justify-between h-140">
+    <div className="w-full rounded-md bg-(--color-foreground) flex items-center justify-between lg:h-140 md:pb-0 pb-10">
       <div className="w-1/2 flex flex-col items-center justify-center">
-        <span className="text-(--color-desc) text-xl font-semibold">
+        <span className="text-(--color-desc) md:text-xl text-sm font-semibold text-center">
           {item.subtitle}
         </span>
-        <h5 className="text-(--color-title) text-5xl font-semibold text-center leading-14 w-full max-w-[80%] my-5">
+        <h5 className="text-(--color-title) lg:text-5xl text-xl font-semibold text-center lg:leading-14 w-full md:max-w-[80%] md:my-5">
           {item.title}
         </h5>
         <Link
           href={item.ctaLink ?? ""}
-          className="w-fit mt-5 mx-auto px-10 py-4 bg-(--color-title) text-(--color-background) rounded-sm text-xl font-semibold"
+          className="w-fit md:mt-5 mt-2 mx-auto md:px-10 px-3 md:py-4 py-1.5 bg-(--color-title) text-(--color-background) rounded-xs md:text-xl text-xs font-semibold"
         >
           {item.ctaText ?? "Shop Now"}
         </Link>
       </div>
-      <div className="w-1/2 p-10">
+      <div className="w-1/2 md:p-10">
         <Image
           draggable={false}
           src={item.image}

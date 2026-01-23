@@ -20,7 +20,7 @@ import EditProfileBtn from "./modal/edit-profile/EditProfileBtn";
 import { getImageLink } from "@/utils/getImageLink.utils";
 import AddAddressBtn from "./modal/add-address/AddAddressBtn";
 import { IAddress } from "@/interfaces/address/address.interface";
-import AddressList from "./AddressList";
+import AddressCard from "./common/card/AddressCard";
 
 interface ProfileResProps {
   userData: IUser;
@@ -32,20 +32,20 @@ interface ProfileResProps {
 
 export default function ProfileLayout({ items }: { items: ProfileResProps }) {
   return (
-    <div className="w-full max-w-7xl mx-auto flex flex-col gap-7">
-      <div className="w-full flex items-center justify-between">
-        <div className="w-full flex  items-center justify-start gap-5">
+    <div className="w-full max-w-7xl mx-auto flex flex-col gap-7 md:px-0 px-5">
+      <div className="w-full flex items-center justify-between ">
+        <div className="w-full flex flex-1 items-center justify-start md:gap-5 gap-2">
           <BaseAvatar
             url={getImageLink(items.userData.avatar) ?? ""}
             size={50}
           />
           <div>
-            <h1>Account Settings</h1>
-            <p>Manage your personal information and orders</p>
+            <h1 className="text-sm">Account Settings</h1>
+            <p className="text-xs text-(--color-text)">Manage your personal information and orders</p>
           </div>
         </div>
-        <button className="flex items-center justify-end w-52 gap-2 text-red-500 font-medium cursor-pointer">
-          <LogOut strokeWidth={1.7} size={20} /> Sign Out
+        <button className="flex items-center justify-end md:w-52 px-2 md:px-0 w-fit md:gap-2 gap-1 md:text-md text-sm font-normal text-red-500 md:font-medium cursor-pointer">
+          <LogOut strokeWidth={1.7} className="md:size-5 size-4" /> Sign Out
         </button>
       </div>
 
@@ -95,7 +95,7 @@ export default function ProfileLayout({ items }: { items: ProfileResProps }) {
               }}
             />
           </div>
-          <div className="flex items-center justify-between gap-5">
+          <div className="flex md:flex-row flex-col-reverse items-center justify-between gap-5">
             <BaseInput
               value={items.userData.email}
               disabled
@@ -148,14 +148,18 @@ export default function ProfileLayout({ items }: { items: ProfileResProps }) {
               trigger={
                 <div className="flex items-center justify-center gap-2 cursor-pointer">
                   <Plus strokeWidth={1.5} size={18} />
-                  Add New Address
+                  New Address
                 </div>
               }
             />
           }
         />
 
-        <AddressList items={items.addresses.data} />
+        <div className="grid md:grid-cols-3 grid-cols-1 gap-5 mt-5">
+          {items.addresses.data.map((item) => (
+            <AddressCard item={item} key={item.id} />
+          ))}
+        </div>
       </div>
     </div>
   );

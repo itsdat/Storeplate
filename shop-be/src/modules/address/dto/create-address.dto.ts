@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateAddressDto {
     @IsString()
@@ -33,4 +33,11 @@ export class CreateAddressDto {
         description: 'street',
     })
     street: string;
+
+    @IsBoolean()
+    @ApiProperty({
+        example: 'true',
+        description: 'default address',
+    })
+    isDefault: boolean;
 }

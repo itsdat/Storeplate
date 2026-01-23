@@ -3,7 +3,7 @@ import { CartEmptyIcon } from "@/components/common/icons/BaseIcon";
 import BasePopover from "@/components/common/popover/BasePopover";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Spinner } from "@/components/ui/spinner";
-import { useSession } from "@/context/SessionProvider";
+import { useAuth } from "@/context/AuthContext";
 import { ICart } from "@/interfaces/cart/cart.interface";
 import {
   getCart,
@@ -27,13 +27,13 @@ export default function UserCart({
 }) {
   const [carts, setCarts] = useState<ICart[]>([]);
   const router = useRouter();
-  const user = useSession();
+  const {user} = useAuth()
 
   useEffect(() => {
     if (!open) return;
 
     async function fetchCart() {
-      if (!user?.userId) {
+      if (!user?.id) {
         setCarts(getCart());
         return;
       }
@@ -43,7 +43,7 @@ export default function UserCart({
     }
 
     fetchCart();
-  }, [open, user?.userId]);
+  }, [open, user?.id]);
 
   useEffect(() => {
     onSetCount(carts?.length ?? 0);

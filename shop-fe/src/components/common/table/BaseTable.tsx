@@ -93,7 +93,7 @@ export default function BaseTable<T>({
   }, [columns, showIndex, indexLabel]);
 
   return (
-    <div className="p-7 w-full bg-(--color-background) rounded-[3px]">
+    <div className="py-7 w-full bg-(--color-background) rounded-[3px]">
       {header && (
         <div className="mb-7 w-full flex items-center justify-between">
           <div className="w-full max-w-md">
@@ -125,7 +125,7 @@ export default function BaseTable<T>({
           )}
         </div>
       ) : (
-        <ScrollArea className={cn("max-h-[70vh] w-full!", height)}>
+        <div className={cn("max-h-[70vh] w-full! ", height)}>
           <Table className="w-full">
             {caption && <TableCaption>{caption}</TableCaption>}
 
@@ -167,7 +167,7 @@ export default function BaseTable<T>({
               ))}
             </TableBody>
           </Table>
-        </ScrollArea>
+        </div>
       )}
     </div>
   );

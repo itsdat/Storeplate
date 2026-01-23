@@ -14,21 +14,44 @@ export class AddressService {
     private readonly addressRepo: Repository<Address>
   ){}
   
-  async create( userId: string, createAddressDto: CreateAddressDto): Promise<IBaseCreatedRes> {
+  async create(
+    userId: string,
+    createAddressDto: CreateAddressDto
+  ): Promise<IBaseCreatedRes> {
     try {
-      const newData = {
-        ... createAddressDto,
-        userId: userId
-      }
-      return{
-        data: await this.addressRepo.save(newData),
-        message: "Create new address successfull",
-        statusCode: HttpStatusCode.CREATED
-      }
+      const data = await this.addressRepo.find({where: {userId}})
+      const result = await this.addressRepo.manager.transaction(
+        async (manager) => {
+          if (createAddressDto.isDefault) {
+            await manager.update(
+              Address,
+              { userId },
+              { isDefault: false }
+            );
+          }
+
+          const newAddress = manager.create(Address, {
+            ...createAddressDto,
+            userId,
+            isDefault: data.length === 0 ? true : createAddressDto.isDefault
+          });
+
+          const saved = await manager.save(newAddress);
+
+          return saved;
+        }
+      );
+
+      return {
+        data: result,
+        message: "Create new address successfully",
+        statusCode: HttpStatusCode.CREATED,
+      };
     } catch (error) {
-      throw new BadRequestException(error.message)
+      throw new BadRequestException(error.message);
     }
   }
+
 
   findAll() {
     return `This action returns all address`;
@@ -36,7 +59,7 @@ export class AddressService {
 
   async findMulti(userId: string): Promise<IBaseGetAllRes> {
     try {
-      const data = await this.addressRepo.find({where: {userId}, relations: ['user']})
+      const data = await this.addressRepo.find({where: {userId}, order: {isDefault: 'DESC', createdAt: 'DESC'} , relations: ['user']})
       return{
         data: data,
         statusCode: HttpStatusCode.OK,

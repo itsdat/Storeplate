@@ -10,8 +10,8 @@ export default function ShippingOption() {
       <Label
         htmlFor="cod"
         className={cn(
-          "flex items-center justify-between rounded-md border p-4 cursor-pointer transition",
-          "hover:bg-muted/50",
+          "flex items-center justify-between rounded-md border border-(--color-border) p-4 cursor-pointer transition",
+          "hover:bg-(--color-foreground)",
           "has-checked:border-primary has-checked:bg-muted"
         )}
       >
@@ -33,8 +33,8 @@ export default function ShippingOption() {
       <Label
         htmlFor="momo"
         className={cn(
-          "flex items-center justify-between rounded-md border p-4 cursor-pointer transition",
-          "hover:bg-muted/50",
+          "flex items-center justify-between rounded-md border border-(--color-border) p-4 cursor-pointer transition",
+          "hover:bg-(--color-foreground)",
           "has-checked:border-primary has-checked:bg-muted"
         )}
       >

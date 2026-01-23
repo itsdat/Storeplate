@@ -3,7 +3,7 @@ import { BaseInputRhf } from "@/components/common/input/BaseInputRhf";
 import { useSimRhf } from "@/hooks/others/useSimRhf.hook";
 import { useCheckoutStore } from "@/stores/checkout.store";
 import { ChevronsRight, CreditCard, ListOrdered, Truck } from "lucide-react";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import ShippingOption from "./common/radio/ShippingOption";
 import { getImageLink } from "@/utils/getImageLink.utils";
 import { Separator } from "@/components/ui/separator";
@@ -14,12 +14,30 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import BaseInput from "@/components/common/input/BaseInput";
 import ShowVoucherModal from "./modal/ShowVoucherModal";
 import { IVoucher } from "@/interfaces/voucher/voucher.interface";
+import { IAddress } from "@/interfaces/address/address.interface";
+import { IUser } from "@/interfaces/user/user.interface";
 
-export default function CheckoutLayout() {
-  const rhf = useSimRhf<any>({
+interface CheckoutForm {
+  firstName: string;
+  lastName: string;
+  city: string;
+  district: string;
+  street: string;
+  wards: string;
+  address: string;
+  user: IUser;
+}
+
+export default function CheckoutLayout({ data }: { data: CheckoutForm }) {
+  const rhf = useSimRhf<CheckoutForm>({
     defaultValues: {
-      email: "",
-      password: "",
+      address: "",
+      user: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+      },
     },
   });
   const { control, handleSubmit, reset } = rhf;
@@ -35,6 +53,17 @@ export default function CheckoutLayout() {
   const getDiscountValue = (v: IVoucher) =>
     Math.min((totalTemp * v.discountPercentage) / 100, v.maxDiscount);
 
+  useEffect(() => {
+    if (!data) return;
+
+    const address = `${data.street}, ${data.wards}, ${data.district}, ${data.city}`;
+
+    reset({
+      address,
+      user: data.user ?? "",
+    });
+  }, [data, reset]);
+
   return (
     <div className="w-full max-w-7xl mx-auto">
       <div className="w-full flex items-start justify-between gap-10">
@@ -48,7 +77,7 @@ export default function CheckoutLayout() {
               <div className="flex items-center justify-between gap-5">
                 <BaseInputRhf
                   required
-                  name="email"
+                  name="user.firstName"
                   control={control}
                   className="text-[14px]! px-5"
                   placeholder="John"
@@ -62,8 +91,7 @@ export default function CheckoutLayout() {
 
                 <BaseInputRhf
                   required
-                  type="email"
-                  name="email"
+                  name="user.lastName"
                   control={control}
                   className="text-[14px]! px-5"
                   placeholder="Doe"
@@ -75,41 +103,29 @@ export default function CheckoutLayout() {
                   }}
                 />
               </div>
-              <BaseInputRhf
-                required
-                type="email"
-                name="email"
-                control={control}
-                className="text-[14px]! px-5"
-                placeholder="123 Morden Way, Suite 400"
-                label="Street Address"
-                classProps={{
-                  inputClass:
-                    "focus:border-none border-none shadow-none bg-(--color-foreground) rounded-[3px] has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-gray-500 has-[[data-slot=input-group-control]:focus-visible]:ring-[1px]",
-                  lableClass: "text-sm font-normal",
-                }}
-              />
               <div className="flex items-center justify-between gap-5">
                 <BaseInputRhf
                   required
-                  name="email"
+                  type="email"
+                  name="user.email"
                   control={control}
                   className="text-[14px]! px-5"
-                  placeholder="San Francisco"
-                  label="District"
+                  placeholder="email@gmail.com"
+                  label="Email"
                   classProps={{
                     inputClass:
                       "focus:border-none border-none shadow-none bg-(--color-foreground) rounded-[3px] has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-gray-500 has-[[data-slot=input-group-control]:focus-visible]:ring-[1px]",
                     lableClass: "text-sm font-normal",
                   }}
                 />
+
                 <BaseInputRhf
                   required
-                  name="email"
+                  name="user.phone"
                   control={control}
                   className="text-[14px]! px-5"
-                  placeholder="San Francisco"
-                  label="City"
+                  placeholder="+1 027346722"
+                  label="Phone number"
                   classProps={{
                     inputClass:
                       "focus:border-none border-none shadow-none bg-(--color-foreground) rounded-[3px] has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-gray-500 has-[[data-slot=input-group-control]:focus-visible]:ring-[1px]",
@@ -117,6 +133,19 @@ export default function CheckoutLayout() {
                   }}
                 />
               </div>
+              <BaseInputRhf
+                required
+                name="address"
+                control={control}
+                className="text-[14px]! px-5"
+                placeholder="Morden Way"
+                label="Address"
+                classProps={{
+                  inputClass:
+                    "focus:border-none border-none shadow-none bg-(--color-foreground) rounded-[3px] has-[[data-slot=input-group-control]:focus-visible]:border-ring has-[[data-slot=input-group-control]:focus-visible]:ring-gray-500 has-[[data-slot=input-group-control]:focus-visible]:ring-[1px]",
+                  lableClass: "text-sm font-normal",
+                }}
+              />
             </div>
           </div>
 
@@ -170,7 +199,7 @@ export default function CheckoutLayout() {
                     lableClass: "text-sm font-normal",
                   }}
                 />
-                
+
                 <ShowVoucherModal
                   currentVoucher={voucher?.id}
                   onApply={(item) => setVoucher(item)}

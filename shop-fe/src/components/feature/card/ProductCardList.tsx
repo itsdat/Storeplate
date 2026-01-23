@@ -1,5 +1,5 @@
 import { CartApis } from "@/apis";
-import { useSession } from "@/context/SessionProvider";
+import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/others/useToast.hook";
 import { ICart } from "@/interfaces/cart/cart.interface";
 import { IProduct } from "@/interfaces/product/product.interface";
@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default function ProductCardList({ item }: { item: IProduct }) {
   const { toastAddToCart, toastError, toastWarning } = useToast();
-  const user = useSession();
+  const {user} = useAuth()
   const handleAddToCart = async (data: ICart) => {
     try {
       if (!user) {
@@ -43,15 +43,15 @@ export default function ProductCardList({ item }: { item: IProduct }) {
           <img
             src={getImageLink(item.variants[0].images[0])}
             alt="image"
-            className="object-cover w-full h-64 rounded-sm border border-(--color-foreground)"
+            className="object-cover w-full md:h-64  rounded-sm border border-(--color-foreground)"
           />
         </div>
-        <div className="w-2/3 flex flex-col items-start justify-start gap-5">
+        <div className="w-2/3 flex flex-col items-start justify-start md:gap-5 gap-3">
           <div className="flex flex-col items-start justify-start gap-1 w-full">
-            <Link href={`product/${item.slug}`} className="text-3xl">
+            <Link href={`product/${item.slug}`} className="md:text-3xl text-2xl line-clamp-1 md:line-clamp-2">
               {item.name}
             </Link>
-            <div className="flex items-start text-(--color-desc) justify-start gap-3">
+            <div className="w-full flex items-start text-(--color-desc) justify-start gap-3">
               <span className="text-xl font-semibold">
                 €
                 {(item.variants?.[0]?.price ?? 0) -
@@ -69,7 +69,7 @@ export default function ProductCardList({ item }: { item: IProduct }) {
             className="prose bg-white p-3 text-(--color-desc) line-clamp-3"
             dangerouslySetInnerHTML={{ __html: item.description }}
           /> */}
-          <p className="text-(--color-desc) line-clamp-3">{item.description}</p>
+          <p className="text-(--color-desc) md:line-clamp-3 line-clamp-1 w-full hidden md:block">{item.description}</p>
 
           <button
             onClick={() => {
@@ -86,7 +86,7 @@ export default function ProductCardList({ item }: { item: IProduct }) {
                 productId: item.id,
               });
             }}
-            className={`px-5 py-1.5 bg-(--color-text-btn) text-(--color-btn) border border-(--color-btn) hover:bg-(--color-btn) hover:text-(--color-text-btn) transition-all duration-300 font-bold rounded-sm ${
+            className={`md:px-5 px-3 md:py-1.5 py-1 bg-(--color-text-btn) text-(--color-btn) border border-(--color-btn) hover:bg-(--color-btn) hover:text-(--color-text-btn) transition-all duration-300 font-bold rounded-sm ${
               checkStock ? "cursor-not-allowed" : "cursor-pointer"
             }`}
           >

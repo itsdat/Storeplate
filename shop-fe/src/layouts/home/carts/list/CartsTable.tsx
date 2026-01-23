@@ -10,10 +10,10 @@ import {
 } from "@/utils/cart.utils";
 import { ICart } from "@/interfaces/cart/cart.interface";
 import { CartEmptyIcon } from "@/components/common/icons/BaseIcon";
-import { useSession } from "@/context/SessionProvider";
 import { CartApis } from "@/apis";
 import { IProductOption } from "@/interfaces/product/product.interface";
 import { useCheckoutStore } from "@/stores/checkout.store";
+import { useAuth } from "@/context/AuthContext";
 
 export default function CartsTable({
   items,
@@ -25,7 +25,7 @@ export default function CartsTable({
   const router = useRouter();
   const [data, setData] = useState<ICart[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
-  const user = useSession();
+  const { user } = useAuth();
   const { setItems } = useCheckoutStore();
 
   const handleSubtractionCart = async (item: ICart) => {
@@ -130,21 +130,23 @@ export default function CartsTable({
 
   return (
     <div>
-      <BaseTable
-        height="max-h-[50vh]! overflow-y-scroll"
-        showIndex={false}
-        columns={columns}
-        data={items || data}
-        onBtnAction={() => router.push("/products")}
-        textBtn="Continue Shopping"
-        empty={{
-          icon: <CartEmptyIcon />,
-          title: "Oops. Your Bag Is Empty.",
-          btnText: "Don't Miss Out: Add Product",
-          onBtn: () => router.push("/products"),
-        }}
-        header={(items?.length ?? 0) > 0 || (data?.length ?? 0) > 0}
-      />
+      <div className="w-full">
+        <BaseTable
+          height="max-h-[50vh]! overflow-y-scroll"
+          showIndex={false}
+          columns={columns}
+          data={items || data}
+          onBtnAction={() => router.push("/products")}
+          textBtn="Continue Shopping"
+          empty={{
+            icon: <CartEmptyIcon />,
+            title: "Oops. Your Bag Is Empty.",
+            btnText: "Don't Miss Out: Add Product",
+            onBtn: () => router.push("/products"),
+          }}
+          header={(items?.length ?? 0) > 0 || (data?.length ?? 0) > 0}
+        />
+      </div>
 
       <div>
         {selected.length > 0 && (

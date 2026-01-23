@@ -1,5 +1,5 @@
 import { CartApis } from "@/apis";
-import { useSession } from "@/context/SessionProvider";
+import { useAuth } from "@/context/AuthContext";
 import { useToast } from "@/hooks/others/useToast.hook";
 import { ICart } from "@/interfaces/cart/cart.interface";
 import { IProduct } from "@/interfaces/product/product.interface";
@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export default function ProductCardGrid({ item }: { item: IProduct }) {
   const { toastAddToCart, toastError, toastWarning } = useToast();
-  const user = useSession();
+  const {user} = useAuth()
   const handleAddToCart = async (data: ICart) => {
     try {
       if (!user) {
@@ -46,7 +46,7 @@ export default function ProductCardGrid({ item }: { item: IProduct }) {
           <img
             src={getImageLink(item.variants[0].images[0])}
             alt="image"
-            className="object-cover w-full h-64 rounded-sm border border-(--color-foreground)"
+            className="object-cover w-full md:h-64 rounded-sm border border-(--color-foreground)"
           />
 
           <button
@@ -66,7 +66,7 @@ export default function ProductCardGrid({ item }: { item: IProduct }) {
                 productId: item.id,
               });
             }}
-            className={`absolute opacity-0 ease-in-out group-hover:opacity-100 transition-all duration-200  translate-y-0 group-hover:-translate-y-10 bottom-0 left-1/2 -translate-x-1/2 px-5 py-2 bg-(--color-btn) text-(--color-text-btn) font-bold rounded-sm ${
+            className={`absolute hidden md:block opacity-0 ease-in-out group-hover:opacity-100 transition-all duration-200  translate-y-0 group-hover:-translate-y-10 bottom-0 left-1/2 -translate-x-1/2 px-5 py-2 bg-(--color-btn) text-(--color-text-btn) font-bold rounded-sm ${
               checkStock ? "cursor-not-allowed" : "cursor-pointer"
             }`}
           >
@@ -74,8 +74,8 @@ export default function ProductCardGrid({ item }: { item: IProduct }) {
           </button>
         </div>
 
-        <h5 className="font-medium text-xl line-clamp-2">{item.name}</h5>
-        <div className="flex items-center justify-center gap-3 -translate-y-3">
+        <h5 className="font-medium md:text-xl md:line-clamp-2 text-center line-clamp-1">{item.name}</h5>
+        <div className="flex items-center justify-center gap-3 md:-translate-y-3 -translate-y-5">
           <span className="text-xl font-semibold">
             €
             {(item.variants?.[0]?.price ?? 0) -
