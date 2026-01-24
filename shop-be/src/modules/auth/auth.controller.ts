@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, UseGuards, Res, Query, BadRequestException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -6,6 +6,7 @@ import { LoginDto } from './dto/login.dto';
 import { CurrentUser } from 'src/common/decorators/current-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import type { Response } from 'express';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -47,5 +48,31 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Success' })
   getMe(@CurrentUser() user: User){
     return this.authService.getMe(user?.id)
+  }
+
+  @Post("logout")
+  logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      path: "/"
+    });
+
+    return {
+      message: "Logout successfully",
+      statusCode: 200,
+    };
+  }
+
+  @Post('send-mail')
+  @UseGuards(JwtAuthGuard)
+  async sendEmail(@CurrentUser() user: User){
+    return this.authService.sendVerifyEmail(user)
+  }
+
+  @Get('verify-email')
+  async verifyEmail(@Query('token') token: string) {
+    return this.authService.verifyEmailToken(token);
   }
 }

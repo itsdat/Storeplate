@@ -17,35 +17,36 @@ const isHttps =
 
 export async function login(payload: ILogin) {
   const res = await api({
-    url: `${URL}/${FEATURE.LOGIN}`,
+    url: `${URL}/${FEATURE.LOG_IN}`,
     method: CONST_METHODS.POST,
     body: payload,
     skipAuth: true,
   });
 
-  const sessionData = {
-    userId: res?.data?.user.id,
-    email: res.data.user.email,
-    username: res.data.user.username,
-    role: res.data.user.role,
-    token: res.data.access_token
-  };
-  const encryptedSession = await encrypt(sessionData);
-  (await
-    cookies()).set("token", encryptedSession, {
-    httpOnly: true,
-    secure: isHttps,
-    sameSite: "lax",
-    path: "/",
-    maxAge: 60 * 60 * 24 * 7,
-  });
-
+  if(res.statusCode === 200){
+    const sessionData = {
+      userId: res?.data?.user.id,
+      email: res.data.user.email,
+      username: res.data.user.username,
+      role: res.data.user.role,
+      token: res.data.access_token
+    };
+    const encryptedSession = await encrypt(sessionData);
+    (await
+      cookies()).set("token", encryptedSession, {
+      httpOnly: true,
+      secure: isHttps,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+  }
   return res
 }
 
 export async function adminLogin(payload: ILogin) {
   const res = await api({
-    url: `${URL}/${FEATURE.ADMIN_LOGIN}`,
+    url: `${URL}/${FEATURE.ADMIN_LOG_IN}`,
     method: CONST_METHODS.POST,
     body: payload,
     skipAuth: true,
@@ -82,6 +83,27 @@ export async function register(payload: IRegister){
 export async function getMe(){
   const res = await api<IUser>({
     url: `${URL}/${FEATURE.GET_ME}`,
+    method: CONST_METHODS.GET,
+  })
+  return res
+}
+
+export async function logout() {
+  (await cookies()).delete("token");
+  return { success: true };
+}
+
+export async function sendMail(){
+  const res = await api<IUser>({
+    url: `${URL}/${FEATURE.SEND_MAIL}`,
+    method: CONST_METHODS.POST,
+  })
+  return res
+}
+
+export async function verifyMail(token: string){
+  const res = await api<IUser>({
+    url: `${URL}/${FEATURE.VEIRIFY_MAIL}?token=${token}`,
     method: CONST_METHODS.GET,
   })
   return res

@@ -69,7 +69,7 @@ export default function ProductCardList({ item }: { item: IProduct }) {
             className="prose bg-white p-3 text-(--color-desc) line-clamp-3"
             dangerouslySetInnerHTML={{ __html: item.description }}
           /> */}
-          <p className="text-(--color-desc) md:line-clamp-3 line-clamp-1 w-full hidden md:block">{item.description}</p>
+          <p className="text-(--color-desc) md:line-clamp-3 line-clamp-1 w-full hidden">{item.description}</p>
 
           <button
             onClick={() => {

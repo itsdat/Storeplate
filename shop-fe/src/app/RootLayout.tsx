@@ -34,7 +34,7 @@ export default function LayoutRoot({
     >
       <ThemeWrapper>
         <PageTransition>
-          {pathname.includes("/admin") ? (
+          {pathname.includes("/admin") || pathname.includes("/verify") ? (
             children
           ) : (
             <div>

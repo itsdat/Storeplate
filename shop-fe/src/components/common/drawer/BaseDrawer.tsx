@@ -28,7 +28,7 @@ export default function BaseDrawer({
     <Sheet open={open} onOpenChange={(v) => !v && onClose()}>
       <SheetContent
         side={side}
-        className="w-100 sm:w-135 bg-(--color-background) border-none"
+        className="w-full md:w-100 bg-(--color-background) border-none"
       >
         <SheetHeader>
           {title && <SheetTitle>{title}</SheetTitle>}

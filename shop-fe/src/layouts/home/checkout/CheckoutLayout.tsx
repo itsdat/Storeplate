@@ -66,8 +66,8 @@ export default function CheckoutLayout({ data }: { data: CheckoutForm }) {
 
   return (
     <div className="w-full max-w-7xl mx-auto">
-      <div className="w-full flex items-start justify-between gap-10">
-        <div className="w-2/3 flex flex-col gap-10">
+      <div className="w-full flex md:flex-row flex-col-reverse items-start justify-between gap-10 md:px-0 px-5">
+        <div className="w-full md:w-2/3 flex flex-col gap-10">
           <div className="w-full">
             <HeaderTitle
               icon={<Truck strokeWidth={1.5} />}
@@ -157,7 +157,7 @@ export default function CheckoutLayout({ data }: { data: CheckoutForm }) {
             <ShippingOption />
           </div>
         </div>
-        <div className="w-1/3">
+        <div className="w-full md:w-1/3">
           <div className="w-full bg-(--color-background) border border-(--color-border) rounded-lg p-5">
             <HeaderTitle
               icon={<ListOrdered strokeWidth={1.5} />}

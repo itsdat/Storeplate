@@ -2,6 +2,7 @@
 import { AuthApis, CartApis } from "@/apis";
 import BaseHeading from "@/components/common/heading/BaseHeading";
 import { BaseInputRhf } from "@/components/common/input/BaseInputRhf";
+import { useAuth } from "@/context/AuthContext";
 import { useSimRhf } from "@/hooks/others/useSimRhf.hook";
 import { useToast } from "@/hooks/others/useToast.hook";
 import { ILogin } from "@/interfaces/auth/auth.interface";
@@ -20,6 +21,7 @@ export default function LoginLayout() {
   });
   const { control, handleSubmit, reset } = rhf;
   const router = useRouter();
+  const { refreshUser } = useAuth();
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
     try {
@@ -28,8 +30,9 @@ export default function LoginLayout() {
         reset();
         toastSuccess(
           "Login Successfull",
-          "Signed in successfully. Wellcome to Storeplate!"
+          "Signed in successfully. Wellcome to Storeplate!",
         );
+        refreshUser();
         try {
           const localCart = getCart();
           for (const item of localCart) {
@@ -44,7 +47,7 @@ export default function LoginLayout() {
         }
         router.replace("/");
       } else {
-        toast("Login fail");
+        toastError("Login fail", "Email or password is incorrect");
       }
     } catch (error: any) {
       toastError("Login Fail", `${error.message}`);
@@ -54,7 +57,7 @@ export default function LoginLayout() {
   const { toastSuccess, toastError } = useToast();
 
   return (
-    <div className="w-full max-w-7xl mx-auto h-[calc(100vh-7rem)] flex flex-col items-center justify-center">
+    <div className="w-full max-w-7xl mx-auto h-[calc(100vh-7rem)] flex flex-col items-center justify-center md:px-0 px-5">
       <BaseHeading
         title="Login"
         desc="Please fill your email and password to login"

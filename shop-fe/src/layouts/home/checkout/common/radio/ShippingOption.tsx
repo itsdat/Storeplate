@@ -12,12 +12,14 @@ export default function ShippingOption() {
         className={cn(
           "flex items-center justify-between rounded-md border border-(--color-border) p-4 cursor-pointer transition",
           "hover:bg-(--color-foreground)",
-          "has-checked:border-primary has-checked:bg-muted"
+          "has-checked:border-primary has-checked:bg-muted",
         )}
       >
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-3">
-            <RadioGroupItem value="cod" id="cod" />
+            <div className="w-5">
+              <RadioGroupItem value="cod" id="cod" />
+            </div>
             <div>
               <p className="font-medium">Cash on Delivery</p>
               <p className="text-sm text-muted-foreground font-normal">
@@ -35,12 +37,14 @@ export default function ShippingOption() {
         className={cn(
           "flex items-center justify-between rounded-md border border-(--color-border) p-4 cursor-pointer transition",
           "hover:bg-(--color-foreground)",
-          "has-checked:border-primary has-checked:bg-muted"
+          "has-checked:border-primary has-checked:bg-muted",
         )}
       >
         <div className="flex items-center justify-between w-full">
           <div className="flex items-center gap-3">
-            <RadioGroupItem value="momo" id="momo" />
+            <div className="w-5">
+              <RadioGroupItem value="momo" id="momo" />
+            </div>
             <div>
               <p className="font-medium">MoMo E-Wallet</p>
               <p className="text-sm text-muted-foreground font-normal">

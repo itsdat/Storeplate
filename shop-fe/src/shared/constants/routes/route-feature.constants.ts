@@ -14,10 +14,13 @@ export const ROUTE_COMMON_FEATURES = {
 
 export const ROUTE_FEATURES = {
   AUTH: {
-    LOGIN: 'login',
+    LOG_IN: 'login',
     REGISTER: 'register',
-    ADMIN_LOGIN: 'admin/login',
-    GET_ME: 'get-me'
+    ADMIN_LOG_IN: 'admin/login',
+    GET_ME: 'get-me',
+    LOG_OUT: 'logout',
+    SEND_MAIL: 'send-mail',
+    VEIRIFY_MAIL: 'verify-email'
   },
   UPLOAD: {
     CREATE: 'upload'

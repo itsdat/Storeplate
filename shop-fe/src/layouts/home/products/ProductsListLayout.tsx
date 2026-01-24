@@ -183,7 +183,7 @@ export default function ProductsListLayout({ items }: ProductsResProps) {
                   </button>
                 </div>
                 <button
-                  className="flex items-center justify-center gap-1 px-2 py-1 transition-all duration-200"
+                  className="flex items-center justify-center gap-1 px-2 py-1 transition-all duration-200 md:hidden"
                   onClick={() => setShowFilters(!showFilters)}
                 >
                   {showFilters ? (

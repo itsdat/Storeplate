@@ -5,9 +5,10 @@ import { cn } from "@/lib/utils";
 function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
   return (
     <Loader
+      color="#f1f1f1"
       role="status"
       aria-label="Loading"
-      className={cn("size-6 animate-spin", className)}
+      className={cn("size-10 animate-spin", className)}
       {...props}
     />
   );

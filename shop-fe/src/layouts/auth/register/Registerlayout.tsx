@@ -41,7 +41,7 @@ export default function Registerlayout() {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto h-[calc(100vh-7rem)] flex flex-col items-center justify-center">
+    <div className="w-full max-w-7xl mx-auto h-[calc(100vh-7rem)] flex flex-col items-center justify-center md:px-0 px-5">
       <BaseHeading
         title="Create an account"
         desc="Create an account and start using..."

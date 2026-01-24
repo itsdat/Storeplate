@@ -14,6 +14,7 @@ import { CartApis } from "@/apis";
 import { IProductOption } from "@/interfaces/product/product.interface";
 import { useCheckoutStore } from "@/stores/checkout.store";
 import { useAuth } from "@/context/AuthContext";
+import { ShoppingCart } from "lucide-react";
 
 export default function CartsTable({
   items,
@@ -137,7 +138,12 @@ export default function CartsTable({
           columns={columns}
           data={items || data}
           onBtnAction={() => router.push("/products")}
-          textBtn="Continue Shopping"
+          textBtn={
+            <>
+              <ShoppingCart strokeWidth={1.5} size={22} className="block md:hidden" />
+              <p className="hidden md:block">Continue Shopping</p>
+            </>
+          }
           empty={{
             icon: <CartEmptyIcon />,
             title: "Oops. Your Bag Is Empty.",

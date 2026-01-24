@@ -21,6 +21,7 @@ import { getImageLink } from "@/utils/getImageLink.utils";
 import AddAddressBtn from "./modal/add-address/AddAddressBtn";
 import { IAddress } from "@/interfaces/address/address.interface";
 import AddressCard from "./common/card/AddressCard";
+import { useAuth } from "@/context/AuthContext";
 
 interface ProfileResProps {
   userData: IUser;
@@ -31,8 +32,9 @@ interface ProfileResProps {
 }
 
 export default function ProfileLayout({ items }: { items: ProfileResProps }) {
+  const { logoutUser } = useAuth();
   return (
-    <div className="w-full max-w-7xl mx-auto flex flex-col gap-7 md:px-0 px-5">
+    <div className="w-full max-w-7xl mx-auto flex flex-col gap-7 md:px-0 px-5 relative">
       <div className="w-full flex items-center justify-between ">
         <div className="w-full flex flex-1 items-center justify-start md:gap-5 gap-2">
           <BaseAvatar
@@ -41,15 +43,20 @@ export default function ProfileLayout({ items }: { items: ProfileResProps }) {
           />
           <div>
             <h1 className="text-sm">Account Settings</h1>
-            <p className="text-xs text-(--color-text)">Manage your personal information and orders</p>
+            <p className="text-xs text-(--color-text)">
+              Manage your personal information and orders
+            </p>
           </div>
         </div>
-        <button className="flex items-center justify-end md:w-52 px-2 md:px-0 w-fit md:gap-2 gap-1 md:text-md text-sm font-normal text-red-500 md:font-medium cursor-pointer">
+        <button
+          onClick={logoutUser}
+          className="flex items-center justify-end md:w-52 px-2 md:px-0 w-fit md:gap-2 gap-1 md:text-md text-sm font-normal text-red-500 md:font-medium cursor-pointer"
+        >
           <LogOut strokeWidth={1.7} className="md:size-5 size-4" /> Sign Out
         </button>
       </div>
 
-      <BaseAlertVerifyEmail />
+      {items.userData.verified === false && <BaseAlertVerifyEmail />}
 
       <div>
         <HeaderTitle
@@ -71,7 +78,7 @@ export default function ProfileLayout({ items }: { items: ProfileResProps }) {
         <div className="flex flex-col gap-5 mt-5">
           <div className="flex items-center justify-between gap-5">
             <BaseInput
-              value={items.userData.firstName}
+              value={items.userData.firstName ?? ""}
               disabled
               className="text-[14px]! px-5"
               placeholder="John"
@@ -83,7 +90,7 @@ export default function ProfileLayout({ items }: { items: ProfileResProps }) {
               }}
             />
             <BaseInput
-              value={items.userData.lastName}
+              value={items.userData.lastName ?? ""}
               disabled
               className="text-[14px]! px-5"
               placeholder="Doe"
@@ -97,7 +104,7 @@ export default function ProfileLayout({ items }: { items: ProfileResProps }) {
           </div>
           <div className="flex md:flex-row flex-col-reverse items-center justify-between gap-5">
             <BaseInput
-              value={items.userData.email}
+              value={items.userData.email ?? ""}
               disabled
               className="text-[14px]! px-5"
               placeholder="johndoe@gmail.com"
@@ -108,12 +115,16 @@ export default function ProfileLayout({ items }: { items: ProfileResProps }) {
                 lableClass: "text-sm font-normal",
               }}
               addon={
-                <BaseTag color={STATUS_COLORS.ERROR}>not verified</BaseTag>
+                items.userData.verified ? (
+                  <BaseTag color={STATUS_COLORS.SUCCESS}>verified</BaseTag>
+                ) : (
+                  <BaseTag color={STATUS_COLORS.ERROR}>not verified</BaseTag>
+                )
               }
             />
             <BaseInput
               disabled
-              value={items.userData.phone}
+              value={items.userData.phone ?? ""}
               className="text-[14px]! px-5"
               placeholder="(+1).834.738.264"
               label="Phone Number"

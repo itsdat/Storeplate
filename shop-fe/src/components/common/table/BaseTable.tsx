@@ -41,7 +41,7 @@ interface BaseTableProps<T> {
   footer?: React.ReactNode;
   showIndex?: boolean; // 👈 props bật/tắt cột Id mặc định
   indexLabel?: string; // 👈 tùy chỉnh tiêu đề cột Id
-  textBtn?: string;
+  textBtn?: React.ReactNode;
   onBtnAction?: () => void;
   empty?: EmptyProp;
   header?: boolean;
@@ -95,7 +95,7 @@ export default function BaseTable<T>({
   return (
     <div className="py-7 w-full bg-(--color-background) rounded-[3px]">
       {header && (
-        <div className="mb-7 w-full flex items-center justify-between">
+        <div className="mb-7 w-full flex items-center justify-between gap-2">
           <div className="w-full max-w-md">
             <BaseInput placeholder="Search..." />
           </div>

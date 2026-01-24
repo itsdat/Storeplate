@@ -66,21 +66,21 @@ export default function ProductDetailLayout({ item }: { item: IProduct }) {
                   src={getImageLink(item)}
                   alt={item || "image"}
                   draggable={false}
-                  className="w-full aspect-square object-cover translate-x-2.5 rounded-sm"
+                  className="w-full aspect-square object-cover md:translate-x-2.5 md:rounded-sm"
                 />
               </>
             )}
             activeIndex={viewImage}
           />
 
-          <div className="flex items-start justify-start gap-4 mt-4">
+          <div className="flex items-start justify-start md:gap-4 gap-2 mt-4">
             {item.variants[variantIndex].images.map((img, index) => (
               <img
                 key={index}
                 src={getImageLink(img)}
                 alt={img || "image"}
                 draggable={false}
-                className={`md:w-20 w-15 aspect-square border-2 transition-all duration-300 object-cover translate-x-2.5 rounded-sm cursor-pointer ${
+                className={`md:w-20 w-15 aspect-square border-2 transition-all duration-300 object-cover translate-x-2.5 md:rounded-sm cursor-pointer ${
                   viewImage === index
                     ? "border-(--color-btn)"
                     : "border-transparent"

@@ -54,6 +54,7 @@ export async function api<T>({
     headers,
     body: bodyData,
     cache: "no-store",
+    credentials: 'include'
   });
 
   // ⚠️ fetch có thể trả body rỗng

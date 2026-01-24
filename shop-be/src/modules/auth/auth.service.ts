@@ -10,6 +10,7 @@ import { HttpStatusCode } from 'src/shared/enums/http-status.enum';
 import { LoginDto } from './dto/login.dto';
 import { IBaseCreatedRes, IBaseGetOneRes } from 'src/shared/interfaces/common/IBaseRetun.interface';
 import { ROLES } from 'src/shared/constants/common/role.contanst';
+import { MailService } from '../services/mail.service';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,8 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly mailService: MailService,
   ){}
 
   async register(dto: RegisterDto):Promise<IBaseCreatedRes>{
@@ -122,6 +124,45 @@ export class AuthService {
     } catch (error) {
       console.log("error fetching", error.message);
       throw new BadRequestException("Fetching fail")
+    }
+  }
+
+  async sendVerifyEmail(user: User) {
+    try {
+      const verifyToken = this.jwtService.sign(
+        { sub: user.id },
+        {
+          secret: process.env.JWT_VERIFY_SECRET,
+          expiresIn: '15m',
+        },
+      );
+
+      await this.mailService.sendVerifyEmail(user.email, verifyToken);
+      return {
+        message: 'Please check your email to verify account.',
+        statusCode: 200,
+      };
+    } catch (error) {
+      console.error('Send verify email failed:', error.message);
+    }
+  }
+
+  async verifyEmailToken(token: string) {
+    try {
+      const payload = this.jwtService.verify(token, {
+        secret: process.env.JWT_VERIFY_SECRET,
+      });
+
+      await this.userRepo.update(payload.sub, {
+        verified: true,
+      });
+
+      return {
+        message: 'Email verified successfully',
+        statusCode: 200,
+      };
+    } catch (error) {
+      throw new BadRequestException('Invalid or expired token');
     }
   }
 
