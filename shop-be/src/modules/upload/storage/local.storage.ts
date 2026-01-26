@@ -18,7 +18,7 @@ export class LocalStorage implements StorageProvider {
 
     return {
       url: `/uploads/${folder}/${filename}`,
-      key: `uploads/${folder}/${filename}`,
+      key: `/uploads/${folder}/${filename}`,
     };
   }
 

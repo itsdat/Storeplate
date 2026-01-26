@@ -67,7 +67,8 @@ export default function EditProfileModal({
         const uploadRes = await UploadApis.create(file!, BASE_FOLDER.AVATARS);
         avatarUrl = uploadRes.data.url;
         if (uploadRes.statusCode === 201 && item.avatar) {
-          await UploadApis.deteleMulti([item.avatar.slice(1) as any]);
+          // await UploadApis.deteleMulti([item.avatar.slice(1) as any]);
+          await UploadApis.deteleMulti([item.avatar]);
         }
       }
 
