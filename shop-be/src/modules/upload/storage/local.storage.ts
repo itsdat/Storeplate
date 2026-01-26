@@ -17,8 +17,8 @@ export class LocalStorage implements StorageProvider {
     fs.writeFileSync(fullPath, file.buffer);
 
     return {
-      url: `/${folder}/${filename}`,
-      key: `${folder}/${filename}`,
+      url: `/uploads/${folder}/${filename}`,
+      key: `uploads${folder}/${filename}`,
     };
   }
 
