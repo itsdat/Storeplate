@@ -12,8 +12,8 @@ export default async function Home() {
           total: collectionsRes.totalItems ?? 0,
         },
         products: {
-          data: productRes.data ?? [],
-          total: productRes.totalItems ?? 0,
+          data: productRes?.data ?? [],
+          total: productRes?.totalItems ?? 0,
         },
       }}
     />
