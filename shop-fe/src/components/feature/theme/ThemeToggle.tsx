@@ -26,7 +26,7 @@ export default function ThemeToggle() {
         className={`absolute left-0 active:scale-50 active:animate-spin top-0 w-6 h-6 flex items-center justify-center transform transition-all duration-300 ease-in-out`}
       >
         {theme === "dark" ? (
-          <Moon color="var(--color-text)" />
+          <Moon color="var(--color-text)" className="stroke-1" />
         ) : (
           <Sun color="var(--color-text)" />
         )}

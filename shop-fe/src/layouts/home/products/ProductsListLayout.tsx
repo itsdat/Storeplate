@@ -60,8 +60,8 @@ export default function ProductsListLayout({ items }: ProductsResProps) {
   };
 
   return (
-    <div className="w-full max-w-7xl lg:px-0 md:px-10 px-5 mx-auto">
-      <div className="flex md:flex-row flex-col items-start justify-between gap-5 md:gap-10 w-full md:mb-20">
+    <div className="w-full max-w-7xl lg:px-0  mx-auto">
+      <div className="flex md:flex-row flex-col items-start justify-between gap-5 md:gap-10 w-full md:mb-20 md:px-10 px-5">
         <div
           className={`
     w-full md:w-1/4 overflow-hidden
@@ -198,6 +198,16 @@ export default function ProductsListLayout({ items }: ProductsResProps) {
           </div>
 
           <div className="w-full">
+            {searchParams.get("search")?.trim() && (
+              <div className="mb-2">
+                <span className="text-(--color-text) text-lg leading-0">
+                  Your keyword:{" "}
+                  <span className="text-(--color-title) underline">
+                    {searchParams.get("search")}
+                  </span>
+                </span>
+              </div>
+            )}
             {!items.products?.data ? (
               <div>ÌAASFKLDJFKLDJSFLKJDSLKJFLK:DSJLFJLDJFLKDJKFDJL:</div>
             ) : items.products?.data.length === 0 ? (

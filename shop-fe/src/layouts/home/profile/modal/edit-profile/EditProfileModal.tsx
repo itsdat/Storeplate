@@ -38,7 +38,12 @@ export default function EditProfileModal({
   useEffect(() => {
     if (open && item) {
       function initialItem() {
-        reset(item);
+        reset({
+          firstName: item.firstName ?? "",
+          lastName: item.lastName ?? "",
+          email: item.email ?? "",
+          phone: item.phone ?? "",
+        });
       }
       initialItem();
     }
@@ -61,7 +66,7 @@ export default function EditProfileModal({
       if (file) {
         const uploadRes = await UploadApis.create(file!, BASE_FOLDER.AVATARS);
         avatarUrl = uploadRes.data.url;
-        if (uploadRes.statusCode === 201) {
+        if (uploadRes.statusCode === 201 && item.avatar) {
           await UploadApis.deteleMulti([item.avatar.slice(1) as any]);
         }
       }
@@ -94,6 +99,7 @@ export default function EditProfileModal({
           <div className="md:w-1/5 w-full flex flex-col items-center justify-center gap-3 group">
             <div className="border rounded-full">
               <BaseAvatar
+                // name={`${item.lastName} ${item.firstName} `}
                 url={
                   preview !== null ? String(preview) : getImageLink(item.avatar)
                 }

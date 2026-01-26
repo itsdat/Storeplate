@@ -1,5 +1,6 @@
 import BaseDrawer from "@/components/common/drawer/BaseDrawer";
 import { LogoIcon } from "@/components/common/icons/BaseIcon";
+import ThemeToggle from "@/components/feature/theme/ThemeToggle";
 import {
   Accordion,
   AccordionContent,
@@ -8,6 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAuth } from "@/context/AuthContext";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -43,6 +45,8 @@ export default function NavDrawer({
 }) {
   const pathname = usePathname();
   const { user } = useAuth();
+
+  const { theme } = useTheme();
   return (
     <BaseDrawer title={<LogoIcon />} open={open} onClose={onClose}>
       <ScrollArea className="h-screen overflow-y-auto mr-1">
@@ -105,6 +109,14 @@ export default function NavDrawer({
           })}
         </div>
       </ScrollArea>
+      <div className="md:hidden px-5 py-5 flex items-center justify-start gap-3">
+        <ThemeToggle />{" "}
+        <p
+          className={`capitalize ${theme === "dark" ? "font-thin" : "font-normal"}`}
+        >
+          {theme}
+        </p>
+      </div>
     </BaseDrawer>
   );
 }

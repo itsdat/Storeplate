@@ -14,7 +14,7 @@ import {
   ShoppingCart,
   UserRound,
 } from "lucide-react";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import BaseAlertVerifyEmail from "./common/BaseAlertVerifyEmail";
 import EditProfileBtn from "./modal/edit-profile/EditProfileBtn";
 import { getImageLink } from "@/utils/getImageLink.utils";
@@ -22,6 +22,7 @@ import AddAddressBtn from "./modal/add-address/AddAddressBtn";
 import { IAddress } from "@/interfaces/address/address.interface";
 import AddressCard from "./common/card/AddressCard";
 import { useAuth } from "@/context/AuthContext";
+import BaseConfirmAlert from "@/components/common/alert/BaseConfirmAlert";
 
 interface ProfileResProps {
   userData: IUser;
@@ -33,11 +34,13 @@ interface ProfileResProps {
 
 export default function ProfileLayout({ items }: { items: ProfileResProps }) {
   const { logoutUser } = useAuth();
+  const [signOut, setSingOut] = useState<boolean>(false);
   return (
     <div className="w-full max-w-7xl mx-auto flex flex-col gap-7 md:px-0 px-5 relative">
       <div className="w-full flex items-center justify-between ">
         <div className="w-full flex flex-1 items-center justify-start md:gap-5 gap-2">
           <BaseAvatar
+            name={`${items.userData.lastName} ${items.userData.firstName}`}
             url={getImageLink(items.userData.avatar) ?? ""}
             size={50}
           />
@@ -49,7 +52,7 @@ export default function ProfileLayout({ items }: { items: ProfileResProps }) {
           </div>
         </div>
         <button
-          onClick={logoutUser}
+          onClick={() => setSingOut(true)}
           className="flex items-center justify-end md:w-52 px-2 md:px-0 w-fit md:gap-2 gap-1 md:text-md text-sm font-normal text-red-500 md:font-medium cursor-pointer"
         >
           <LogOut strokeWidth={1.7} className="md:size-5 size-4" /> Sign Out
@@ -172,6 +175,16 @@ export default function ProfileLayout({ items }: { items: ProfileResProps }) {
           ))}
         </div>
       </div>
+
+      <BaseConfirmAlert
+        open={signOut}
+        onOpenChange={() => setSingOut(false)}
+        onConfirm={logoutUser}
+        title="Sign out"
+        description="Are you sure you want to sign out? You will need to log in again to access your account."
+        confirmText="Sign out"
+        cancelText="Cancel"
+      />
     </div>
   );
 }
