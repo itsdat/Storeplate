@@ -78,7 +78,7 @@ export default function Navbar() {
   };
 
   return (
-    <div className="w-full">
+    <>
       <div
         className={`w-full flex flex-col transition-all duration-300 items-center justify-center bg-(--color-background) sticky top-0 z-10 ${
           scrolled ? "shadow-sm md:h-24 h-12" : "md:h-28 h-14"
@@ -202,6 +202,6 @@ export default function Navbar() {
           />
         </form>
       </div>
-    </div>
+    </>
   );
 }

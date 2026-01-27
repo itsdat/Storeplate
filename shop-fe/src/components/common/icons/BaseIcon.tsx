@@ -1,100 +1,162 @@
+// Desktop version - Adjusted proportions for better balance
 export const LogoIcon = ({ size = 150 }: { size?: number }) => (
   <svg
-    version="1.0"
-    xmlns="http://www.w3.org/2000/svg"
     width={size}
-    height={size / 3}
-    viewBox="0 0 214.000000 48.000000"
-    preserveAspectRatio="xMidYMid meet"
+    height={size * 0.38}
+    viewBox="0 0 220 84"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
   >
-    <g
-      transform="translate(0.000000,48.000000) scale(0.100000,-0.100000)"
-      fill="var(--color-title)"
-      stroke="none"
-    >
+    <defs>
+      {/* Premium metallic gradient effect */}
+      <linearGradient id="metallic" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stopColor="var(--color-title)" stopOpacity="0.85" />
+        <stop offset="50%" stopColor="var(--color-title)" stopOpacity="1" />
+        <stop offset="100%" stopColor="var(--color-title)" stopOpacity="0.85" />
+      </linearGradient>
+
+      {/* Elegant shadow */}
+      <filter id="elegantShadow">
+        <feDropShadow dx="0" dy="2" stdDeviation="2" floodOpacity="0.15" />
+      </filter>
+    </defs>
+
+    {/* Letter L with extended baseline - Reduced size */}
+    <g transform="translate(20, 18)">
       <path
-        d={`M135 458 c-19 -17 -27 -36 -32 -75 -8 -69 13 -71 22 -3 8 57 31 80
-81 80 43 0 74 -39 74 -91 0 -22 5 -39 10 -39 6 0 10 23 10 50 0 41 -5 56 -25
-75 -33 34 -103 35 -140 3z`}
-      />
-      <path
-        d={`M55 378 c-4 -10 -55 -330 -55 -343 0 -11 84 -14 130 -5 65 12 122 49
-167 108 l33 43 -7 -33 c-6 -34 -31 -86 -60 -127 l-17 -24 29 16 c60 31 97 87
-97 151 1 55 -22 198 -35 214 -17 22 -27 13 -27 -24 0 -28 -3 -35 -17 -32 -12
-2 -19 14 -21 36 l-3 32 -64 0 -63 0 -6 -36 c-9 -46 -40 -44 -44 4 -3 32 -28
-45 -37 20z`}
-      />
-      <path
-        d={`M570 349 c-30 -12 -40 -26 -40 -61 0 -31 7 -37 70 -59 39 -14 45 -19
-45 -45 0 -26 -4 -29 -33 -32 -29 -3 -35 0 -45 27 -14 38 -47 43 -47 8 0 -59
-107 -95 150 -51 47 49 23 102 -55 124 -38 11 -45 17 -43 34 4 30 57 36 65 7 7
--26 43 -28 43 -3 0 40 -64 70 -110 51z`}
-      />
-      <path
-        d={`M1570 235 c0 -108 1 -115 20 -115 19 0 20 7 20 115 0 108 -1 115 -20
-115 -19 0 -20 -7 -20 -115z`}
-      />
-      <path
-        d={`M750 316 c0 -13 -7 -26 -15 -30 -8 -3 -15 -12 -15 -21 0 -8 7 -15 15
--15 11 0 15 -13 15 -53 0 -60 12 -77 52 -77 33 0 39 25 8 33 -16 4 -20 14 -20
-51 0 39 3 46 20 46 13 0 20 7 20 20 0 13 -7 20 -20 20 -15 0 -20 7 -20 25 0
-18 -5 25 -20 25 -14 0 -20 -7 -20 -24z`}
-      />
-      <path
-        d={`M1857 333 c-4 -3 -7 -15 -7 -25 0 -10 -4 -18 -10 -18 -5 0 -10 -9
--10 -20 0 -11 5 -20 10 -20 6 0 10 -19 10 -43 0 -55 22 -87 61 -87 35 0 41 27
-7 32 -20 3 -23 10 -26 50 -3 42 -1 47 20 50 30 4 30 32 1 36 -17 3 -23 10 -23
-28 0 23 -18 32 -33 17z`}
-      />
-      <path
-        d={`M886 269 c-20 -16 -26 -29 -26 -60 0 -22 4 -49 10 -59 14 -27 64 -41
-100 -28 37 12 50 35 50 83 0 72 -76 109 -134 64z m78 -25 c19 -18 21 -65 4
--82 -17 -17 -55 -15 -62 4 -12 31 -6 73 12 83 23 14 28 14 46 -5z`}
-      />
-      <path
-        d={`M1060 205 c0 -78 2 -85 20 -85 16 0 19 8 22 63 3 59 4 62 31 65 19 2
-27 9 27 23 0 22 0 22 -34 9 -16 -6 -27 -6 -31 0 -4 6 -13 10 -21 10 -11 0 -14
--18 -14 -85z`}
-      />
-      <path
-        d={`M1203 266 c-22 -19 -28 -32 -28 -65 0 -53 30 -85 79 -85 33 0 76 26
-76 46 0 11 -38 10 -45 -2 -11 -18 -54 -11 -65 10 -10 19 -8 20 50 20 58 0 60
-1 60 25 0 33 -42 75 -74 75 -14 0 -37 -11 -53 -24z m75 -18 c21 -21 13 -28
--30 -28 -40 0 -41 0 -23 20 21 23 36 25 53 8z`}
-      />
-      <path
-        d={`M1370 169 c0 -109 2 -120 18 -117 12 2 18 14 20 40 3 35 5 36 28 28
-51 -20 97 18 97 81 0 66 -52 106 -103 79 -13 -7 -21 -7 -25 0 -3 5 -13 10 -21
-10 -11 0 -14 -22 -14 -121z m104 78 c13 -9 17 -23 14 -52 -2 -33 -7 -41 -26
--43 -13 -2 -30 2 -38 8 -19 16 -18 65 2 84 19 19 25 20 48 3z`}
-      />
-      <path
-        d={`M1682 274 c-12 -8 -22 -22 -22 -30 0 -19 27 -18 47 1 18 19 48 16 48
--5 0 -7 -15 -18 -35 -22 -45 -12 -72 -42 -61 -70 11 -30 43 -39 75 -23 14 8
-26 10 26 4 0 -5 9 -9 20 -9 18 0 20 7 20 69 0 61 -3 72 -22 85 -12 9 -34 16
--48 16 -14 0 -36 -7 -48 -16z m78 -87 c0 -19 -21 -37 -42 -37 -26 0 -22 29 5
-40 31 12 37 12 37 -3z`}
-      />
-      <path
-        d={`M2002 283 c-18 -7 -42 -57 -42 -87 0 -14 11 -37 24 -52 18 -22 32
--28 60 -27 52 1 106 53 57 53 -11 0 -23 -4 -26 -10 -11 -18 -54 -11 -65 10
--10 19 -8 20 51 20 l62 0 -7 33 c-10 53 -63 81 -114 60z m68 -38 c18 -21 9
--27 -36 -23 -36 3 -37 4 -20 21 21 21 40 22 56 2z`}
+        d="M 0 0 L 6 0 L 6 28 L 22 28 L 22 34 L 0 34 Z"
+        fill="url(#metallic)"
+        filter="url(#elegantShadow)"
       />
     </g>
+
+    {/* Letter U with modern cut - Reduced size */}
+    <g transform="translate(50, 18)">
+      <path
+        d="M 0 0 L 6 0 L 6 20 Q 6 28 13 28 Q 20 28 20 20 L 20 0 L 26 0 L 26 20 Q 26 34 13 34 Q 0 34 0 20 Z"
+        fill="url(#metallic)"
+        filter="url(#elegantShadow)"
+      />
+      {/* Modern accent cut */}
+      <rect
+        x="10"
+        y="0"
+        width="6"
+        height="2.5"
+        fill="var(--color-title)"
+        opacity="0.4"
+      />
+    </g>
+
+    {/* Letter X with crossed lines - Reduced size */}
+    <g transform="translate(86, 18)">
+      <path
+        d="M 0 0 L 7 0 L 13 14 L 19 0 L 26 0 L 16 19 L 27 34 L 20 34 L 13 18 L 6 34 L -1 34 L 10 19 Z"
+        fill="url(#metallic)"
+        filter="url(#elegantShadow)"
+      />
+    </g>
+
+    {/* Letter E with geometric style - Reduced size */}
+    <g transform="translate(120, 18)">
+      <path
+        d="M 0 0 L 23 0 L 23 6 L 6 6 L 6 14 L 20 14 L 20 20 L 6 20 L 6 28 L 23 28 L 23 34 L 0 34 Z"
+        fill="url(#metallic)"
+        filter="url(#elegantShadow)"
+      />
+      {/* Geometric accent */}
+      <circle cx="25" cy="3" r="1.8" fill="var(--color-title)" opacity="0.6" />
+    </g>
+
+    {/* Decorative elements */}
+    <g>
+      {/* Top accent line */}
+      <line
+        x1="20"
+        y1="12"
+        x2="148"
+        y2="12"
+        stroke="var(--color-title)"
+        strokeWidth="0.8"
+        opacity="0.3"
+      />
+
+      {/* Bottom elegant underline */}
+      <path
+        d="M 20 58 Q 84 54 148 58"
+        stroke="var(--color-title)"
+        strokeWidth="1.2"
+        fill="none"
+        opacity="0.5"
+        strokeLinecap="round"
+      />
+
+      {/* Small decorative diamonds */}
+      <g opacity="0.4">
+        <circle cx="20" cy="58" r="1.5" fill="var(--color-title)" />
+        <circle cx="148" cy="58" r="1.5" fill="var(--color-title)" />
+      </g>
+    </g>
+
+    {/* Elegant tagline - Larger and more prominent */}
+    <text
+      x="84"
+      y="76"
+      fontFamily="system-ui, -apple-system, sans-serif"
+      fontSize="12"
+      fill="var(--color-title)"
+      opacity="1"
+      textAnchor="middle"
+      letterSpacing="4"
+      fontWeight="400"
+    >
+      PREMIUM FASHION
+    </text>
   </svg>
 );
 
-export const ShortLogoIcon = ({ size = 100 }: { size?: number }) => (
+// Mobile version 1 - Circular with L monogram
+export const LogoIconMobile = ({ size = 40 }: { size?: number }) => (
   <svg
-    xmlns="http://www.w3.org/2000/svg"
     width={size}
     height={size}
-    viewBox="0 0 64 64" // chỉnh viewBox cho phù hợp hình túi xách
-    fill="var(--color-title)"
+    viewBox="0 0 64 64"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
   >
-    {/* Path của túi xách */}
-    <path d="M48 16H40V12C40 5.373 34.627 0 28 0S16 5.373 16 12v4H8c-2.209 0-4 1.791-4 4v36c0 2.209 1.791 4 4 4h40c2.209 0 4-1.791 4-4V20c0-2.209-1.791-4-4-4zM20 12c0-4.418 3.582-8 8-8s8 3.582 8 8v4H20v-4z" />
+    <defs>
+      <linearGradient id="faviconGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="var(--color-title)" stopOpacity="1" />
+        <stop offset="100%" stopColor="var(--color-title)" stopOpacity="0.9" />
+      </linearGradient>
+    </defs>
+
+    {/* Solid background for better visibility at small sizes */}
+    <rect
+      width="64"
+      height="64"
+      rx="100"
+      fill="var(--color-title)"
+      opacity="0.05"
+    />
+
+    {/* Bold, simple "L" optimized for small sizes */}
+    <g transform="translate(16, 12)">
+      <path
+        d="M 0 0 L 8 0 L 8 32 L 28 32 L 28 40 L 0 40 Z"
+        fill="url(#faviconGradient)"
+      />
+
+      {/* Small accent square */}
+      <rect
+        x="32"
+        y="28"
+        width="4"
+        height="4"
+        fill="var(--color-title)"
+        opacity="0.6"
+      />
+    </g>
   </svg>
 );
 
