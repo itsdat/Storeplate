@@ -24,10 +24,9 @@ import {
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import AdminProfileDrawer from "./AdminProfileDrawer";
 import { useState } from "react";
-import { LogoIcon, ShortLogoIcon } from "@/components/common/icons/BaseIcon";
+import { LogoIcon } from "@/components/common/icons/BaseIcon";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -135,7 +134,7 @@ export default function AdminSlideBar() {
               className="hover:bg-transparent active:bg-transparent data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground">
-                <ShortLogoIcon />
+                <LogoIcon />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold text-(--color-title)">
