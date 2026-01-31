@@ -7,20 +7,40 @@ import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class LocalStorage implements StorageProvider {
-  async upload(file: Express.Multer.File, folder = 'uploads') {
-    const uploadPath = path.join(process.cwd(), 'public', folder);
-    if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath, { recursive: true });
+  // async upload(file: Express.Multer.File, folder = 'uploads') {
+  //   const uploadPath = path.join(process.cwd(), 'public', folder);
+  //   if (!fs.existsSync(uploadPath)) fs.mkdirSync(uploadPath, { recursive: true });
 
-    const ext = path.extname(file.originalname);
-    const filename = `${uuid()}${ext}`;
-    const fullPath = path.join(uploadPath, filename);
-    fs.writeFileSync(fullPath, file.buffer);
+  //   const ext = path.extname(file.originalname);
+  //   const filename = `${uuid()}${ext}`;
+  //   const fullPath = path.join(uploadPath, filename);
+  //   fs.writeFileSync(fullPath, file.buffer);
 
-    return {
-      url: `/uploads/${folder}/${filename}`,
-      key: `/uploads/${folder}/${filename}`,
-    };
+  //   return {
+  //     url: `/uploads/${folder}/${filename}`,
+  //     key: `/uploads/${folder}/${filename}`,
+  //   };
+  // }
+
+  async upload(file: Express.Multer.File, folder = '') {
+  const uploadPath = path.join('/app/uploads', folder);
+
+  if (!fs.existsSync(uploadPath)) {
+    fs.mkdirSync(uploadPath, { recursive: true });
   }
+
+  const ext = path.extname(file.originalname);
+  const filename = `${uuid()}${ext}`;
+  const fullPath = path.join(uploadPath, filename);
+
+  fs.writeFileSync(fullPath, file.buffer);
+
+  return {
+    url: `/uploads/${folder ? folder + '/' : ''}${filename}`,
+    key: `${folder ? folder + '/' : ''}${filename}`,
+  };
+}
+
 
   async delete(key: string) {
     const filePath = path.join(process.cwd(), 'public', key);

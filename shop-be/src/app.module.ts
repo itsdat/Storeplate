@@ -37,12 +37,16 @@ import { AddressModule } from './modules/address/address.module';
         entities: [User]
       })
     }),
+    // ServeStaticModule.forRoot({
+    //   rootPath: process.env.NODE_ENV === 'production'
+    //     ? '/app/uploads'
+    //     : join(__dirname, '..', 'public'),
+    //   serveRoot: '/uploads',
+    // }),
     ServeStaticModule.forRoot({
-      rootPath: process.env.NODE_ENV === 'production'
-        ? '/app/uploads'
-        : join(__dirname, '..', 'public'),
-      serveRoot: '/uploads',
-    }),
+  rootPath: '/app/uploads',
+  serveRoot: '/uploads',
+}),
     AuthModule,
     CollectionModule,
     ProductModule,
