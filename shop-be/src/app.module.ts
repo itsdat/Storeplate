@@ -38,8 +38,10 @@ import { AddressModule } from './modules/address/address.module';
       })
     }),
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'), // thư mục chứa file
-      serveRoot: '/', // đường dẫn truy cập /avatars/... hoặc /products/...
+      rootPath: process.env.NODE_ENV === 'production'
+        ? '/app/uploads'
+        : join(__dirname, '..', 'public'),
+      serveRoot: '/uploads',
     }),
     AuthModule,
     CollectionModule,
