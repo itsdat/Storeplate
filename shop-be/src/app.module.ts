@@ -44,7 +44,7 @@ import { AddressModule } from './modules/address/address.module';
     //   serveRoot: '/uploads',
     // }),
     ServeStaticModule.forRoot({
-  rootPath: '/app/uploads',
+  rootPath: '/uploads',
   serveRoot: '/uploads',
 }),
     AuthModule,
